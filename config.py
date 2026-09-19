@@ -5,17 +5,23 @@ from dotenv import load_dotenv
 # 載入 .env 環境變數
 load_dotenv()
 
-# Gemini API 設定
+# Jev API 設定 (TypeSafe AI - System 1 決策核心)
+TYPESAFE_API_KEY = os.getenv("TYPESAFE_API_KEY", "")
+JEV_MODEL_NAME = os.getenv("JEV_MODEL_NAME", "jev-latest")
+JEV_API_URL = os.getenv("JEV_API_URL", "https://api.typesafe.ai/v1/systemone")
+
+# Gemini API 設定 (輔助認知與使用者意圖解析 - System 2)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-MODEL_NAME = "gemini-3.6-flash"
+MODEL_NAME = "gemini-3.8-flash"
 
 # UI與系統預設設定
-DEFAULT_POLL_INTERVAL = 2.0  # 輪詢間隔 (秒)
+DEFAULT_POLL_INTERVAL = 0.25  # 決策輪詢間隔固定為 0.25 秒 (4 Hz 實時畫面流)
 DEFAULT_OPACITY = 0.85        # 預設透明度 (0.2 ~ 1.0)
 MAX_IMAGE_SIZE = (1280, 720)  # 超低延遲傳輸用的預處理縮放尺寸
 
 # 熱鍵設定
-HOTKEY_TOGGLE_POLL = "f9"     # F9: 切換自動輪詢 / 暫停
+HOTKEY_EMERGENCY_STOP = "f8"   # F8: 緊急停止自動操作 (安全熔斷開關)
+HOTKEY_TOGGLE_POLL = "f9"     # F9: 切換 0.25s 自動決策輪詢 / 暫停
 HOTKEY_MANUAL_TRIGGER = "f10" # F10: 手動快照分析一次
 HOTKEY_VOICE_PROMPT = "f11"   # F11: 觸發麥克風語音指令發問 (STT)
 
@@ -36,6 +42,13 @@ class GameType(str, Enum):
     STAR_RAIL = "崩壞：星穹鐵道 (Honkai: Star Rail)"
     ZZZ = "絕區零 (Zenless Zone Zero)"
     GENERAL = "泛用遊戲模式 (General Game)"
+
+
+class AssistCapability(str, Enum):
+    GUIDANCE = "操作指導 (Guidance HUD)"
+    AUTONOMOUS = "代替操作 (Autonomous Screen Play)"
+    DATA_ANALYSIS = "資料分析 (Data & Stats)"
+    VOICE_QA = "語音自由問答 (Voice Q&A)"
 
 
 class AnalysisMode(str, Enum):

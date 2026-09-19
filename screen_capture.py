@@ -19,7 +19,8 @@ class ScreenCapturer:
         """
         取得系統所有顯示器資訊
         """
-        with mss.mss() as sct:
+        mss_cls = getattr(mss, "MSS", mss.mss)
+        with mss_cls() as sct:
             return sct.monitors
 
     @staticmethod
@@ -37,28 +38,36 @@ class ScreenCapturer:
         """
         start_time = time.perf_counter()
 
-        with mss.mss() as sct:
-            if bbox:
-                left, top, width, height = bbox
-                region = {"left": left, "top": top, "width": width, "height": height}
-            else:
-                monitors = sct.monitors
-                if monitor_index < 0 or monitor_index >= len(monitors):
-                    monitor_index = 1
-                region = monitors[monitor_index]
+        try:
+            mss_cls = getattr(mss, "MSS", mss.mss)
+            with mss_cls() as sct:
+                if bbox:
+                    left, top, width, height = bbox
+                    region = {"left": left, "top": top, "width": width, "height": height}
+                else:
+                    monitors = sct.monitors
+                    if monitor_index < 0 or monitor_index >= len(monitors):
+                        monitor_index = 1
+                    region = monitors[monitor_index]
 
-            sct_img = sct.grab(region)
-            # mss 回傳 BGRA, 轉為 PIL Image (RGB)
-            img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
+                sct_img = sct.grab(region)
+                # mss 回傳 BGRA, 轉為 PIL Image (RGB)
+                img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
 
-            if max_size:
-                target_w, target_h = max_size
-                orig_w, orig_h = img.size
-                if orig_w > target_w or orig_h > target_h:
-                    img.thumbnail((target_w, target_h), Image.Resampling.BILINEAR)
+                if max_size:
+                    target_w, target_h = max_size
+                    orig_w, orig_h = img.size
+                    if orig_w > target_w or orig_h > target_h:
+                        img.thumbnail((target_w, target_h), Image.Resampling.BILINEAR)
 
+                elapsed_ms = (time.perf_counter() - start_time) * 1000.0
+                return img, elapsed_ms
+        except Exception as e:
+            # 在無螢幕授權、螢幕鎖定或伺服器遠端會話下，提供安全降級畫面，防止迴圈崩潰
             elapsed_ms = (time.perf_counter() - start_time) * 1000.0
-            return img, elapsed_ms
+            fallback_w, fallback_h = max_size if max_size else (1280, 720)
+            fallback_img = Image.new("RGB", (fallback_w, fallback_h), color=(15, 18, 25))
+            return fallback_img, elapsed_ms
 
 
 if __name__ == "__main__":

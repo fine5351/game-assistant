@@ -48,6 +48,7 @@ class TTSEngine:
     def __init__(self, rate: int = TTS_RATE, volume: float = TTS_VOLUME):
         self.rate = rate
         self.volume = volume
+        self._current_engine = None
 
     def speak(self, text: str):
         """
@@ -72,6 +73,7 @@ class TTSEngine:
             except Exception:
                 engine = pyttsx3.init()
 
+            self._current_engine = engine
             engine.setProperty('rate', self.rate)
             engine.setProperty('volume', self.volume)
 
@@ -88,10 +90,15 @@ class TTSEngine:
 
             engine.say(cleaned_text)
             engine.runAndWait()
-            engine.stop()
         except Exception as e:
             print(f"[TTSEngine] 語音播報異常: {e}")
         finally:
+            if self._current_engine:
+                try:
+                    self._current_engine.stop()
+                except Exception:
+                    pass
+                self._current_engine = None
             if pythoncom:
                 try:
                     pythoncom.CoUninitialize()
@@ -99,8 +106,12 @@ class TTSEngine:
                     pass
 
     def stop(self):
-        """強行中斷目前語音朗讀 (如有需要)"""
-        pass
+        """強行中斷目前語音朗讀"""
+        if self._current_engine:
+            try:
+                self._current_engine.stop()
+            except Exception:
+                pass
 
 
 if __name__ == "__main__":
