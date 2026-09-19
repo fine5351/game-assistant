@@ -8,7 +8,7 @@ if __name__ == "__main__" and not __package__:
 import threading
 from typing import Optional
 
-from PyQt6.QtCore import Qt, QPoint, pyqtSignal, QObject
+from PyQt6.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer
 from PyQt6.QtGui import QFont, QColor, QPalette, QCursor
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel,
@@ -19,8 +19,9 @@ from pynput import keyboard
 
 from game_assistant.core.config import (
     GameType, AssistCapability, DEFAULT_OPACITY,
+    HOTKEY_VOICE_TRANSLATE, HOTKEY_TRANSLATE_SCREEN,
     HOTKEY_EMERGENCY_STOP, HOTKEY_TOGGLE_POLL, HOTKEY_MANUAL_TRIGGER, HOTKEY_VOICE_PROMPT,
-    TTS_ENABLED
+    DEFAULT_TARGET_LANGUAGE, TTS_ENABLED
 )
 
 
@@ -28,8 +29,10 @@ class HotkeyListener(QObject):
     """
     全域熱鍵監聽器 (採用 pynput)
     透過 Qt Signal 將熱鍵事件非同步通知 GUI 主執行緒
-    支援 F8 (急停), F9 (0.25s 輪詢), F10 (快照分析), F11 (語音指令)
+    支援 F6 (語音翻譯輸入), F7 (畫面翻譯), F8 (急停), F9 (0.25s 輪詢), F10 (快照分析), F11 (語音指令)
     """
+    voice_translate_signal = pyqtSignal()
+    screen_translate_signal = pyqtSignal()
     emergency_stop_signal = pyqtSignal()
     toggle_poll_signal = pyqtSignal()
     manual_trigger_signal = pyqtSignal()
@@ -42,7 +45,11 @@ class HotkeyListener(QObject):
     def start(self):
         def on_press(key):
             try:
-                if key == keyboard.Key.f8:
+                if key == keyboard.Key.f6:
+                    self.voice_translate_signal.emit()
+                elif key == keyboard.Key.f7:
+                    self.screen_translate_signal.emit()
+                elif key == keyboard.Key.f8:
                     self.emergency_stop_signal.emit()
                 elif key == keyboard.Key.f9:
                     self.toggle_poll_signal.emit()
@@ -62,6 +69,156 @@ class HotkeyListener(QObject):
             self._listener.stop()
 
 
+class FloatingSubtitleOverlay(QWidget):
+    """
+    遊戲置頂浮動翻譯字幕視窗 (Floating Subtitle Banner)
+    專門顯示遊戲中 NPC 台詞、對話字幕、外國玩家發言之繁體中文字幕
+    支援自動隱藏、無邊框滑鼠拖曳、字型高對比發光渲染
+    """
+    def __init__(self):
+        super().__init__()
+        self.drag_position = QPoint()
+        self._hide_timer = QTimer(self)
+        self._hide_timer.setSingleShot(True)
+        self._hide_timer.timeout.connect(self.hide)
+        self._init_ui()
+
+    def _init_ui(self):
+        self.setWindowFlags(
+            Qt.WindowType.WindowStaysOnTopHint |
+            Qt.WindowType.FramelessWindowHint |
+            Qt.WindowType.Tool |
+            Qt.WindowType.WindowDoesNotAcceptFocus
+        )
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
+        self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, True)
+        self.resize(540, 110)
+        self.setMinimumSize(320, 75)
+
+        # 預設自適應定位於螢幕中下方 (典型遊戲字幕與對話框常駐區)
+        try:
+            screen = QApplication.primaryScreen()
+            if screen:
+                geom = screen.geometry()
+                x = (geom.width() - 540) // 2
+                y = int(geom.height() * 0.72)
+                self.move(x, y)
+        except Exception:
+            pass
+
+        # 外層容器
+        self.frame = QFrame(self)
+        self.frame.setObjectName("SubtitleFrame")
+        shadow = QGraphicsDropShadowEffect(self)
+        shadow.setBlurRadius(16)
+        shadow.setColor(QColor(0, 0, 0, 200))
+        shadow.setOffset(0, 3)
+        self.frame.setGraphicsEffect(shadow)
+
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(6, 6, 6, 6)
+        main_layout.addWidget(self.frame)
+
+        content_layout = QVBoxLayout(self.frame)
+        content_layout.setContentsMargins(12, 8, 12, 10)
+        content_layout.setSpacing(4)
+
+        # 頂部標題列
+        header_layout = QHBoxLayout()
+        header_layout.setSpacing(4)
+        lbl_tag = QLabel("🌐 遊戲即時翻譯字幕 (Live Subtitles)")
+        lbl_tag.setFont(QFont("Microsoft JhengHei", 9, QFont.Weight.Bold))
+        lbl_tag.setStyleSheet("color: #00E5FF;")
+
+        btn_close = QPushButton("✕")
+        btn_close.setFixedSize(18, 18)
+        btn_close.setStyleSheet("background: transparent; color: #888888; border: none; font-size: 11px;")
+        btn_close.clicked.connect(self.hide)
+
+        header_layout.addWidget(lbl_tag)
+        header_layout.addStretch()
+        header_layout.addWidget(btn_close)
+        content_layout.addLayout(header_layout)
+
+        # 繁中翻譯字幕主文字 (大字號高辨識)
+        self.lbl_translated = QLabel("等待翻譯字幕...")
+        self.lbl_translated.setFont(QFont("Microsoft JhengHei", 12, QFont.Weight.Bold))
+        self.lbl_translated.setStyleSheet("color: #FFE600; line-height: 1.3;")
+        self.lbl_translated.setWordWrap(True)
+        content_layout.addWidget(self.lbl_translated)
+
+        # 外文原文輔助文字 (小字號斜體)
+        self.lbl_original = QLabel("")
+        self.lbl_original.setFont(QFont("Segoe UI", 9))
+        self.lbl_original.setStyleSheet("color: #94A3B8; font-style: italic;")
+        self.lbl_original.setWordWrap(True)
+        content_layout.addWidget(self.lbl_original)
+
+        self.setStyleSheet("""
+            #SubtitleFrame {
+                background-color: rgba(12, 18, 28, 0.93);
+                border: 1px solid rgba(0, 229, 255, 0.55);
+                border-radius: 10px;
+            }
+        """)
+
+    def show_subtitle(self, translated: str, original: str = "", duration_ms: int = 8000):
+        """顯示翻譯字幕並於指定時間後自動淡出隱藏"""
+        if not translated:
+            return
+        self.lbl_translated.setText(translated)
+        if original:
+            self.lbl_original.setText(f"原文: {original}")
+            self.lbl_original.show()
+        else:
+            self.lbl_original.hide()
+
+        self.adjustSize()
+        self.show()
+        if duration_ms > 0:
+            self._hide_timer.start(duration_ms)
+
+    def show_subtitles_list(self, subtitles: list[dict], duration_ms: int = 8000):
+        """一次性展示多則對話字幕/聊天訊息"""
+        if not subtitles:
+            return
+        trans_lines = []
+        orig_lines = []
+        for sub in subtitles[:4]:  # 最多同時顯示最新 4 筆以保證排版簡潔
+            s = sub.get("sender", "")
+            t = sub.get("translated", "").strip()
+            o = sub.get("original", "").strip()
+            if t:
+                trans_lines.append(f"【{s}】{t}" if s else t)
+            if o:
+                orig_lines.append(f"[{s}] {o}" if s else o)
+
+        if not trans_lines and not orig_lines:
+            return
+
+        self.show_subtitle(
+            translated="\n".join(trans_lines),
+            original="\n".join(orig_lines),
+            duration_ms=duration_ms
+        )
+
+    def clear_subtitle(self):
+        self._hide_timer.stop()
+        self.lbl_translated.setText("")
+        self.lbl_original.setText("")
+        self.hide()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.drag_position = event.globalPosition().toPoint() - self.frameGeometry().topLeft()
+            event.accept()
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() & Qt.MouseButton.LeftButton:
+            self.move(event.globalPosition().toPoint() - self.drag_position)
+            event.accept()
+
+
 class GameAssistantOverlay(QWidget):
     """
     Windows 置頂懸浮面板 (Always-On-Top Overlay)
@@ -76,6 +233,8 @@ class GameAssistantOverlay(QWidget):
     manual_analyze_signal = pyqtSignal()
     toggle_poll_signal = pyqtSignal()
     voice_prompt_signal = pyqtSignal()
+    screen_translate_signal = pyqtSignal()
+    voice_translate_signal = pyqtSignal(str)
     tts_toggle_signal = pyqtSignal(bool)
 
     def __init__(self):
@@ -99,7 +258,7 @@ class GameAssistantOverlay(QWidget):
             Qt.WindowType.Tool
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
-        self.resize(440, 620)
+        self.resize(450, 660)
         self.setMinimumSize(340, 220)
 
         # 外層主容器
@@ -165,7 +324,7 @@ class GameAssistantOverlay(QWidget):
         body_layout.setContentsMargins(0, 0, 0, 0)
         body_layout.setSpacing(8)
 
-        # 下拉選單控制列 (遊戲切換 & 輔助能力切換)
+        # 下拉選單控制列 (遊戲切換 & 輔助能力切換 & 翻譯語言切換)
         controls_layout = QHBoxLayout()
         controls_layout.setSpacing(6)
 
@@ -186,8 +345,16 @@ class GameAssistantOverlay(QWidget):
         # 保持相容 combo_mode
         self.combo_mode = self.combo_capability
 
+        self.combo_target_lang = QComboBox()
+        self.combo_target_lang.addItem("翻譯目標: 英文", "英文")
+        self.combo_target_lang.addItem("翻譯目標: 日文", "日文")
+        self.combo_target_lang.addItem("翻譯目標: 韓文", "韓文")
+        self.combo_target_lang.addItem("翻譯目標: 俄文", "俄文")
+        self.combo_target_lang.setToolTip("語音翻譯發言時轉譯的目標外語")
+
         controls_layout.addWidget(self.combo_game, 3)
         controls_layout.addWidget(self.combo_capability, 3)
+        controls_layout.addWidget(self.combo_target_lang, 2)
         body_layout.addLayout(controls_layout)
 
         # Jev 決策狀態卡片 (即時顯示 Jev System 1 最新 Choice / 信心 / 螢幕操作)
@@ -214,7 +381,7 @@ class GameAssistantOverlay(QWidget):
 
         body_layout.addWidget(self.decision_card)
 
-        # 按鈕列 (控制：0.25s 輪詢 / 快照分析 / F8 急停 / 語音提問 / 朗讀開關)
+        # 按鈕列 (控制：0.25s 輪詢 / 快照分析 / F8 急停 / 語音提問 / 朗讀開關 / 畫面翻譯 / 語音翻譯)
         bar_layout = QVBoxLayout()
         bar_layout.setSpacing(6)
 
@@ -254,8 +421,25 @@ class GameAssistantOverlay(QWidget):
         bar_row2.addWidget(self.btn_voice_prompt, 3)
         bar_row2.addWidget(self.btn_tts_toggle, 2)
 
+        bar_row3 = QHBoxLayout()
+        bar_row3.setSpacing(6)
+
+        self.btn_screen_translate = QPushButton("🌐 畫面翻譯 (F7)")
+        self.btn_screen_translate.setObjectName("TransBtn")
+        self.btn_screen_translate.setToolTip("按下 F7 截取遊戲畫面，即時翻譯外文選單/字幕/UI為繁體中文")
+        self.btn_screen_translate.clicked.connect(lambda: self.screen_translate_signal.emit())
+
+        self.btn_voice_translate = QPushButton("💬 語音翻譯輸入 (F6)")
+        self.btn_voice_translate.setObjectName("VoiceTransBtn")
+        self.btn_voice_translate.setToolTip("按下 F6 辨識中文語音並翻譯為外語，代替操作自動貼上至聊天框")
+        self.btn_voice_translate.clicked.connect(self._on_voice_translate_clicked)
+
+        bar_row3.addWidget(self.btn_screen_translate, 3)
+        bar_row3.addWidget(self.btn_voice_translate, 3)
+
         bar_layout.addLayout(bar_row1)
         bar_layout.addLayout(bar_row2)
+        bar_layout.addLayout(bar_row3)
         body_layout.addLayout(bar_layout)
 
         # 透明度滑桿列
@@ -288,6 +472,8 @@ class GameAssistantOverlay(QWidget):
             "按下 <b style='color:#00E5FF;'>F9</b> 啟動每 0.25 秒高頻實時決策<br>"
             "按下 <b style='color:#FFB300;'>F10</b> 手動快照分析<br>"
             "按下 <b style='color:#E040FB;'>F11</b> 麥克風語音發問<br>"
+            "按下 <b style='color:#00E5FF;'>F7</b> 外文畫面與對話即時翻譯<br>"
+            "按下 <b style='color:#FFB300;'>F6</b> 中文語音翻譯並自動輸入聊天框<br>"
             "按下 <b style='color:#FF5252;'>F8</b> 緊急停止代替操作"
             "</div>"
         )
@@ -453,6 +639,37 @@ class GameAssistantOverlay(QWidget):
                 color: #777777;
                 border-color: #555555;
             }
+            QPushButton#TransBtn {
+                background-color: rgba(0, 188, 212, 0.22);
+                color: #00E5FF;
+                border: 1px solid #00E5FF;
+                border-radius: 6px;
+                padding: 6px;
+                font-size: 11px;
+                font-weight: bold;
+            }
+            QPushButton#TransBtn:hover {
+                background-color: rgba(0, 229, 255, 0.35);
+                color: #FFFFFF;
+            }
+            QPushButton#VoiceTransBtn {
+                background-color: rgba(255, 179, 0, 0.2);
+                color: #FFB300;
+                border: 1px solid #FFB300;
+                border-radius: 6px;
+                padding: 6px;
+                font-size: 11px;
+                font-weight: bold;
+            }
+            QPushButton#VoiceTransBtn:hover {
+                background-color: rgba(255, 179, 0, 0.35);
+                color: #FFFFFF;
+            }
+            QPushButton#VoiceTransBtn:disabled {
+                background-color: rgba(100, 100, 100, 0.2);
+                color: #777777;
+                border-color: #555555;
+            }
             QSlider::groove:horizontal {
                 height: 4px;
                 background: rgba(255, 255, 255, 0.2);
@@ -589,6 +806,35 @@ class GameAssistantOverlay(QWidget):
     def set_status_loading(self):
         """切換為分析中狀態"""
         self.status_footer.setText("狀態: 🧠 Gemini 3.8 輔助認知分析中...")
+
+    def _on_voice_translate_clicked(self):
+        target_lang = self.combo_target_lang.currentData() or "英文"
+        self.voice_translate_signal.emit(target_lang)
+
+    def get_target_language(self) -> str:
+        """獲取當前選定的翻譯目標語言"""
+        return self.combo_target_lang.currentData() or "英文"
+
+    def set_status_translating(self):
+        """切換為畫面外文解析中狀態"""
+        self.status_footer.setText("狀態: 🌐 Gemini 3.8 Flash 外文遊戲畫面解析與翻譯中...")
+
+    def set_status_voice_translating(self):
+        """切換為語音辨識與翻譯輸入中狀態"""
+        self.btn_voice_translate.setText("⏳ 翻譯輸入中...")
+        self.btn_voice_translate.setEnabled(False)
+        self.status_footer.setText("狀態: 🎙️ 聆聽中文發音並轉譯外語輸入中...")
+
+    def reset_voice_translate_button(self):
+        """復原語音翻譯按鈕狀態"""
+        self.btn_voice_translate.setText("💬 語音翻譯輸入 (F6)")
+        self.btn_voice_translate.setEnabled(True)
+
+    def show_translation_view(self, markdown_text: str, capture_ms: float = 0.0):
+        """展示外文遊戲畫面翻譯對照與字幕結果 (鎖定顯示模式避免被輪詢洗掉)"""
+        self._active_display_mode = "translation"
+        self.output_browser.setMarkdown(markdown_text)
+        self.status_footer.setText(f"狀態: 🌐 外文畫面翻譯完成 | 耗時: {capture_ms:.1f} ms")
 
     # --- 無邊框拖曳視窗支援 ---
     def mousePressEvent(self, event):

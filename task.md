@@ -76,3 +76,20 @@
 - [x] 任務 41: 全面強化策略模式與 Gemini 引擎中對 `capability` 為字串或枚舉時的相容處理 (`getattr(capability, "value", str(capability))`)
 - [x] 任務 42: 擴充單元測試至 44 項，涵蓋 CLI argparse、`pyproject.toml` PEP 621 設定與未知遊戲降級機制，`pytest` 與 `unittest` 雙測試套件 100% 通過
 
+## 第八階段：遊戲輔助功能「語文翻譯能力」擴充與驗證 (Translation & Live Subtitles)
+- [x] 任務 43: 配置翻譯功能核心常數、列舉與 Prompt 範本 (`config.py`)：新增 `HOTKEY_VOICE_TRANSLATE` (F6)、`HOTKEY_TRANSLATE_SCREEN` (F7)、`DEFAULT_TARGET_LANGUAGE`、`AssistCapability.TRANSLATION`、`AnalysisMode.TRANSLATION` 與各遊戲專屬外文翻譯提示詞範本
+- [x] 任務 44: 擴充致動器文字輸入能力 (`input_actuator.py`)：實作 `copy_to_clipboard` (Pyperclip / Win32 API 雙重降級) 與 `paste_text_to_chat` (模擬開啟聊天框、Ctrl+V 貼上、Enter 發送與 force 強制模式)
+- [x] 任務 45: 擴充 Gemini 輔助認知引擎多模態翻譯 (`ai_engine.py`)：實作 `translate_screen` (外文介面/選單/劇情/聊天 Markdown 對照)、`translate_chat_subtitles` (JSON 字幕抽取與對話即時翻譯) 與 `translate_voice_text` (玩家繁中語音即時轉譯外語，含離線常用遊戲字典對照降級)
+- [x] 任務 46: 實作 UniversalGameAgent 翻譯協調介面 (`agent.py`)：整合畫面外文視覺翻譯 (`translate_screen`) 與中文語音翻譯並自動發送至遊戲聊天框 (`translate_voice_to_chat`)
+- [x] 任務 47: 實作置頂浮動翻譯字幕視窗與主介面翻譯控制列 (`gui.py`)：
+  - 建立 `FloatingSubtitleOverlay`：支援無邊框滑鼠拖曳、置頂半透明、高對比發光字幕、自動逾時隱藏
+  - 擴充 `GameAssistantOverlay`：新增 F7 畫面翻譯按鈕、F6 語音翻譯輸入按鈕、目標外語切換下拉選單 (英文/日文/韓文/俄文)、翻譯檢視專屬鎖定模式防重繪閃爍
+  - 擴充 `HotkeyListener`：全域監聽 F6 與 F7 快捷鍵訊號
+- [x] 任務 48: 實作非同步翻譯 Worker 執行緒群與控制器整合 (`app.py`)：
+  - 建立 `ScreenTranslationWorker` 與 `VoiceTranslationWorker` 確保 UI 零阻塞
+  - 整合 `GameAssistantController` 訊號槽、全域熱鍵、能力切換連動與 TTS 即時朗讀對話字幕
+- [x] 任務 49: 統一套件匯出與相容性維護 (`__init__.py`, `main.py`)：匯出翻譯熱鍵常數、Worker 與浮動字幕組件
+- [x] 任務 50: 撰寫完整單元測試套件 (`tests/test_translation.py`)：覆蓋常數列舉、Gemini 視覺翻譯/離線降級/JSON 抽取、致動器剪貼簿貼上、Agent 協調、UI 浮動字幕/Overlay、非同步 Worker、Win32 64-bit ctypes 降級、防焦點奪取旗標等 36 項測試，確保現有 44 項原有測試持續 100% 通過（總計 80 項測試全數 PASS）
+- [x] 任務 51: 全專案語法編譯檢查 (`py_compile`) 28 個模組 100% 零錯誤
+
+

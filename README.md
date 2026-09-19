@@ -91,7 +91,8 @@ game-assistant/
 │           └── registry.py     # StrategyRegistry 策略工廠與動態註冊中心
 └── tests/                      # 單元測試與驗證套件 (獨立於 src 外)
     ├── __init__.py
-    └── test_universal_agent.py # 完整單元測試與強健性驗證套件 (42 個測試案例)
+    ├── test_translation.py     # 語文翻譯與即時字幕測試套件 (36 個測試案例)
+    └── test_universal_agent.py # 通用 Agent 核心測試套件 (44 個測試案例)
 ```
 
 ---
@@ -130,11 +131,12 @@ GEMINI_API_KEY=your_gemini_api_key
 
 ### 4. 執行測試套件
 ```bash
-# 使用 unittest 自動發現執行完整 42 項測試
+# 使用 unittest 自動發現執行完整 80 項測試 (包含 44 項通用核心與 36 項翻譯測試)
 python -m unittest discover -s tests
 
-# 或直接執行測試模組
+# 或分別執行測試模組
 python tests/test_universal_agent.py
+python tests/test_translation.py
 ```
 
 ### 5. 啟動通用遊戲 Agent
@@ -162,6 +164,8 @@ python main.py
 
 | 熱鍵 | 功能說明 |
 | :--- | :--- |
+| **`F6`** | **💬 中文語音翻譯並自動輸入 (Voice Translation)**：聆聽玩家中文語音，轉譯為外語 (英文/日文/韓文等) 並代替操作貼上至遊戲聊天框。 |
+| **`F7`** | **🌐 外文畫面與對話即時翻譯 (Screen Translation)**：擷取遊戲畫面，深度解析外文 UI 選單、任務、劇情字幕與對話框並顯示翻譯與浮動字幕。 |
 | **`F8`** | **🛑 緊急安全急停 (Killswitch)**：立即終止代替操作，解除所有鍵盤滑鼠動作，切回指導模式。 |
 | **`F9`** | **⚡ 切換 0.25 秒高頻實時決策輪詢**：啟動 / 暫停固定 4 Hz 畫面決策迴圈。 |
 | **`F10`** | **📸 手動快照深度分析**：調用 Gemini 3.8 Flash 進行深層畫面視覺解析與裝備評估。 |

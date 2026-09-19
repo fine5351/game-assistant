@@ -207,10 +207,24 @@ class ScreenActuator:
                 "right": Key.right,
                 "up": Key.up,
                 "down": Key.down,
+                "f1": Key.f1,
+                "f2": Key.f2,
+                "f3": Key.f3,
+                "f4": Key.f4,
+                "f5": Key.f5,
+                "f6": Key.f6,
+                "f7": Key.f7,
+                "f8": Key.f8,
+                "f9": Key.f9,
+                "f10": Key.f10,
+                "f11": Key.f11,
+                "f12": Key.f12,
             }
             if k in key_map:
                 return key_map[k]
-        return k
+        if len(k) == 1:
+            return k
+        return None
 
     def _record_action(self, action_type: str, details: Dict[str, Any]):
         entry = {
@@ -221,6 +235,164 @@ class ScreenActuator:
         self._action_history.append(entry)
         if len(self._action_history) > self._max_history:
             self._action_history.pop(0)
+
+    def copy_to_clipboard(self, text: str) -> bool:
+        """將指定文字寫入系統剪貼簿 (支援 pyperclip 與 Win32 64-bit ctypes 雙重降級)"""
+        try:
+            import pyperclip
+            pyperclip.copy(text)
+            return True
+        except Exception:
+            pass
+
+        try:
+            import ctypes
+            u32 = ctypes.windll.user32
+            k32 = ctypes.windll.kernel32
+
+            k32.GlobalAlloc.argtypes = [ctypes.c_uint, ctypes.c_size_t]
+            k32.GlobalAlloc.restype = ctypes.c_void_p
+            k32.GlobalLock.argtypes = [ctypes.c_void_p]
+            k32.GlobalLock.restype = ctypes.c_void_p
+            k32.GlobalUnlock.argtypes = [ctypes.c_void_p]
+            k32.GlobalUnlock.restype = ctypes.c_int
+            u32.OpenClipboard.argtypes = [ctypes.c_void_p]
+            u32.OpenClipboard.restype = ctypes.c_int
+            u32.EmptyClipboard.argtypes = []
+            u32.EmptyClipboard.restype = ctypes.c_int
+            u32.SetClipboardData.argtypes = [ctypes.c_uint, ctypes.c_void_p]
+            u32.SetClipboardData.restype = ctypes.c_void_p
+            u32.CloseClipboard.argtypes = []
+            u32.CloseClipboard.restype = ctypes.c_int
+
+            if not u32.OpenClipboard(None):
+                return False
+
+            try:
+                u32.EmptyClipboard()
+                text_bytes = text.encode('utf-16le') + b'\x00\x00'
+                # GHND = GMEM_MOVEABLE (0x0002) | GMEM_ZEROINIT (0x0040)
+                h_mem = k32.GlobalAlloc(0x0042, len(text_bytes))
+                if not h_mem:
+                    return False
+
+                p_mem = k32.GlobalLock(h_mem)
+                if not p_mem:
+                    k32.GlobalFree(h_mem)
+                    return False
+
+                ctypes.cdll.msvcrt.memcpy(ctypes.c_void_p(p_mem), text_bytes, len(text_bytes))
+                k32.GlobalUnlock(h_mem)
+                # CF_UNICODETEXT = 13
+                u32.SetClipboardData(13, h_mem)
+                return True
+            finally:
+                u32.CloseClipboard()
+        except Exception as e:
+            print(f"[ScreenActuator] 剪貼簿寫入異常: {e}")
+            return False
+
+    def paste_text_to_chat(
+        self,
+        text: str,
+        enter_chat_key: Optional[str] = "enter",
+        submit: bool = True,
+        force: bool = True
+    ) -> bool:
+        """
+        將翻譯文字輸入至遊戲文字聊天框中
+        支援以剪貼簿貼上 (Ctrl+V) 確保跨語言與特殊字元正確輸入
+        :param text: 要輸入的翻譯文字
+        :param enter_chat_key: 開啟聊天框的按鍵 (預設為 'enter'，若為 None 則假定聊天框已開啟)
+        :param submit: 輸入後是否按 Enter 發送訊息
+        :param force: 是否強制執行 (語音翻譯專屬致動即使在指導模式亦允許發送)
+        :return: 是否成功執行
+        """
+        if not text or not text.strip():
+            return False
+
+        with self._lock:
+            if not force and not self._is_enabled:
+                return False
+
+            # 複製至系統剪貼簿
+            clipboard_ok = self.copy_to_clipboard(text.strip())
+            self._record_action("CHAT_PASTE", {
+                "text": text.strip(),
+                "enter_chat_key": enter_chat_key,
+                "submit": submit,
+                "clipboard_ok": clipboard_ok
+            })
+
+            if not self._keyboard or not Key:
+                return clipboard_ok
+
+            try:
+                # 1. 開啟遊戲聊天輸入框 (若有指定)
+                if enter_chat_key:
+                    k_open = self._resolve_key(enter_chat_key)
+                    if k_open is not None:
+                        try:
+                            self._keyboard.press(k_open)
+                            time.sleep(0.04)
+                        finally:
+                            self._keyboard.release(k_open)
+                        time.sleep(0.12)  # 等待遊戲呼叫出聊天框
+
+                # 2. 模擬 Ctrl+V 貼上剪貼簿內容 (嚴格 try/finally 防按鍵卡死)
+                self._keyboard.press(Key.ctrl)
+                try:
+                    time.sleep(0.02)
+                    self._keyboard.press('v')
+                    try:
+                        time.sleep(0.03)
+                    finally:
+                        self._keyboard.release('v')
+                    time.sleep(0.02)
+                finally:
+                    self._keyboard.release(Key.ctrl)
+                time.sleep(0.08)
+
+                # 3. 發送訊息 (按下 Enter 提交)
+                if submit:
+                    self._keyboard.press(Key.enter)
+                    try:
+                        time.sleep(0.04)
+                    finally:
+                        self._keyboard.release(Key.enter)
+
+                return True
+            except Exception as e:
+                print(f"[ScreenActuator] paste_text_to_chat 模擬異常: {e}")
+                return False
+
+    def type_text(self, text: str, auto_enter: bool = False) -> bool:
+        """
+        直接鍵盤輸入字串
+        :param text: 字串內容
+        :param auto_enter: 是否自動在末尾按 Enter
+        """
+        if not text:
+            return False
+
+        with self._lock:
+            self._record_action("TYPE_TEXT", {"text": text, "auto_enter": auto_enter})
+            if not self._keyboard:
+                return self.copy_to_clipboard(text)
+
+            try:
+                self._keyboard.type(text)
+                if auto_enter and Key:
+                    time.sleep(0.03)
+                    self._keyboard.press(Key.enter)
+                    try:
+                        time.sleep(0.03)
+                    finally:
+                        self._keyboard.release(Key.enter)
+                return True
+            except Exception as e:
+                print(f"[ScreenActuator] type_text 異常: {e}")
+                return False
 
     def get_recent_history(self, limit: int = 10) -> List[Dict[str, Any]]:
         with self._lock:

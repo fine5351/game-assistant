@@ -10,7 +10,7 @@ from game_assistant.core.config import (
 )
 from game_assistant.utils.screen_capture import ScreenCapturer
 from game_assistant.core.agent import UniversalGameAgent
-from game_assistant.ui.gui import GameAssistantOverlay, HotkeyListener
+from game_assistant.ui.gui import GameAssistantOverlay, HotkeyListener, FloatingSubtitleOverlay
 from game_assistant.audio.tts_engine import TTSEngine
 from game_assistant.audio.stt_engine import STTEngine
 
@@ -129,6 +129,110 @@ class DeepVisionWorker(QThread):
             self._is_busy = False
 
 
+class ScreenTranslationWorker(QThread):
+    """
+    Gemini 3.8 Flash 遊戲畫面與字幕即時多模態翻譯 Worker (F7)
+    負責非同步擷取畫面並翻譯畫面中所有外文 UI、選單、對話與任務
+    """
+    translation_started = pyqtSignal()
+    translation_finished = pyqtSignal(str, list, float)  # markdown, subtitles, elapsed_ms
+    translation_error = pyqtSignal(str)
+
+    def __init__(self, agent: UniversalGameAgent):
+        super().__init__()
+        self.agent = agent
+        self.target_lang = "繁體中文"
+        self._is_busy = False
+
+    def is_busy(self) -> bool:
+        return self._is_busy
+
+    def request_translation(self, target_lang: str = "繁體中文") -> bool:
+        if self._is_busy:
+            return False
+        self.target_lang = target_lang
+        self.start()
+        return True
+
+    def run(self):
+        self._is_busy = True
+        self.translation_started.emit()
+        try:
+            start_t = time.perf_counter()
+            image, capture_ms = ScreenCapturer.capture(monitor_index=1)
+            report_md, subtitles = self.agent.translate_screen(
+                image=image,
+                target_lang=self.target_lang
+            )
+            total_elapsed = (time.perf_counter() - start_t) * 1000.0
+            self.translation_finished.emit(report_md, subtitles, total_elapsed)
+        except Exception as e:
+            self.translation_error.emit(f"❌ 畫面翻譯異常：{str(e)}")
+        finally:
+            self._is_busy = False
+
+
+class VoiceTranslationWorker(QThread):
+    """
+    雙向語音對話翻譯 Worker (F6)
+    負責錄製玩家中文語音 (STT) -> 翻譯為目標外語 -> 代替操作自動貼上輸入至遊戲聊天框
+    """
+    voice_trans_started = pyqtSignal()
+    voice_trans_finished = pyqtSignal(str, str, bool)  # original_zh, translated_foreign, was_typed
+    voice_trans_error = pyqtSignal(str)
+
+    def __init__(self, agent: UniversalGameAgent, stt_engine: STTEngine):
+        super().__init__()
+        self.agent = agent
+        self.stt_engine = stt_engine
+        self.target_lang = "英文"
+        self.auto_submit = True
+        self.enter_chat_key = "enter"
+        self._is_running = False
+
+    def is_running(self) -> bool:
+        return self._is_running
+
+    def request_voice_translation(
+        self,
+        target_lang: str = "英文",
+        auto_submit: bool = True,
+        enter_chat_key: Optional[str] = "enter"
+    ) -> bool:
+        if self._is_running:
+            return False
+        self.target_lang = target_lang
+        self.auto_submit = auto_submit
+        self.enter_chat_key = enter_chat_key
+        self.start()
+        return True
+
+    def run(self):
+        self._is_running = True
+        self.voice_trans_started.emit()
+        try:
+            # 1. 麥克風擷取並辨識玩家中文語音
+            success, text_or_err = self.stt_engine.listen_and_recognize()
+            if not success:
+                self.voice_trans_error.emit(text_or_err)
+                return
+
+            chinese_text = text_or_err.strip()
+
+            # 2. 翻譯為目標外語並自動輸入至遊戲聊天框
+            foreign_text, was_typed = self.agent.translate_voice_to_chat(
+                chinese_voice_text=chinese_text,
+                target_lang=self.target_lang,
+                auto_submit=self.auto_submit,
+                enter_chat_key=self.enter_chat_key
+            )
+            self.voice_trans_finished.emit(chinese_text, foreign_text, was_typed)
+        except Exception as e:
+            self.voice_trans_error.emit(f"❌ 語音翻譯輸入異常：{str(e)}")
+        finally:
+            self._is_running = False
+
+
 class STTWorker(QThread):
     """非同步語音指令辨識 (STT) Worker 執行緒"""
     stt_started = pyqtSignal()
@@ -216,6 +320,7 @@ class GameAssistantController(QObject):
         self.tts_engine = TTSEngine()
         self.stt_engine = STTEngine()
         self.overlay = GameAssistantOverlay()
+        self.floating_subtitle = FloatingSubtitleOverlay()
         self.hotkey_listener = HotkeyListener()
 
         # 初始化背景 Worker
@@ -224,6 +329,8 @@ class GameAssistantController(QObject):
         self.deep_worker = DeepVisionWorker(self.agent)
         self.stt_worker = STTWorker(self.stt_engine)
         self.tts_worker = TTSWorker(self.tts_engine)
+        self.trans_worker = ScreenTranslationWorker(self.agent)
+        self.voice_trans_worker = VoiceTranslationWorker(self.agent, self.stt_engine)
 
         self.tts_enabled = TTS_ENABLED
 
@@ -247,12 +354,16 @@ class GameAssistantController(QObject):
         self.overlay.emergency_stop_signal.connect(self.emergency_stop)
         self.overlay.voice_prompt_signal.connect(self.trigger_voice_prompt)
         self.overlay.tts_toggle_signal.connect(self._on_tts_toggled)
+        self.overlay.screen_translate_signal.connect(self.trigger_screen_translation)
+        self.overlay.voice_translate_signal.connect(self.trigger_voice_translation)
 
         # 全域熱鍵訊號
         self.hotkey_listener.emergency_stop_signal.connect(self.emergency_stop)
         self.hotkey_listener.toggle_poll_signal.connect(self.toggle_polling)
         self.hotkey_listener.manual_trigger_signal.connect(self.trigger_deep_analysis)
         self.hotkey_listener.voice_prompt_signal.connect(self.trigger_voice_prompt)
+        self.hotkey_listener.screen_translate_signal.connect(self.trigger_screen_translation)
+        self.hotkey_listener.voice_translate_signal.connect(self.trigger_voice_translation)
 
         # Jev 0.25s 決策迴圈訊號
         self.jev_worker.decision_ready.connect(self._on_jev_decision_ready)
@@ -267,6 +378,16 @@ class GameAssistantController(QObject):
         self.deep_worker.deep_analysis_started.connect(self._on_deep_started)
         self.deep_worker.deep_analysis_finished.connect(self._on_deep_finished)
         self.deep_worker.deep_analysis_error.connect(self._on_deep_error)
+
+        # 畫面翻譯 Worker 訊號
+        self.trans_worker.translation_started.connect(self._on_trans_started)
+        self.trans_worker.translation_finished.connect(self._on_trans_finished)
+        self.trans_worker.translation_error.connect(self._on_trans_error)
+
+        # 語音翻譯 Worker 訊號
+        self.voice_trans_worker.voice_trans_started.connect(self._on_voice_trans_started)
+        self.voice_trans_worker.voice_trans_finished.connect(self._on_voice_trans_finished)
+        self.voice_trans_worker.voice_trans_error.connect(self._on_voice_trans_error)
 
         # STT Worker 訊號
         self.stt_worker.stt_started.connect(self._on_stt_started)
@@ -309,6 +430,8 @@ class GameAssistantController(QObject):
             if capability == AssistCapability.DATA_ANALYSIS:
                 report = self.agent.generate_data_analysis_report()
                 self.overlay.show_data_analysis(report)
+            elif capability == AssistCapability.TRANSLATION:
+                self.trigger_screen_translation()
             elif capability in (AssistCapability.GUIDANCE, AssistCapability.AUTONOMOUS):
                 self.overlay.set_guidance_display_mode()
 
@@ -411,6 +534,64 @@ class GameAssistantController(QObject):
     def _on_intent_error(self, err_msg: str):
         self.overlay.update_result(err_msg)
 
+    def trigger_screen_translation(self):
+        """觸發遊戲畫面與字幕即時外文翻譯 (F7)"""
+        if self.trans_worker.is_busy():
+            return
+        self.overlay.set_status_translating()
+        self.trans_worker.request_translation(target_lang="繁體中文")
+
+    def _on_trans_started(self):
+        self.overlay.set_status_translating()
+
+    def _on_trans_finished(self, report_md: str, subtitles: list, elapsed_ms: float):
+        self.overlay.show_translation_view(report_md, elapsed_ms)
+        if subtitles and len(subtitles) > 0:
+            self.floating_subtitle.show_subtitles_list(subtitles, duration_ms=8000)
+            if self.tts_enabled:
+                tts_text = " ".join([s.get("translated", "").strip() for s in subtitles if s.get("translated")])
+                if tts_text:
+                    self.tts_worker.speak_text(tts_text)
+
+    def _on_trans_error(self, err_msg: str):
+        self.overlay.update_result(err_msg)
+
+    def trigger_voice_translation(self, target_lang: Optional[str] = None):
+        """觸發語音翻譯並自動輸入至遊戲文字聊天框 (F6)"""
+        if self.voice_trans_worker.is_running():
+            return
+        self.tts_worker.stop_speaking()
+        lang = target_lang or self.overlay.get_target_language()
+        self.voice_trans_worker.request_voice_translation(target_lang=lang, auto_submit=True)
+
+    def _on_voice_trans_started(self):
+        self.overlay.set_status_voice_translating()
+
+    def _on_voice_trans_finished(self, chinese: str, foreign: str, was_typed: bool):
+        self.overlay.reset_voice_translate_button()
+        target_lang = self.overlay.get_target_language()
+        status_msg = f"狀態: 💬 語音已轉為 {target_lang} 並輸入聊天框：「{foreign}」"
+        self.overlay.status_footer.setText(status_msg)
+
+        input_status = "✅ 已代替操作自動貼上至遊戲聊天框並發送" if was_typed else "📋 已複製至剪貼簿 (可手動按 Ctrl+V 貼上)"
+        md = (
+            f"### 💬 語音對話雙向翻譯完成\n\n"
+            f"- **中文原音**：`{chinese}`\n"
+            f"- **外語翻譯 ({target_lang})**：`{foreign}`\n"
+            f"- **聊天框輸入狀態**：{input_status}\n\n"
+            f"---\n*可繼續按下 F6 進行下一次語音對話輸入。*"
+        )
+        self.overlay.output_browser.setMarkdown(md)
+        self.floating_subtitle.show_subtitle(
+            translated=f"我方發言: {chinese}",
+            original=foreign,
+            duration_ms=6000
+        )
+
+    def _on_voice_trans_error(self, err_msg: str):
+        self.overlay.reset_voice_translate_button()
+        self.overlay.update_result(f"⚠️ **語音翻譯輸入提醒**：\n\n{err_msg}")
+
     def _on_tts_toggled(self, enabled: bool):
         self.tts_enabled = enabled
         if not enabled:
@@ -430,7 +611,12 @@ class GameAssistantController(QObject):
         self.poll_timer.stop()
         self.hotkey_listener.stop()
         self.tts_worker.stop_speaking()
-        for worker in (self.jev_worker, self.intent_worker, self.deep_worker, self.stt_worker, self.tts_worker):
+        self.floating_subtitle.close()
+        for worker in (
+            self.jev_worker, self.intent_worker, self.deep_worker,
+            self.stt_worker, self.tts_worker, self.trans_worker, self.voice_trans_worker
+        ):
             if worker.isRunning():
                 worker.quit()
                 worker.wait(500)
+

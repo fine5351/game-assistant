@@ -154,6 +154,8 @@ class UniversalGameAgent:
             mode = AnalysisMode.BUILD
         elif self.capability == AssistCapability.VOICE_QA:
             mode = AnalysisMode.VOICE_QA
+        elif self.capability == AssistCapability.TRANSLATION:
+            mode = AnalysisMode.TRANSLATION
 
         return self.gemini_engine.analyze_screen(
             image=image,
@@ -161,6 +163,69 @@ class UniversalGameAgent:
             mode=mode,
             custom_prompt=custom_prompt or self.current_user_demand
         )
+
+    def translate_screen(
+        self,
+        image: Optional[Image.Image] = None,
+        target_lang: str = "繁體中文"
+    ) -> tuple[str, list[dict]]:
+        """
+        外文遊戲畫面多模態視覺翻譯
+        解析畫面中所有外文 (UI, 選單, 任務, 對話字幕, 聊天訊息)
+        :param image: 可選傳入 PIL 圖像，若無則自動快照
+        :param target_lang: 目標語言
+        :return: (markdown_translation_report, list_of_subtitles)
+        """
+        if image is None:
+            image, _ = ScreenCapturer.capture(monitor_index=1)
+
+        report_md = self.gemini_engine.translate_screen(
+            image=image,
+            game_type=self.game_type,
+            target_lang=target_lang
+        )
+        # 優先由單次多模態報告中直接抽取字幕與對話，避免重複發起二次全圖 API 請求以降低延遲與 Token 消耗
+        subtitles = self.gemini_engine._extract_subtitles_from_json(report_md)
+        if not subtitles:
+            _, subtitles = self.gemini_engine.translate_chat_subtitles(
+                image=image,
+                game_type=self.game_type,
+                target_lang=target_lang
+            )
+        return report_md, subtitles
+
+    def translate_voice_to_chat(
+        self,
+        chinese_voice_text: str,
+        target_lang: str = "英文",
+        auto_submit: bool = True,
+        enter_chat_key: Optional[str] = "enter"
+    ) -> tuple[str, bool]:
+        """
+        將玩家中文語音翻譯為目標外語並自動輸入至遊戲文字聊天框
+        :param chinese_voice_text: 玩家語音辨識出之中文
+        :param target_lang: 目標翻譯外語
+        :param auto_submit: 是否自動發送 (按 Enter 提交)
+        :param enter_chat_key: 開啟聊天框之按鍵 (預設 'enter'，若 None 則直接貼上)
+        :return: (translated_foreign_text, was_typed)
+        """
+        if not chinese_voice_text or not chinese_voice_text.strip():
+            return "", False
+
+        translated_text = self.gemini_engine.translate_voice_text(
+            chinese_text=chinese_voice_text,
+            target_lang=target_lang
+        )
+
+        # 透過 ScreenActuator 代替操作貼上至遊戲文字輸入框
+        typed = self.actuator.paste_text_to_chat(
+            text=translated_text,
+            enter_chat_key=enter_chat_key,
+            submit=auto_submit,
+            force=True
+        )
+        return translated_text, typed
+
 
 
 if __name__ == "__main__":

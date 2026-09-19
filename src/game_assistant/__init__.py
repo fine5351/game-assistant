@@ -15,6 +15,9 @@ from game_assistant.core.config import (
     HOTKEY_TOGGLE_POLL,
     HOTKEY_MANUAL_TRIGGER,
     HOTKEY_VOICE_PROMPT,
+    HOTKEY_VOICE_TRANSLATE,
+    HOTKEY_TRANSLATE_SCREEN,
+    DEFAULT_TARGET_LANGUAGE,
 )
 from game_assistant.core.agent import UniversalGameAgent
 from game_assistant.engines.jev_engine import (
@@ -61,6 +64,9 @@ __all__ = [
     "HOTKEY_TOGGLE_POLL",
     "HOTKEY_MANUAL_TRIGGER",
     "HOTKEY_VOICE_PROMPT",
+    "HOTKEY_VOICE_TRANSLATE",
+    "HOTKEY_TRANSLATE_SCREEN",
+    "DEFAULT_TARGET_LANGUAGE",
     "JevDecisionEngine",
     "JevResponse",
     "Choice",

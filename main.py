@@ -19,6 +19,8 @@ from game_assistant.app import (
     DeepVisionWorker,
     STTWorker,
     TTSWorker,
+    ScreenTranslationWorker,
+    VoiceTranslationWorker,
 )
 
 __all__ = [
@@ -29,6 +31,8 @@ __all__ = [
     "DeepVisionWorker",
     "STTWorker",
     "TTSWorker",
+    "ScreenTranslationWorker",
+    "VoiceTranslationWorker",
 ]
 
 if __name__ == "__main__":
