@@ -2,10 +2,10 @@ import time
 from typing import Dict, Any, List
 from PIL import Image
 
-from config import GameType, AssistCapability
-from jev_engine import Choice, Noul, Score, JevResponse
-from input_actuator import ScreenActuator
-from strategies.base import (
+from game_assistant.core.config import GameType, AssistCapability
+from game_assistant.engines.jev_engine import Choice, Noul, Score, JevResponse
+from game_assistant.utils.input_actuator import ScreenActuator
+from game_assistant.strategies.base import (
     BaseGameStrategy, TelemetryData, ActionResult, StrategyDecision
 )
 
@@ -106,7 +106,7 @@ class GenshinStrategy(BaseGameStrategy):
     ) -> str:
         state_parts = [
             f"[Game]: {self.name}",
-            f"[Mode]: {capability.value}",
+            f"[Mode]: {getattr(capability, 'value', str(capability))}",
             f"[Combat Status]: in_combat={telemetry.in_combat}, threat={telemetry.threat_level:.2f}",
             f"[Player Status]: HP=80%, ActiveChar={telemetry.active_character}, BurstReady={telemetry.energy_ready}",
             f"[Reactions]: Elements={telemetry.features.get('elements')}, Optimal={telemetry.features.get('optimal_reaction')}"

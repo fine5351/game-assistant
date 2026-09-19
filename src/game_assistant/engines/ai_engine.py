@@ -1,8 +1,15 @@
+if __name__ == "__main__" and not __package__:
+    import sys
+    from pathlib import Path
+    _src = str(Path(__file__).resolve().parents[2])
+    if _src not in sys.path:
+        sys.path.insert(0, _src)
+
 import os
 from typing import Optional
 from PIL import Image
 from google import genai
-from config import GEMINI_API_KEY, MODEL_NAME, GameType, AnalysisMode, AssistCapability, PROMPTS
+from game_assistant.core.config import GEMINI_API_KEY, MODEL_NAME, GameType, AnalysisMode, AssistCapability, PROMPTS
 
 
 class GeminiAuxiliaryEngine:
@@ -60,10 +67,11 @@ class GeminiAuxiliaryEngine:
             return self._fallback_decompose(user_demand, game_type, capability)
 
         game_name = game_type.value if hasattr(game_type, "value") else str(game_type)
+        cap_name = capability.value if hasattr(capability, "value") else str(capability)
         prompt = (
             f"你是一位頂級遊戲戰術決策專家 (Gemini 3.8 Flash)。\n"
             f"當前遊戲：{game_name}\n"
-            f"輔助模式：{capability.value}\n"
+            f"輔助模式：{cap_name}\n"
             f"玩家提出了具體需求：【{user_demand.strip()}】。\n"
             "請將玩家需求轉化為極度簡潔的即時戰術指示 (Directive)，格式包含：\n"
             "1. 核心目標 (例如：破韌、極限閃避、元素反應、自動打怪)\n"

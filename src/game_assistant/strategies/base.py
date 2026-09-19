@@ -3,9 +3,9 @@ from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional
 from PIL import Image
 
-from config import GameType, AssistCapability
-from jev_engine import Choice, Noul, Score, JevResponse
-from input_actuator import ScreenActuator
+from game_assistant.core.config import GameType, AssistCapability
+from game_assistant.engines.jev_engine import Choice, Noul, Score, JevResponse
+from game_assistant.utils.input_actuator import ScreenActuator
 
 
 @dataclass
@@ -134,9 +134,10 @@ class BaseGameStrategy(abc.ABC):
         """
         供 Gemini (System 2) 解析使用者需求與制定高階戰術意圖的 Prompt 範本
         """
+        cap_name = getattr(capability, "value", str(capability))
         return (
             f"你是《{self.name}》的高級戰術顧問。\n"
-            f"玩家目前的輔助模式是：【{capability.value}】。\n"
+            f"玩家目前的輔助模式是：【{cap_name}】。\n"
             f"玩家提出的具體需求是：【{user_demand}】。\n"
             "請將玩家的需求拆解為明確、可供即時決策執行的微觀指令。\n"
             "格式請條列出：1. 戰術目標 2. 推薦按鍵/操作序列 3. 觸發時機或防禦要點。以繁體中文簡明回答。"

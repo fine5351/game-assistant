@@ -1,10 +1,10 @@
 from typing import Dict, Optional, List
-from config import GameType
-from strategies.base import BaseGameStrategy
-from strategies.genshin import GenshinStrategy
-from strategies.star_rail import StarRailStrategy
-from strategies.zzz import ZZZStrategy
-from strategies.general import GeneralGameStrategy
+from game_assistant.core.config import GameType
+from game_assistant.strategies.base import BaseGameStrategy
+from game_assistant.strategies.genshin import GenshinStrategy
+from game_assistant.strategies.star_rail import StarRailStrategy
+from game_assistant.strategies.zzz import ZZZStrategy
+from game_assistant.strategies.general import GeneralGameStrategy
 
 
 class StrategyRegistry:
@@ -35,8 +35,10 @@ class StrategyRegistry:
             return cls._strategies[game_type]
 
         # 嘗試以 value 或 string 比對
+        target_val = getattr(game_type, "value", str(game_type))
         for k, v in cls._strategies.items():
-            if k == game_type or k.value == getattr(game_type, "value", str(game_type)):
+            k_val = getattr(k, "value", str(k))
+            if k == game_type or k_val == target_val:
                 return v
 
         return cls._strategies.get(GameType.GENERAL, GeneralGameStrategy())

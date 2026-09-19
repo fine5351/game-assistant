@@ -1,4 +1,10 @@
-import sys
+if __name__ == "__main__" and not __package__:
+    import sys
+    from pathlib import Path
+    _src = str(Path(__file__).resolve().parents[2])
+    if _src not in sys.path:
+        sys.path.insert(0, _src)
+
 import threading
 from typing import Optional
 
@@ -11,7 +17,7 @@ from PyQt6.QtWidgets import (
 )
 from pynput import keyboard
 
-from config import (
+from game_assistant.core.config import (
     GameType, AssistCapability, DEFAULT_OPACITY,
     HOTKEY_EMERGENCY_STOP, HOTKEY_TOGGLE_POLL, HOTKEY_MANUAL_TRIGGER, HOTKEY_VOICE_PROMPT,
     TTS_ENABLED

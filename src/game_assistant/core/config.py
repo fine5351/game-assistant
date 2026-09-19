@@ -16,6 +16,7 @@ MODEL_NAME = "gemini-3.8-flash"
 
 # UI與系統預設設定
 DEFAULT_POLL_INTERVAL = 0.25  # 決策輪詢間隔固定為 0.25 秒 (4 Hz 實時畫面流)
+POLL_INTERVAL = DEFAULT_POLL_INTERVAL  # 向下相容別名
 DEFAULT_OPACITY = 0.85        # 預設透明度 (0.2 ~ 1.0)
 MAX_IMAGE_SIZE = (1280, 720)  # 超低延遲傳輸用的預處理縮放尺寸
 
@@ -23,6 +24,7 @@ MAX_IMAGE_SIZE = (1280, 720)  # 超低延遲傳輸用的預處理縮放尺寸
 HOTKEY_EMERGENCY_STOP = "f8"   # F8: 緊急停止自動操作 (安全熔斷開關)
 HOTKEY_TOGGLE_POLL = "f9"     # F9: 切換 0.25s 自動決策輪詢 / 暫停
 HOTKEY_MANUAL_TRIGGER = "f10" # F10: 手動快照分析一次
+HOTKEY_CAPTURE_NOW = HOTKEY_MANUAL_TRIGGER # 相容別名
 HOTKEY_VOICE_PROMPT = "f11"   # F11: 觸發麥克風語音指令發問 (STT)
 
 # TTS 離線語音朗讀設定

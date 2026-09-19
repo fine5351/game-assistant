@@ -2,10 +2,10 @@ import time
 from typing import Dict, Any, List
 from PIL import Image
 
-from config import GameType, AssistCapability
-from jev_engine import Choice, Noul, Score, JevResponse
-from input_actuator import ScreenActuator
-from strategies.base import (
+from game_assistant.core.config import GameType, AssistCapability
+from game_assistant.engines.jev_engine import Choice, Noul, Score, JevResponse
+from game_assistant.utils.input_actuator import ScreenActuator
+from game_assistant.strategies.base import (
     BaseGameStrategy, TelemetryData, ActionResult, StrategyDecision
 )
 
@@ -107,7 +107,7 @@ class ZZZStrategy(BaseGameStrategy):
         feats = telemetry.features
         state_parts = [
             f"[Game]: {self.name}",
-            f"[Mode]: {capability.value}",
+            f"[Mode]: {getattr(capability, 'value', str(capability))}",
             f"[Combat Reflex]: YellowFlash={feats.get('yellow_flash')}, RedFlash={feats.get('red_flash')}",
             f"[Daze Status]: Daze={feats.get('daze_ratio', 0.0):.2f}, ChainQTEReady={feats.get('daze_chain')}",
             f"[Threat]: {telemetry.threat_level:.2f}"

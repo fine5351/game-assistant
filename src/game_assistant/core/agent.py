@@ -1,18 +1,25 @@
+if __name__ == "__main__" and not __package__:
+    import sys
+    from pathlib import Path
+    _src = str(Path(__file__).resolve().parents[2])
+    if _src not in sys.path:
+        sys.path.insert(0, _src)
+
 import time
 from typing import Optional, Dict, Any, List
 from PIL import Image
 
-from config import (
+from game_assistant.core.config import (
     GameType, AssistCapability, AnalysisMode, DEFAULT_POLL_INTERVAL
 )
-from screen_capture import ScreenCapturer
-from jev_engine import JevDecisionEngine, JevResponse
-from ai_engine import GeminiAuxiliaryEngine
-from input_actuator import ScreenActuator
-from strategies.base import (
+from game_assistant.utils.screen_capture import ScreenCapturer
+from game_assistant.engines.jev_engine import JevDecisionEngine, JevResponse
+from game_assistant.engines.ai_engine import GeminiAuxiliaryEngine
+from game_assistant.utils.input_actuator import ScreenActuator
+from game_assistant.strategies.base import (
     BaseGameStrategy, TelemetryData, StrategyDecision, ActionResult
 )
-from strategies.registry import StrategyRegistry, get_game_strategy
+from game_assistant.strategies.registry import StrategyRegistry, get_game_strategy
 
 
 class UniversalGameAgent:
@@ -154,3 +161,14 @@ class UniversalGameAgent:
             mode=mode,
             custom_prompt=custom_prompt or self.current_user_demand
         )
+
+
+if __name__ == "__main__":
+    agent = UniversalGameAgent(game_type=GameType.GENSHIN, capability=AssistCapability.GUIDANCE)
+    dummy_img = Image.new("RGB", (320, 240), color="blue")
+    decision = agent.step(image=dummy_img)
+    print("UniversalGameAgent 初始化與 Step 測試成功:")
+    print(f"  策略: {agent.current_strategy.name}")
+    print(f"  決策動作: {decision.primary_action} (置信度: {decision.confidence})")
+    print(f"  戰術提示: {decision.guidance_text}")
+

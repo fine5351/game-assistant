@@ -1,26 +1,37 @@
+import sys
+from pathlib import Path
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_SRC_DIR = _PROJECT_ROOT / "src"
+if str(_SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(_SRC_DIR))
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
 import unittest
 import time
 from PIL import Image
 
-from config import (
+import game_assistant
+from game_assistant.core.config import (
     GameType, AssistCapability, AnalysisMode, MODEL_NAME, DEFAULT_POLL_INTERVAL,
     HOTKEY_EMERGENCY_STOP, HOTKEY_TOGGLE_POLL
 )
-from jev_engine import (
+from game_assistant.engines.jev_engine import (
     Choice, Noul, Score, JevDecisionEngine, JevResponse,
     ChoiceResult, NoulResult, ScoreResult
 )
-from input_actuator import ScreenActuator
-from strategies.base import (
+from game_assistant.utils.input_actuator import ScreenActuator
+from game_assistant.strategies.base import (
     BaseGameStrategy, TelemetryData, StrategyDecision, ActionResult
 )
-from strategies.genshin import GenshinStrategy
-from strategies.star_rail import StarRailStrategy
-from strategies.zzz import ZZZStrategy
-from strategies.general import GeneralGameStrategy
-from strategies.registry import StrategyRegistry, get_game_strategy
-from ai_engine import GeminiAuxiliaryEngine, GeminiAIEngine
-from agent import UniversalGameAgent
+from game_assistant.strategies.genshin import GenshinStrategy
+from game_assistant.strategies.star_rail import StarRailStrategy
+from game_assistant.strategies.zzz import ZZZStrategy
+from game_assistant.strategies.general import GeneralGameStrategy
+from game_assistant.strategies.registry import StrategyRegistry, get_game_strategy
+from game_assistant.engines.ai_engine import GeminiAuxiliaryEngine, GeminiAIEngine
+from game_assistant.core.agent import UniversalGameAgent
 
 
 class TestConfig(unittest.TestCase):
@@ -262,9 +273,12 @@ class TestGameStrategies(unittest.TestCase):
                 return "Custom Analysis"
 
         # 註冊新遊戲
-        StrategyRegistry.register("CustomNewGame", CustomNewGameStrategy())
-        retrieved = StrategyRegistry.get("CustomNewGame")
-        self.assertEqual(retrieved.name, "新擴充遊戲 (Custom New Game)")
+        try:
+            StrategyRegistry.register("CustomNewGame", CustomNewGameStrategy())
+            retrieved = StrategyRegistry.get("CustomNewGame")
+            self.assertEqual(retrieved.name, "新擴充遊戲 (Custom New Game)")
+        finally:
+            StrategyRegistry.initialize_default_strategies()
 
 
 class TestUniversalGameAgent(unittest.TestCase):
@@ -409,7 +423,7 @@ class TestEdgeCasesAndRobustness(unittest.TestCase):
 
     def test_tts_engine_stop_safe_call(self):
         """測試 TTSEngine.stop() 可安全呼叫且不崩潰"""
-        from tts_engine import TTSEngine
+        from game_assistant.audio.tts_engine import TTSEngine
         tts = TTSEngine()
         tts.stop()  # 無作用時不應拋錯
         self.assertIsNone(tts._current_engine)
@@ -428,6 +442,152 @@ class TestEdgeCasesAndRobustness(unittest.TestCase):
         self.assertEqual(s.to_dict()["type"], "score")
 
 
+class TestPackageStructureAndExports(unittest.TestCase):
+    """測試重構後 src/ layout 與各 Package 之匯出介面與跨模組引用完整性"""
+
+    def test_package_root_metadata(self):
+        self.assertEqual(game_assistant.__version__, "0.2.0")
+        self.assertTrue(hasattr(game_assistant, "UniversalGameAgent"))
+        self.assertTrue(hasattr(game_assistant, "JevDecisionEngine"))
+        self.assertTrue(hasattr(game_assistant, "GeminiAuxiliaryEngine"))
+        self.assertTrue(hasattr(game_assistant, "ScreenCapturer"))
+        self.assertTrue(hasattr(game_assistant, "ScreenActuator"))
+        self.assertTrue(hasattr(game_assistant, "TTSEngine"))
+        self.assertTrue(hasattr(game_assistant, "STTEngine"))
+        self.assertIn("UniversalGameAgent", game_assistant.__all__)
+
+    def test_cli_console_scripts_entrypoint(self):
+        from game_assistant.cli import main as cli_main
+        self.assertTrue(callable(cli_main))
+
+    def test_app_controller_exports(self):
+        from game_assistant.app import (
+            GameAssistantController,
+            JevLoopWorker,
+            GeminiIntentWorker,
+            DeepVisionWorker,
+            STTWorker,
+            TTSWorker,
+        )
+        self.assertIsNotNone(GameAssistantController)
+        self.assertIsNotNone(JevLoopWorker)
+        self.assertIsNotNone(GeminiIntentWorker)
+        self.assertIsNotNone(DeepVisionWorker)
+        self.assertIsNotNone(STTWorker)
+        self.assertIsNotNone(TTSWorker)
+
+    def test_core_package_exports(self):
+        from game_assistant import core
+        self.assertTrue(hasattr(core, "UniversalGameAgent"))
+        self.assertTrue(hasattr(core, "GameType"))
+        self.assertTrue(hasattr(core, "AnalysisMode"))
+        self.assertTrue(hasattr(core, "AssistCapability"))
+        self.assertTrue(hasattr(core, "DEFAULT_POLL_INTERVAL"))
+        self.assertTrue(hasattr(core, "POLL_INTERVAL"))
+        self.assertTrue(hasattr(core, "DEFAULT_OPACITY"))
+        self.assertTrue(hasattr(core, "MAX_IMAGE_SIZE"))
+        self.assertTrue(hasattr(core, "HOTKEY_EMERGENCY_STOP"))
+        self.assertTrue(hasattr(core, "HOTKEY_TOGGLE_POLL"))
+        self.assertTrue(hasattr(core, "HOTKEY_MANUAL_TRIGGER"))
+        self.assertTrue(hasattr(core, "HOTKEY_CAPTURE_NOW"))
+        self.assertTrue(hasattr(core, "HOTKEY_VOICE_PROMPT"))
+        self.assertTrue(hasattr(core, "TTS_ENABLED"))
+        self.assertTrue(hasattr(core, "TTS_RATE"))
+        self.assertTrue(hasattr(core, "TTS_VOLUME"))
+        self.assertTrue(hasattr(core, "STT_LANGUAGE"))
+        self.assertTrue(hasattr(core, "STT_TIMEOUT"))
+        self.assertTrue(hasattr(core, "STT_PHRASE_TIME_LIMIT"))
+        self.assertTrue(hasattr(core, "PROMPTS"))
+        # 驗證 __all__ 包含核心成員
+        self.assertIn("HOTKEY_MANUAL_TRIGGER", core.__all__)
+        self.assertIn("DEFAULT_OPACITY", core.__all__)
+        self.assertIn("UniversalGameAgent", core.__all__)
+
+    def test_engines_package_exports(self):
+        from game_assistant import engines
+        self.assertTrue(hasattr(engines, "Choice"))
+        self.assertTrue(hasattr(engines, "Noul"))
+        self.assertTrue(hasattr(engines, "Score"))
+        self.assertTrue(hasattr(engines, "JevDecisionEngine"))
+        self.assertTrue(hasattr(engines, "GeminiAuxiliaryEngine"))
+        self.assertTrue(hasattr(engines, "GeminiAIEngine"))
+        self.assertTrue(hasattr(engines, "OFFICIAL_SDK_AVAILABLE"))
+        self.assertIn("JevDecisionEngine", engines.__all__)
+        self.assertIn("GeminiAuxiliaryEngine", engines.__all__)
+
+    def test_audio_package_exports(self):
+        from game_assistant import audio
+        self.assertTrue(hasattr(audio, "TTSEngine"))
+        self.assertTrue(hasattr(audio, "clean_markdown_for_tts"))
+        self.assertTrue(hasattr(audio, "STTEngine"))
+        self.assertIn("TTSEngine", audio.__all__)
+        self.assertIn("clean_markdown_for_tts", audio.__all__)
+        self.assertIn("STTEngine", audio.__all__)
+
+    def test_utils_package_exports(self):
+        from game_assistant import utils
+        self.assertTrue(hasattr(utils, "ScreenCapturer"))
+        self.assertTrue(hasattr(utils, "ScreenActuator"))
+        self.assertIn("ScreenCapturer", utils.__all__)
+        self.assertIn("ScreenActuator", utils.__all__)
+
+    def test_ui_package_exports(self):
+        from game_assistant import ui
+        self.assertTrue(hasattr(ui, "GameAssistantOverlay"))
+        self.assertTrue(hasattr(ui, "HotkeyListener"))
+        self.assertIn("GameAssistantOverlay", ui.__all__)
+        self.assertIn("HotkeyListener", ui.__all__)
+
+    def test_strategies_package_exports(self):
+        from game_assistant import strategies
+        self.assertTrue(hasattr(strategies, "BaseGameStrategy"))
+        self.assertTrue(hasattr(strategies, "GenshinStrategy"))
+        self.assertTrue(hasattr(strategies, "StarRailStrategy"))
+        self.assertTrue(hasattr(strategies, "ZZZStrategy"))
+        self.assertTrue(hasattr(strategies, "GeneralGameStrategy"))
+        self.assertTrue(hasattr(strategies, "StrategyRegistry"))
+        self.assertTrue(hasattr(strategies, "get_game_strategy"))
+
+    def test_main_entrypoint_imports(self):
+        from main import (
+            GameAssistantController,
+            JevLoopWorker,
+            GeminiIntentWorker,
+            DeepVisionWorker,
+            STTWorker,
+            TTSWorker,
+            main as main_entry
+        )
+        self.assertTrue(callable(main_entry))
+        self.assertIsNotNone(GameAssistantController)
+        self.assertIsNotNone(STTWorker)
+        self.assertIsNotNone(TTSWorker)
+
+    def test_cli_argparse_parser(self):
+        from game_assistant.cli import build_parser
+        parser = build_parser()
+        self.assertIsNotNone(parser)
+        # 測試 --version 參數解析
+        with self.assertRaises(SystemExit) as cm:
+            parser.parse_args(["--version"])
+        self.assertEqual(cm.exception.code, 0)
+
+        # 測試 --help 參數解析
+        with self.assertRaises(SystemExit) as cm_help:
+            parser.parse_args(["--help"])
+        self.assertEqual(cm_help.exception.code, 0)
+
+    def test_pyproject_toml_configuration(self):
+        toml_path = _PROJECT_ROOT / "pyproject.toml"
+        self.assertTrue(toml_path.exists())
+        content = toml_path.read_text(encoding="utf-8")
+        self.assertIn('name = "game-assistant"', content)
+        self.assertIn('game-assistant = "game_assistant.cli:main"', content)
+        self.assertIn('where = ["src"]', content)
+        self.assertIn("sys_platform == 'win32'", content)
+
+
 if __name__ == "__main__":
     unittest.main()
+
 

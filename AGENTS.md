@@ -7,11 +7,11 @@
 ## 1. 專案概觀與技術架構 (Project Architecture)
 
 ### 1.1 專案定位
-本專案為基於 **Google Gemini 3.6 Flash** 的 Windows 桌面即時遊戲視覺與語音輔助助手。專為米哈遊系列遊戲（《原神》、《崩壞：星穹鐵道》、《絕區零》）及泛用遊戲模式提供低延遲即時戰況分析、角色養成與裝備評估以及地圖解謎通關指引，並完整整合雙向語音互動功能（STT 語音發問 + TTS 離線朗讀）。
+本專案為基於 **TypeSafe AI Jev (System 1)** 與 **Google Gemini 3.8 Flash (System 2)** 的 Windows 桌面即時遊戲視覺與語音輔助助手。專為米哈遊系列遊戲（《原神》、《崩壞：星穹鐵道》、《絕區零》）及泛用遊戲模式提供低延遲即時戰況分析、角色養成與裝備評估以及地圖解謎通關指引，並完整整合雙向語音互動功能（STT 語音發問 + TTS 離線朗讀）。
 
 ### 1.2 核心技術棧 (Tech Stack)
 - **語言環境**：Python 3.10+
-- **核心 AI**：`google-genai` SDK (`gemini-3.6-flash`)
+- **核心 AI**：`typesafe-sdk` (Jev System 1) + `google-genai` SDK (`gemini-3.8-flash` System 2)
 - **圖形介面**：PyQt6（置頂透明懸浮面板、無邊框滑鼠拖曳、Markdown 即時渲染）
 - **視覺擷取**：`mss` 硬體加速螢幕快照 + `Pillow` 雙線性縮放預處理
 - **全域熱鍵**：`pynput` 背景熱鍵監聽（F9 輪詢切換 / F10 快照分析 / F11 語音發問）
@@ -19,14 +19,30 @@
 - **語音指令辨識 (STT)**：`SpeechRecognition` + `PyAudio`（麥克風環境噪音自動校正、繁中辨識）
 - **環境設定**：`python-dotenv` 載入設定
 
-### 1.3 核心模組職責劃分 (Module Responsibilities)
-- `main.py`：應用程式進入點與多執行緒排程中心。負責實例化各引擎與介面，並以 `QThread` 隔離 `AnalysisWorker`、`STTWorker`、`TTSWorker`，確保 UI 主執行緒保持 60 FPS 零卡頓與無死鎖。
-- `gui.py`：PyQt6 置頂懸浮視窗介面 (`GameAssistantOverlay`) 與全域熱鍵訊號橋接器 (`HotkeyListener`)。負責即時 Markdown 渲染、透明度調節、收合展開與狀態指示。
-- `config.py`：系統組態、熱鍵設定、TTS/STT 參數設定，以及各遊戲與分析模式之專屬 Prompt 範本庫 (`PROMPTS`)。
-- `screen_capture.py`：封裝 `mss` 與 `Pillow`，提供超低延遲（< 50ms）之螢幕區域或全螢幕擷取與尺寸縮放預處理。
-- `ai_engine.py`：封裝 `GeminiAIEngine`，串接 `google-genai` 呼叫 `gemini-3.6-flash`，支援標準模式 Prompt 與玩家語音自訂問答 (`custom_prompt`)。
-- `tts_engine.py`：`TTSEngine` 與 `clean_markdown_for_tts`。提供 Windows SAPI5 語音合成、Markdown 標點符號與代碼清理、繁中語音包選擇與 COM 執行緒初始化生命週期管理。
-- `stt_engine.py`：`STTEngine`。提供麥克風收音、環境噪音自動校準與 Google 語音辨識，包含設備缺失與超時等嚴密異常處理。
+### 1.3 核心模組與 Package 職責劃分 (Package & Module Responsibilities)
+- `main.py`：專案根目錄相容啟動器。自動注入 `src/` 至 `sys.path`，並調用 `game_assistant.cli:main`。
+- `pyproject.toml`：遵循 PEP 517/518/621 標準之現代化專案建置、相依套件與 `game-assistant` console_scripts 進入點配置。
+- `src/game_assistant/`：主要套件命名空間（Python Standard `src/` Layout）。
+  - `src/game_assistant/__init__.py`：套件版本號 (`0.2.0`) 與核心 API 統一匯出。
+  - `src/game_assistant/__main__.py`：支援 `python -m game_assistant` 執行。
+  - `src/game_assistant/cli.py`：CLI 與 console_scripts 進入點函式 `main()`。
+  - `src/game_assistant/app.py`：`GameAssistantController` 與背景 Worker 執行緒群 (`JevLoopWorker`, `GeminiIntentWorker`, `DeepVisionWorker`, `STTWorker`, `TTSWorker`)。
+  - `src/game_assistant/core/`：核心 Agent 協調器與系統組態。
+    - `src/game_assistant/core/agent.py`：`UniversalGameAgent` 整合感知、認知、決策、策略與致動。
+    - `src/game_assistant/core/config.py`：系統組態、熱鍵設定、能力列舉、TTS/STT 參數設定與 Prompt 範本庫 (`PROMPTS`)。
+  - `src/game_assistant/engines/`：決策與輔助認知 AI 引擎層。
+    - `src/game_assistant/engines/jev_engine.py`：封裝 `JevDecisionEngine` (Choice / Noul / Score，支援 SDK、REST API 與確定性本地啟發降級)。
+    - `src/game_assistant/engines/ai_engine.py`：封裝 `GeminiAuxiliaryEngine` (Gemini 3.8 Flash)，支援意圖拆解與深度多模態視覺剖析。
+  - `src/game_assistant/ui/`：使用者介面與熱鍵監聽。
+    - `src/game_assistant/ui/gui.py`：PyQt6 置頂懸浮視窗介面 (`GameAssistantOverlay`) 與全域熱鍵訊號橋接器 (`HotkeyListener`)。
+  - `src/game_assistant/audio/`：語音處理模組。
+    - `src/game_assistant/audio/tts_engine.py`：`TTSEngine` 與 `clean_markdown_for_tts` (Windows SAPI5 語音合成、Markdown 符號清理、COM 執行緒管理)。
+    - `src/game_assistant/audio/stt_engine.py`：`STTEngine` (麥克風收音、環境噪音自動校準與繁中辨識)。
+  - `src/game_assistant/utils/`：畫面擷取與輸入致動周邊工具。
+    - `src/game_assistant/utils/screen_capture.py`：封裝 `mss` 與 `Pillow`，提供超低延遲（< 50ms）螢幕快照擷取與縮放，具備 BitBlt 異常安全防禦降級。
+    - `src/game_assistant/utils/input_actuator.py`：封裝 `ScreenActuator`，支援實體鍵盤與滑鼠操作模擬、F8 安全熔斷急停與冷卻防洪。
+  - `src/game_assistant/strategies/`：遊戲策略模式庫 (`BaseGameStrategy`, `GenshinStrategy`, `StarRailStrategy`, `ZZZStrategy`, `GeneralGameStrategy`, `StrategyRegistry`)。
+- `tests/`：單元與整合測試套件 (`tests/test_universal_agent.py`)，獨立於 `src/` 外。
 
 ---
 
@@ -88,18 +104,34 @@
 
 ## 6. 開發與驗證指令常用清單 (Commands Reference)
 
+- **套件可編輯安裝**：
+  ```bash
+  pip install -e .
+  ```
 - **語法編譯驗證**：
   ```bash
-  python -m py_compile main.py gui.py config.py screen_capture.py ai_engine.py tts_engine.py stt_engine.py
+  python -m py_compile main.py tests/__init__.py tests/test_universal_agent.py src/game_assistant/__init__.py src/game_assistant/__main__.py src/game_assistant/cli.py src/game_assistant/app.py src/game_assistant/core/__init__.py src/game_assistant/core/config.py src/game_assistant/core/agent.py src/game_assistant/engines/__init__.py src/game_assistant/engines/jev_engine.py src/game_assistant/engines/ai_engine.py src/game_assistant/ui/__init__.py src/game_assistant/ui/gui.py src/game_assistant/audio/__init__.py src/game_assistant/audio/tts_engine.py src/game_assistant/audio/stt_engine.py src/game_assistant/utils/__init__.py src/game_assistant/utils/screen_capture.py src/game_assistant/utils/input_actuator.py src/game_assistant/strategies/__init__.py src/game_assistant/strategies/base.py src/game_assistant/strategies/genshin.py src/game_assistant/strategies/star_rail.py src/game_assistant/strategies/zzz.py src/game_assistant/strategies/general.py src/game_assistant/strategies/registry.py
   ```
-- **單元/模組自測**：
+- **單元測試套件執行**：
   ```bash
-  python screen_capture.py
-  python ai_engine.py
-  python tts_engine.py
-  python stt_engine.py
+  python -m unittest discover -s tests
+  # 或指定檔案直接執行
+  python tests/test_universal_agent.py
   ```
-- **啟動應用程式**：
+- **單元/模組獨立自測**：
   ```bash
+  python src/game_assistant/utils/screen_capture.py
+  python src/game_assistant/engines/jev_engine.py
+  python src/game_assistant/utils/input_actuator.py
+  ```
+- **啟動應用程式（三種模式）**：
+  ```bash
+  # 模式 1: Console Script 指令
+  game-assistant
+
+  # 模式 2: Python 模組模式
+  python -m game_assistant
+
+  # 模式 3: 根目錄相容啟動器
   python main.py
   ```

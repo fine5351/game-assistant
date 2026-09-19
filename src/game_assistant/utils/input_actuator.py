@@ -225,3 +225,14 @@ class ScreenActuator:
     def get_recent_history(self, limit: int = 10) -> List[Dict[str, Any]]:
         with self._lock:
             return list(self._action_history[-limit:])
+
+
+if __name__ == "__main__":
+    actuator = ScreenActuator(action_cooldown=0.1)
+    print(f"ScreenActuator 初始化成功 (pynput available: {PYNPUT_AVAILABLE})")
+    print(f"預設狀態 is_enabled: {actuator.is_enabled}")
+    actuator.enable()
+    print(f"啟用後 is_enabled: {actuator.is_enabled}")
+    actuator.emergency_stop()
+    print(f"F8 急停後 is_enabled: {actuator.is_enabled}")
+

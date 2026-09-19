@@ -1,3 +1,10 @@
+if __name__ == "__main__" and not __package__:
+    import sys
+    from pathlib import Path
+    _src = str(Path(__file__).resolve().parents[2])
+    if _src not in sys.path:
+        sys.path.insert(0, _src)
+
 import json
 import os
 import time
@@ -6,7 +13,7 @@ import urllib.error
 from dataclasses import dataclass, field
 from typing import Optional, Dict, Any, List
 
-from config import TYPESAFE_API_KEY, JEV_MODEL_NAME, JEV_API_URL
+from game_assistant.core.config import TYPESAFE_API_KEY, JEV_MODEL_NAME, JEV_API_URL
 
 # 嘗試載入官方 typesafe-sdk
 try:
@@ -361,3 +368,19 @@ class JevDecisionEngine:
                 res.scores[q_id] = ScoreResult(score=urgency, confidence=0.9)
 
         return res
+
+
+if __name__ == "__main__":
+    engine = JevDecisionEngine()
+    print(f"JevDecisionEngine 初始化成功 (Official SDK Available: {OFFICIAL_SDK_AVAILABLE})")
+    sample_res = engine.evaluate(
+        state="敵方出現黃光前搖攻擊，技能就緒，隊伍滿能量",
+        questions={
+            "action": Choice(instructions="選擇動作", options=["dodge", "parry", "attack"]),
+            "danger": Noul(instructions="是否有危險警示"),
+            "urgency": Score(instructions="緊急程度")
+        }
+    )
+    print(f"決策動作: {sample_res.choices.get('action')}")
+    print(f"危險判定: {sample_res.nouls.get('danger')}")
+    print(f"緊急評分: {sample_res.scores.get('urgency')}")

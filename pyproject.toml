@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "game-assistant"
+version = "0.2.0"
+description = "Windows 即時遊戲視覺與語音輔助助手 (Dual-System Jev + Gemini 3.8 Flash)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Game Assistant Team"}
+]
+keywords = [
+    "game-assistant",
+    "ai",
+    "vision",
+    "voice",
+    "typesafe-jev",
+    "gemini",
+    "pyqt6"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Games/Entertainment",
+]
+dependencies = [
+    "google-genai>=0.1.1",
+    "PyQt6>=6.5.0",
+    "mss>=9.0.1",
+    "Pillow>=10.0.0",
+    "pynput>=1.7.6",
+    "python-dotenv>=1.0.0",
+    "pyttsx3>=2.90",
+    "SpeechRecognition>=3.10.0",
+    "PyAudio>=0.2.14",
+    "pywin32; sys_platform == 'win32'",
+    "typesafe-sdk>=0.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+]
+
+[project.scripts]
+game-assistant = "game_assistant.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

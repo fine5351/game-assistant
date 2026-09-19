@@ -44,29 +44,54 @@
 
 ---
 
-## 📁 專案架構 (Architecture)
+## 📁 專案架構 (Modern Python `src/` Layout)
+
+本專案遵循現代 Python 官方與社群最佳實踐（PEP 517 / 518 / 621 標準與 `src/` layout）：
 
 ```
 game-assistant/
-├── config.py              # Jev / Gemini 3.8 Flash 設定、0.25s 輪詢、熱鍵、能力與遊戲枚舉
-├── screen_capture.py      # mss 與 Pillow 超低延遲畫面擷取 (含 BitBlt 防禦降級)
-├── jev_engine.py          # TypeSafe Jev (System 1) 決策引擎 (SDK / REST / 本地啟發式三重降級)
-├── ai_engine.py           # Gemini 3.8 Flash (System 2) 輔助認知與使用者意圖拆解
-├── input_actuator.py      # 螢幕操作致動器 (鍵盤/滑鼠模擬、F8 急停、冷卻防洪保護)
-├── agent.py               # UniversalGameAgent 通用遊戲 Agent 核心協調器
-├── strategies/            # 策略模式遊戲套件
-│   ├── base.py            # BaseGameStrategy 策略抽象基底類別
-│   ├── genshin.py         # 原神策略
-│   ├── star_rail.py       # 崩壞：星穹鐵道策略
-│   ├── zzz.py             # 絕區零策略
-│   ├── general.py         # 泛用遊戲策略
-│   └── registry.py        # StrategyRegistry 策略工廠與動態註冊中心
-├── tts_engine.py          # Windows SAPI5 離線語音朗讀
-├── stt_engine.py          # SpeechRecognition 麥克風擷取與繁中 STT
-├── gui.py                 # PyQt6 置頂懸浮 Overlay 視窗 (含 Jev 即時決策卡片與 F8 急停按鈕)
-├── main.py                # 應用程式進入點與 0.25s QThread Worker 調度中心
-├── test_universal_agent.py# 完整單元測試與強健性驗證套件
-└── requirements.txt       # Python 套件依賴清單
+├── pyproject.toml              # 現代化 PEP 621 專案建置與依賴配置 (含 console_scripts)
+├── requirements.txt            # 相容性依賴清單
+├── main.py                     # 根目錄相容啟動器 (支援直接 python main.py 執行)
+├── README.md                   # 專案說明與操作指南
+├── AGENTS.md                   # 代理工程規則與規範
+├── task.md                     # 任務清單與進度追蹤
+├── src/
+│   └── game_assistant/         # 核心套件 (game_assistant)
+│       ├── __init__.py         # 套件版本 (v0.2.0) 與核心 API 統一匯出
+│       ├── __main__.py         # 支援 python -m game_assistant 啟動
+│       ├── cli.py              # console_scripts 進入點 (game-assistant 指令)
+│       ├── app.py              # PyQt6 應用排程控制器與非同步 QThread Worker 群
+│       ├── core/               # 核心 Agent 協調器與系統組態
+│       │   ├── __init__.py
+│       │   ├── agent.py        # UniversalGameAgent 通用遊戲 Agent 核心協調器
+│       │   └── config.py       # Jev / Gemini 設定、0.25s 輪詢、熱鍵與 Prompt 範本
+│       ├── engines/            # 雙系統 AI 決策與輔助認知引擎
+│       │   ├── __init__.py
+│       │   ├── jev_engine.py   # TypeSafe Jev (System 1) 決策引擎 (SDK / REST / 確定性降級)
+│       │   └── ai_engine.py    # Gemini 3.8 Flash (System 2) 輔助認知與使用者意圖拆解
+│       ├── ui/                 # 視覺介面與熱鍵監聽
+│       │   ├── __init__.py
+│       │   └── gui.py          # PyQt6 置頂懸浮 Overlay 視窗 (HUD 決策卡片與 F8 急停按鈕)
+│       ├── audio/              # 語音處理模組
+│       │   ├── __init__.py
+│       │   ├── tts_engine.py   # Windows SAPI5 離線語音朗讀
+│       │   └── stt_engine.py   # SpeechRecognition 麥克風擷取與繁中 STT
+│       ├── utils/              # 工具與周邊致動服務
+│       │   ├── __init__.py
+│       │   ├── screen_capture.py # mss 與 Pillow 超低延遲畫面擷取 (BitBlt 防禦降級)
+│       │   └── input_actuator.py # 螢幕操作致動器 (鍵盤/滑鼠模擬、F8 急停、冷卻防洪保護)
+│       └── strategies/         # 策略模式遊戲套件
+│           ├── __init__.py
+│           ├── base.py         # BaseGameStrategy 策略抽象基底類別
+│           ├── genshin.py      # 原神策略 (元素反應、四人循環、無敵幀閃避)
+│           ├── star_rail.py    # 崩壞：星穹鐵道策略 (SP 配額、終結技插隊)
+│           ├── zzz.py          # 絕區零策略 (黃光招架、紅光閃避、失衡 QTE)
+│           ├── general.py      # 泛用遊戲策略 (WASD、滑鼠攻擊、通用技能)
+│           └── registry.py     # StrategyRegistry 策略工廠與動態註冊中心
+└── tests/                      # 單元測試與驗證套件 (獨立於 src 外)
+    ├── __init__.py
+    └── test_universal_agent.py # 完整單元測試與強健性驗證套件 (42 個測試案例)
 ```
 
 ---
@@ -79,6 +104,15 @@ game-assistant/
 - 音訊設備：可用麥克風與耳機/喇叭
 
 ### 2. 安裝套件
+
+可使用以下任一種方式安裝：
+
+**方式 A：標準套件可編輯安裝（推薦最佳實踐）**
+```bash
+pip install -e .
+```
+
+**方式 B：傳統 requirements 安裝**
 ```bash
 pip install -r requirements.txt
 ```
@@ -96,10 +130,28 @@ GEMINI_API_KEY=your_gemini_api_key
 
 ### 4. 執行測試套件
 ```bash
-python test_universal_agent.py
+# 使用 unittest 自動發現執行完整 42 項測試
+python -m unittest discover -s tests
+
+# 或直接執行測試模組
+python tests/test_universal_agent.py
 ```
 
 ### 5. 啟動通用遊戲 Agent
+
+重構後支援多元標準啟動方式：
+
+**方式 A：Console Script 命令行啟動（套件安裝後）**
+```bash
+game-assistant
+```
+
+**方式 B：Python 模組模式啟動**
+```bash
+python -m game_assistant
+```
+
+**方式 C：根目錄相容啟動器直接執行**
 ```bash
 python main.py
 ```

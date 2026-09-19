@@ -1,5 +1,12 @@
+if __name__ == "__main__" and not __package__:
+    import sys
+    from pathlib import Path
+    _src = str(Path(__file__).resolve().parents[2])
+    if _src not in sys.path:
+        sys.path.insert(0, _src)
+
 import speech_recognition as sr
-from config import STT_LANGUAGE, STT_TIMEOUT, STT_PHRASE_TIME_LIMIT
+from game_assistant.core.config import STT_LANGUAGE, STT_TIMEOUT, STT_PHRASE_TIME_LIMIT
 
 
 class STTEngine:
