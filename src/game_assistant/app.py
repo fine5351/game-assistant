@@ -432,7 +432,12 @@ class GameAssistantController(QObject):
                 self.overlay.show_data_analysis(report)
             elif capability == AssistCapability.TRANSLATION:
                 self.trigger_screen_translation()
-            elif capability in (AssistCapability.GUIDANCE, AssistCapability.AUTONOMOUS):
+            elif capability in (
+                AssistCapability.GUIDANCE,
+                AssistCapability.AUTONOMOUS,
+                AssistCapability.EXPLORATION,
+                AssistCapability.EQUIPMENT_BUILD
+            ):
                 self.overlay.set_guidance_display_mode()
 
     def emergency_stop(self):

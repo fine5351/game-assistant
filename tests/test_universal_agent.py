@@ -587,6 +587,337 @@ class TestPackageStructureAndExports(unittest.TestCase):
         self.assertIn("sys_platform == 'win32'", content)
 
 
+class TestJevOfficialProtocolAndSafety(unittest.TestCase):
+    """測試 TypeSafe AI Jev 官方規格協議、Noul 浮點數機率解析與信心度安全閘控"""
+
+    def setUp(self):
+        self.engine = JevDecisionEngine()
+
+    def test_official_api_response_parsing(self):
+        """測試符合 TypeSafe 官方 HTTP API 規格的 answers 映射結構解析"""
+        official_data = {
+            "model": "jev-latest",
+            "answers": {
+                "tactical_action": {
+                    "type": "choice",
+                    "choice": "burst_q",
+                    "confidence": 0.92,
+                    "probabilities": {"burst_q": 0.92, "skill_e": 0.08}
+                },
+                "should_evade": {
+                    "type": "noul",
+                    "noul": 0.88
+                },
+                "combat_urgency": {
+                    "type": "score",
+                    "score": 1.6,
+                    "legend": {"0": "安全", "1": "普通對峙", "2": "爆發危險"},
+                    "probabilities": {"0": 0.05, "1": 0.3, "2": 0.65},
+                    "confidence": 0.78
+                }
+            },
+            "usage": {"input_tokens": 312, "output_tokens": 48}
+        }
+
+        resp = self.engine._parse_api_response(official_data)
+        self.assertIn("tactical_action", resp.choices)
+        self.assertEqual(resp.choices["tactical_action"].choice, "burst_q")
+        self.assertAlmostEqual(resp.choices["tactical_action"].confidence, 0.92)
+        self.assertEqual(resp.choices["tactical_action"].probabilities.get("burst_q"), 0.92)
+
+        self.assertIn("should_evade", resp.nouls)
+        self.assertAlmostEqual(resp.nouls["should_evade"].noul, 0.88)
+        self.assertTrue(resp.nouls["should_evade"].is_positive(threshold=0.5))
+        self.assertTrue(bool(resp.nouls["should_evade"]))
+
+        self.assertIn("combat_urgency", resp.scores)
+        self.assertAlmostEqual(resp.scores["combat_urgency"].score, 1.6)
+        self.assertAlmostEqual(resp.scores["combat_urgency"].confidence, 0.78)
+        self.assertEqual(resp.scores["combat_urgency"].legend.get("1"), "普通對峙")
+
+    def test_noul_probability_thresholds(self):
+        """測試 Noul 機率浮點數閾值防禦，杜絕非零 float 在 Python 中誤判為真"""
+        # 低機率 (0.05): 表示非危險 / 不需閃避
+        n_safe = NoulResult(noul=0.05)
+        self.assertAlmostEqual(n_safe.noul, 0.05)
+        self.assertFalse(n_safe.is_positive(threshold=0.5))
+        self.assertFalse(bool(n_safe), "低機率 0.05 在 bool() 判定下必須為 False")
+
+        # 高機率 (0.85): 表示高度危險 / 需閃避
+        n_danger = NoulResult(noul=0.85)
+        self.assertAlmostEqual(n_danger.noul, 0.85)
+        self.assertTrue(n_danger.is_positive(threshold=0.5))
+        self.assertTrue(bool(n_danger), "高機率 0.85 在 bool() 判定下必須為 True")
+
+        # 向下相容 bool 傳入
+        n_legacy_true = NoulResult(noul=True)
+        self.assertAlmostEqual(n_legacy_true.noul, 1.0)
+        self.assertTrue(bool(n_legacy_true))
+
+        n_legacy_false = NoulResult(noul=False)
+        self.assertAlmostEqual(n_legacy_false.noul, 0.0)
+        self.assertFalse(bool(n_legacy_false))
+
+    def test_confidence_gated_routing_genshin(self):
+        """測試原神策略在代替操作模式下的信心度閘門 (Confidence-Gated Routing)"""
+        strat = GenshinStrategy()
+        dummy_img = Image.new("RGB", (100, 100))
+        telemetry = strat.extract_telemetry(dummy_img)
+
+        # 1. 低信心度 (0.35) 的高風險動作 -> 應安全降級為 idle
+        low_conf_resp = JevResponse(
+            choices={"tactical_action": ChoiceResult(choice="burst_q", confidence=0.35)},
+            nouls={"should_evade": NoulResult(noul=0.1)},
+            scores={"combat_urgency": ScoreResult(score=0.3)}
+        )
+        decision_low = strat.interpret_decision(low_conf_resp, telemetry, AssistCapability.AUTONOMOUS)
+        self.assertEqual(decision_low.primary_action, "idle", "代替操作模式下，低置信度動作應被安全門禁降級為 idle")
+
+        # 2. 高信心度 (0.88) 的高風險動作 -> 正常採納
+        high_conf_resp = JevResponse(
+            choices={"tactical_action": ChoiceResult(choice="burst_q", confidence=0.88)},
+            nouls={"should_evade": NoulResult(noul=0.1)},
+            scores={"combat_urgency": ScoreResult(score=0.8)}
+        )
+        decision_high = strat.interpret_decision(high_conf_resp, telemetry, AssistCapability.AUTONOMOUS)
+        self.assertEqual(decision_high.primary_action, "burst_q", "高置信度動作應正常被採納")
+
+    def test_primitives_serialization_official_spec(self):
+        """測試 Primitives 序列化嚴格遵循 TypeSafe 官方 JSON 規格"""
+        c = Choice(
+            instructions="選擇戰術動作",
+            options=["burst_q", "skill_e"]
+        )
+        c_dict = c.to_dict()
+        self.assertEqual(c_dict["type"], "choice")
+        self.assertEqual(c_dict["instructions"], "選擇戰術動作")
+        self.assertIn("burst_q", c_dict["criteria"])
+        self.assertNotIn("name", c_dict)
+        self.assertIn("burst_q", c_dict["options"])
+
+        n = Noul(
+            instructions="是否有危險",
+            criteria={"true": "存在紅圈", "false": "安全"}
+        )
+        n_dict = n.to_dict()
+        self.assertEqual(n_dict["type"], "noul")
+        self.assertEqual(n_dict["criteria"]["true"], "存在紅圈")
+
+        s = Score(
+            instructions="評分緊急度",
+            criteria=["平穩", "緊張", "爆發"]
+        )
+        s_dict = s.to_dict()
+        self.assertEqual(s_dict["type"], "score")
+        self.assertEqual(len(s_dict["criteria"]), 3)
+
+
+class TestMultiScenarioExpansion(unittest.TestCase):
+    """測試擴充之多情境功能：大世界探索蒐集、裝備調整與強化分析"""
+
+    def setUp(self):
+        self.dummy_img = Image.new("RGB", (320, 240), color="blue")
+        self.actuator = ScreenActuator(action_cooldown=0.01)
+        self.actuator.enable()
+
+    def test_new_assist_capabilities_and_modes(self):
+        """驗證新枚舉能力與分析模式"""
+        self.assertTrue(hasattr(AssistCapability, "EXPLORATION"))
+        self.assertTrue(hasattr(AssistCapability, "EQUIPMENT_BUILD"))
+        self.assertEqual(AssistCapability.EXPLORATION.value, "探索蒐集 (Exploration & Gathering)")
+        self.assertEqual(AssistCapability.EQUIPMENT_BUILD.value, "裝備調整與強化 (Gear Tuning & Upgrade)")
+
+        self.assertTrue(hasattr(AnalysisMode, "EQUIPMENT_ENHANCE"))
+        self.assertTrue(hasattr(AnalysisMode, "EXPLORATION_MAP"))
+
+    def test_genshin_exploration_and_gear_upgrade(self):
+        """測試原神策略在大世界探索與聖遺物雙暴強化下的 Jev 決策"""
+        strat = GenshinStrategy()
+
+        # 1. 探索模式
+        telemetry_exp = strat.extract_telemetry(self.dummy_img, visual_context="發現散失的神瞳與珍貴寶箱")
+        self.assertFalse(telemetry_exp.in_combat)
+        self.assertTrue(telemetry_exp.has_interactive_target)
+        self.assertIn("寶箱", telemetry_exp.target_name)
+
+        q_exp = strat.build_jev_questions(AssistCapability.EXPLORATION, {})
+        self.assertIn("exploration_action", q_exp)
+        self.assertIn("has_interactive_target", q_exp)
+        self.assertIn("exploration_priority", q_exp)
+
+        resp_exp = JevResponse(
+            choices={"exploration_action": ChoiceResult(choice="open_chest", confidence=0.92)},
+            nouls={"has_interactive_target": NoulResult(noul=0.95)},
+            scores={"exploration_priority": ScoreResult(score=0.9)}
+        )
+        dec_exp = strat.interpret_decision(resp_exp, telemetry_exp, AssistCapability.EXPLORATION)
+        self.assertEqual(dec_exp.primary_action, "open_chest")
+        self.assertIn("按 【F】 開啟", dec_exp.guidance_text)
+
+        # 測試探索代替操作
+        action_res = strat.execute_action(dec_exp, self.actuator)
+        self.assertEqual(action_res.target_key_or_button, "f")
+        self.assertTrue(action_res.executed)
+
+        # 2. 聖遺物強化模式
+        telemetry_gear = strat.extract_telemetry(self.dummy_img, visual_context="聖遺物暴擊傷害30分雙暴極品胚子")
+        self.assertGreater(telemetry_gear.gear_score, 30.0)
+
+        q_gear = strat.build_jev_questions(AssistCapability.EQUIPMENT_BUILD, {})
+        self.assertIn("enhancement_action", q_gear)
+        self.assertIn("is_worth_upgrading", q_gear)
+        self.assertIn("should_lock", q_gear)
+        self.assertIn("gear_score", q_gear)
+
+        resp_gear = JevResponse(
+            choices={"enhancement_action": ChoiceResult(choice="lock_and_keep", confidence=0.95)},
+            nouls={"is_worth_upgrading": NoulResult(noul=0.95), "should_lock": NoulResult(noul=0.98)},
+            scores={"gear_score": ScoreResult(score=0.85), "upgrade_potential": ScoreResult(score=0.9)}
+        )
+        dec_gear = strat.interpret_decision(resp_gear, telemetry_gear, AssistCapability.EQUIPMENT_BUILD)
+        self.assertEqual(dec_gear.primary_action, "lock_and_keep")
+        self.assertIn("上鎖", dec_gear.guidance_text)
+
+    def test_star_rail_exploration_and_relic_upgrade(self):
+        """測試星穹鐵道在次元撲滿抓捕與遺器配速/自塑塵脂下的 Jev 決策"""
+        strat = StarRailStrategy()
+
+        # 1. 銀河探索：次元撲滿
+        telemetry_trotter = strat.extract_telemetry(self.dummy_img, visual_context="警告：前方發現次元撲滿")
+        self.assertTrue(telemetry_trotter.has_interactive_target)
+        self.assertIn("撲滿", telemetry_trotter.target_name)
+
+        q_exp = strat.build_jev_questions(AssistCapability.EXPLORATION, {})
+        self.assertIn("catch_trotter", q_exp["exploration_action"].criteria)
+        self.assertIn("is_urgent_trotter", q_exp)
+
+        resp_trotter = JevResponse(
+            choices={"exploration_action": ChoiceResult(choice="catch_trotter", confidence=0.96)},
+            nouls={"is_urgent_trotter": NoulResult(noul=0.9)},
+            scores={"exploration_priority": ScoreResult(score=1.0)}
+        )
+        dec_trotter = strat.interpret_decision(resp_trotter, telemetry_trotter, AssistCapability.EXPLORATION)
+        self.assertEqual(dec_trotter.primary_action, "catch_trotter")
+        self.assertIn("次元撲滿", dec_trotter.guidance_text)
+
+        # 撲滿秘技先手操作
+        act_res = strat.execute_action(dec_trotter, self.actuator)
+        self.assertEqual(act_res.target_key_or_button, "e")
+        self.assertTrue(act_res.executed)
+
+        # 2. 遺器自塑塵脂推薦
+        telemetry_relic = strat.extract_telemetry(self.dummy_img, visual_context="遺器 134 速度鞋與充能繩")
+        q_relic = strat.build_jev_questions(AssistCapability.EQUIPMENT_BUILD, {})
+        self.assertIn("craft_with_resin", q_relic["enhancement_action"].criteria)
+        self.assertIn("meets_speed_threshold", q_relic)
+
+        resp_relic = JevResponse(
+            choices={"enhancement_action": ChoiceResult(choice="craft_with_resin", confidence=0.91)},
+            nouls={"meets_speed_threshold": NoulResult(noul=0.85), "is_worth_upgrading": NoulResult(noul=0.9)},
+            scores={"gear_score": ScoreResult(score=0.7), "upgrade_potential": ScoreResult(score=0.8)}
+        )
+        dec_relic = strat.interpret_decision(resp_relic, telemetry_relic, AssistCapability.EQUIPMENT_BUILD)
+        self.assertEqual(dec_relic.primary_action, "craft_with_resin")
+        self.assertIn("自塑塵脂", dec_relic.guidance_text)
+
+    def test_zzz_exploration_and_drive_disc_upgrade(self):
+        """測試絕區零在六分街物資與驅動光碟調律拆解下的 Jev 決策"""
+        strat = ZZZStrategy()
+
+        # 1. 街區探索：小卡格車
+        telemetry_cargo = strat.extract_telemetry(self.dummy_img, visual_context="發現遺失的小卡格車與喵吉委託")
+        self.assertTrue(telemetry_cargo.has_interactive_target)
+        self.assertIn("小卡格車", telemetry_cargo.target_name)
+
+        q_exp = strat.build_jev_questions(AssistCapability.EXPLORATION, {})
+        self.assertIn("collect_cargo_truck", q_exp["exploration_action"].criteria)
+
+        resp_cargo = JevResponse(
+            choices={"exploration_action": ChoiceResult(choice="collect_cargo_truck", confidence=0.9)},
+            nouls={"has_interactive_target": NoulResult(noul=0.9)},
+            scores={"exploration_priority": ScoreResult(score=0.8)}
+        )
+        dec_cargo = strat.interpret_decision(resp_cargo, telemetry_cargo, AssistCapability.EXPLORATION)
+        self.assertEqual(dec_cargo.primary_action, "collect_cargo_truck")
+        self.assertIn("按 【F】 拾取", dec_cargo.guidance_text)
+
+        # 2. 驅動光碟調律校音器
+        telemetry_disc = strat.extract_telemetry(self.dummy_img, visual_context="S級驅動光碟調律校音器主詞條")
+        q_disc = strat.build_jev_questions(AssistCapability.EQUIPMENT_BUILD, {})
+        self.assertIn("tune_with_calibrator", q_disc["enhancement_action"].criteria)
+
+        resp_disc = JevResponse(
+            choices={"enhancement_action": ChoiceResult(choice="tune_with_calibrator", confidence=0.92)},
+            nouls={"is_worth_upgrading": NoulResult(noul=0.8), "should_lock": NoulResult(noul=0.5)},
+            scores={"gear_score": ScoreResult(score=0.75), "upgrade_potential": ScoreResult(score=0.8)}
+        )
+        dec_disc = strat.interpret_decision(resp_disc, telemetry_disc, AssistCapability.EQUIPMENT_BUILD)
+        self.assertEqual(dec_disc.primary_action, "tune_with_calibrator")
+        self.assertIn("校音器", dec_disc.guidance_text)
+
+    def test_general_game_exploration_and_gear(self):
+        """測試泛用遊戲模式在拾取與裝等比對下的決策"""
+        strat = GeneralGameStrategy()
+
+        # 1. 探索拾取
+        telemetry_loot = strat.extract_telemetry(self.dummy_img, visual_context="地面掉落物與寶箱拾取")
+        self.assertTrue(telemetry_loot.has_interactive_target)
+
+        q_exp = strat.build_jev_questions(AssistCapability.EXPLORATION, {})
+        self.assertIn("interact_pickup", q_exp["exploration_action"].criteria)
+
+        resp_loot = JevResponse(
+            choices={"exploration_action": ChoiceResult(choice="interact_pickup", confidence=0.88)},
+            nouls={"has_interactive_target": NoulResult(noul=0.85)},
+            scores={"exploration_priority": ScoreResult(score=0.7)}
+        )
+        dec_loot = strat.interpret_decision(resp_loot, telemetry_loot, AssistCapability.EXPLORATION)
+        self.assertEqual(dec_loot.primary_action, "interact_pickup")
+
+        # 2. 裝備比對
+        q_gear = strat.build_jev_questions(AssistCapability.EQUIPMENT_BUILD, {})
+        self.assertIn("compare_and_equip", q_gear["enhancement_action"].criteria)
+
+    def test_ai_engine_equipment_and_exploration_fallback(self):
+        """測試 Gemini 認知引擎在無金鑰時的裝備與探索離線啟發降級"""
+        engine = GeminiAuxiliaryEngine()
+
+        # 1. 裝備評估
+        res_genshin_gear = engine.evaluate_equipment_screen(self.dummy_img, GameType.GENSHIN)
+        self.assertIn("聖遺物", res_genshin_gear)
+        self.assertIn("雙暴分", res_genshin_gear)
+
+        res_hsr_gear = engine.evaluate_equipment_screen(self.dummy_img, GameType.STAR_RAIL)
+        self.assertIn("自塑塵脂", res_hsr_gear)
+
+        res_zzz_gear = engine.evaluate_equipment_screen(self.dummy_img, GameType.ZZZ)
+        self.assertIn("調律校音器", res_zzz_gear)
+
+        # 2. 探索指引
+        res_genshin_exp = engine.guide_exploration_screen(self.dummy_img, GameType.GENSHIN)
+        self.assertIn("神瞳", res_genshin_exp)
+
+        res_hsr_exp = engine.guide_exploration_screen(self.dummy_img, GameType.STAR_RAIL)
+        self.assertIn("次元撲滿", res_hsr_exp)
+
+        res_zzz_exp = engine.guide_exploration_screen(self.dummy_img, GameType.ZZZ)
+        self.assertIn("喵吉長官", res_zzz_exp)
+
+    def test_universal_agent_new_capabilities(self):
+        """測試 UniversalGameAgent 在新能力下的運作與便捷方法"""
+        agent = UniversalGameAgent(game_type=GameType.GENSHIN, capability=AssistCapability.EXPLORATION)
+        dec = agent.step(image=self.dummy_img)
+        self.assertIsNotNone(dec)
+        self.assertIn(dec.primary_action, ["gather_specialty", "open_chest", "collect_oculus", "solve_puzzle", "follow_route", "idle"])
+
+        # 測試便捷方法
+        gear_md = agent.evaluate_equipment(image=self.dummy_img)
+        self.assertIn("聖遺物", gear_md)
+
+        exp_md = agent.guide_exploration(image=self.dummy_img)
+        self.assertIn("大世界", exp_md)
+
+
 if __name__ == "__main__":
     unittest.main()
 

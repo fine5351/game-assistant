@@ -24,9 +24,11 @@ class GeminiAuxiliaryEngine:
         self.api_key = api_key or GEMINI_API_KEY
         self.model_name = MODEL_NAME
         self.client = None
+        self._key_invalid = False
         self._init_client()
 
     def _init_client(self):
+        self._key_invalid = False
         placeholder_keys = ("", "your_gemini_api_key_here", "your_api_key_here")
         key_val = (self.api_key or "").strip()
         if key_val and key_val not in placeholder_keys:
@@ -63,8 +65,8 @@ class GeminiAuxiliaryEngine:
 
         demand_lower = user_demand.lower()
 
-        if not self.client:
-            return self._fallback_decompose(user_demand, game_type, capability)
+        if not self.client or self._key_invalid:
+            return self._fallback_decompose(user_demand, game_type, capability, is_offline=self._key_invalid)
 
         game_name = game_type.value if hasattr(game_type, "value") else str(game_type)
         cap_name = capability.value if hasattr(capability, "value") else str(capability)
@@ -90,58 +92,190 @@ class GeminiAuxiliaryEngine:
                 return response.text.strip()
             return f"戰術目標：因應需求【{user_demand}】執行最佳輸出與防守。"
         except Exception as e:
-            print(f"[GeminiAuxiliaryEngine] decompose_user_demand 異常: {e}")
-            return self._fallback_decompose(user_demand, game_type, capability)
+            err_str = str(e)
+            if "API_KEY_INVALID" in err_str or "API key not valid" in err_str or "INVALID_ARGUMENT" in err_str:
+                self._key_invalid = True
+                print("[GeminiAuxiliaryEngine] 提示：GEMINI_API_KEY 無效或未授權，已自動切換為本地離線啟發式戰術規則庫。請於 .env 配置有效金鑰。")
+            else:
+                print(f"[GeminiAuxiliaryEngine] decompose_user_demand 異常: {e}")
+            return self._fallback_decompose(user_demand, game_type, capability, is_offline=True)
 
     def _fallback_decompose(
         self,
         user_demand: str,
         game_type: GameType,
-        capability: AssistCapability
+        capability: AssistCapability,
+        is_offline: bool = False
     ) -> str:
         demand_lower = user_demand.lower()
         game_str = game_type.value if hasattr(game_type, "value") else str(game_type)
         if "閃避" in user_demand or "dodge" in demand_lower or "紅光" in user_demand or "危險" in user_demand:
-            return (
+            res = (
                 f"【戰術指示 - {game_str}】：\n"
                 f"1. 核心目標：極限閃避防禦\n"
                 f"2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n"
                 f"3. 警戒條件：鎖定敵方紅光或紅圈警示"
             )
         elif "招架" in user_demand or "parry" in demand_lower or "黃光" in user_demand:
-            return (
+            res = (
                 f"【戰術指示 - {game_str}】：\n"
                 f"1. 核心目標：極限招架反擊\n"
                 f"2. 推薦操作：敵方閃黃光瞬間按下 Space / C 觸發支援突擊\n"
                 f"3. 警戒條件：失衡積蓄最大化"
             )
         elif "大招" in user_demand or "終結技" in user_demand or "burst" in demand_lower or "ult" in demand_lower:
-            return (
+            res = (
                 f"【戰術指示 - {game_str}】：\n"
                 f"1. 核心目標：終結技/大招爆發破韌\n"
                 f"2. 推薦操作：按下 1-4 號位大招或 Q 鍵進行立即插隊輸出\n"
                 f"3. 警戒條件：確認敵方處於弱點或失衡易傷狀態"
             )
         elif "反應" in user_demand or "元素" in user_demand or "蒸發" in user_demand or "融化" in user_demand:
-            return (
+            res = (
                 f"【戰術指示 - {game_str}】：\n"
                 f"1. 核心目標：元素反應增傷鏈\n"
                 f"2. 推薦操作：切換 2 號位掛水/火/雷 ➔ 切回 1 號位主 C 施放戰技 E 與平 A\n"
                 f"3. 警戒條件：維持元素附著覆蓋"
             )
+        elif any(kw in user_demand for kw in ["探索", "採集", "寶箱", "撲滿", "神瞳", "卡格車", "解謎", "撿"]):
+            res = (
+                f"【探索與採集指示 - {game_str}】：\n"
+                f"1. 核心目標：大世界珍貴物資全收集與地圖解謎\n"
+                f"2. 推薦操作：靠近目標標記按 【F】 互動拾取；若遇撲滿立即施放秘技先手開怪\n"
+                f"3. 警戒條件：關注迷你地圖特產標記與高低差神瞳"
+            )
+        elif any(kw in user_demand for kw in ["裝備", "強化", "聖遺物", "遺器", "光碟", "詞條", "雙暴", "調律", "洗練"]):
+            res = (
+                f"【裝備與強化分析指示 - {game_str}】：\n"
+                f"1. 核心目標：主副詞條精準評分與強化及時停損\n"
+                f"2. 推薦操作：極品雙暴胚子立即【上鎖】；詞條歪斜立即【停損做狗糧/拆解】；稀缺部位考慮自塑塵脂定向\n"
+                f"3. 警戒條件：關注 134 速度閾值與雙暴 1:2 配比"
+            )
         elif "分析" in user_demand or "資料" in user_demand:
-            return (
+            res = (
                 f"【戰術指示 - {game_str}】：\n"
                 f"1. 核心目標：戰鬥遙測與資源分析\n"
                 f"2. 推薦操作：統計威脅度與 SP/能量循環\n"
                 f"3. 警戒條件：監控血量低於 30% 與戰技點耗盡"
             )
         else:
-            return (
+            res = (
                 f"【戰術指示 - {game_str}】：\n"
                 f"1. 核心目標：因應需求「{user_demand}」維持最佳攻防\n"
                 f"2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n"
                 f"3. 警戒條件：保持拉扯走位，遇危險立即閃避"
+            )
+
+        if is_offline or not self.client or self._key_invalid:
+            res += "\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*"
+        return res
+
+    def evaluate_equipment_screen(
+        self,
+        image: Image.Image,
+        game_type: GameType = GameType.GENSHIN
+    ) -> str:
+        """
+        深度多模態裝備調整與強化分析 (聖遺物 / 遺器 / 驅動光碟 / 泛用裝備)
+        """
+        if not self.client or self._key_invalid:
+            return self._fallback_equipment_analysis(game_type)
+
+        prompt = PROMPTS.get(game_type, {}).get(
+            AnalysisMode.EQUIPMENT_ENHANCE,
+            PROMPTS[GameType.GENERAL][AnalysisMode.EQUIPMENT_ENHANCE]
+        )
+        return self.analyze_screen(image, game_type, AnalysisMode.EQUIPMENT_ENHANCE, custom_prompt=prompt)
+
+    def guide_exploration_screen(
+        self,
+        image: Image.Image,
+        game_type: GameType = GameType.GENSHIN
+    ) -> str:
+        """
+        深度多模態大地圖探索蒐集與解謎指引 (特產 / 寶箱 / 撲滿 / 神瞳 / 卡格車)
+        """
+        if not self.client or self._key_invalid:
+            return self._fallback_exploration_guide(game_type)
+
+        prompt = PROMPTS.get(game_type, {}).get(
+            AnalysisMode.EXPLORATION_MAP,
+            PROMPTS[GameType.GENERAL][AnalysisMode.EXPLORATION_MAP]
+        )
+        return self.analyze_screen(image, game_type, AnalysisMode.EXPLORATION_MAP, custom_prompt=prompt)
+
+    def _fallback_equipment_analysis(self, game_type: GameType) -> str:
+        game_str = game_type.value if hasattr(game_type, "value") else str(game_type)
+        if game_type == GameType.GENSHIN:
+            return (
+                f"### 🛡️ 《原神》聖遺物數值與強化分析 (本地離線啟發式)\n\n"
+                f"- **裝備部位**：理之冠 / 空之杯 / 時之沙\n"
+                f"- **詞條評估**：暴擊率 + 暴擊傷害 (CV 雙暴分評級)\n"
+                f"- **強化策略**：\n"
+                f"  1. 初始 3 詞條胚子建議先升至 **+4** 查看第四條詞條。\n"
+                f"  2. 若 +8 連續歪入生命/防禦，建議立即**停損**並作為下一胚子之狗糧經驗。\n"
+                f"  3. 雙暴分達 35 分以上之胚子，強烈建議點擊右上角**上鎖**保存！\n\n"
+                f"*(💡 配置有效 GEMINI_API_KEY 可啟用多模態全自動文字識別與精確數值換算)*"
+            )
+        elif game_type == GameType.STAR_RAIL:
+            return (
+                f"### 🛡️ 《崩壞：星穹鐵道》遺器調整與強化分析 (本地離線啟發式)\n\n"
+                f"- **遺器六件套**：四件隧洞 + 兩件位面飾品\n"
+                f"- **配速閾值**：建議主力角色追求 **133.4 速度** (首輪 2 動) 或 **160 速度**。\n"
+                f"- **強化策略**：\n"
+                f"  1. 每 3 級 (+3/+6/+9/+12/+15) 提升一次副詞條。\n"
+                f"  2. 「自塑塵脂」極其珍貴，強烈建議優先定向合成**「能量恢復效率連結繩」**或**「屬性傷害位面球」**。\n"
+                f"  3. 淘汰之金色遺器建議保留作為 10 合 1 遺器合成殘骸。\n\n"
+                f"*(💡 配置有效 GEMINI_API_KEY 可啟用遺器面板視覺直讀)*"
+            )
+        elif game_type == GameType.ZZZ:
+            return (
+                f"### 🛡️ 《絕區零》驅動光碟評級與調律分析 (本地離線啟發式)\n\n"
+                f"- **光碟槽位**：1-3 號位固定基礎數值，4-6 號位為核心隨機主屬性。\n"
+                f"- **調律建議**：\n"
+                f"  1. 達到高級調律等級後，使用「調律校音器」鎖定 4 號位雙暴、5 號位穿透率/屬性傷或 6 號位衝擊力/能量回復。\n"
+                f"  2. 強化每 3 級副詞條升級，若副詞條嚴重歪斜，建議在唱片店**拆解**換取經驗鍍劑與母盤。\n\n"
+                f"*(💡 配置有效 GEMINI_API_KEY 可啟用驅動盤多模態圖像精算)*"
+            )
+        else:
+            return (
+                f"### 🛡️ 《{game_str}》裝備數值與強化分析 (本地離線啟發式)\n\n"
+                f"- **品質與裝等**：檢視主屬性加成與額外詞條收益。\n"
+                f"- **強化策略**：評估強化成本與成功率，性價比低時及時停損或分解回收。\n\n"
+                f"*(💡 配置有效 GEMINI_API_KEY 可啟用深度多模態視覺剖析)*"
+            )
+
+    def _fallback_exploration_guide(self, game_type: GameType) -> str:
+        game_str = game_type.value if hasattr(game_type, "value") else str(game_type)
+        if game_type == GameType.GENSHIN:
+            return (
+                f"### 🧭 《原神》提瓦特大世界探索與採集指引 (本地離線啟發式)\n\n"
+                f"- **特產採集**：靠近特產植物或礦石按 【F】 拾取。\n"
+                f"- **神瞳與寶箱**：留意小地圖十字星神瞳標記與周遭仙靈座，建議標記已拿點位避免漏網。\n"
+                f"- **解謎機關**：元素方碑需切換對應屬性角色進行點亮。\n\n"
+                f"*(💡 配置有效 GEMINI_API_KEY 可啟用畫面即時特產標記與跟跑路線)*"
+            )
+        elif game_type == GameType.STAR_RAIL:
+            return (
+                f"### 🧭 《崩壞：星穹鐵道》銀河探索指引 (本地離線啟發式)\n\n"
+                f"- **次元撲滿**：發現撲滿時請勿直接靠近，應提前切換遠程角色施放【秘技】開戰防止逃跑！\n"
+                f"- **戰利品全收集**：地圖上的普通/豐厚/貴重戰利品可獲得豐富星瓊與遺器經驗。\n"
+                f"- **大世界資源**：擊破紫瓶補滿全隊秘技點。\n\n"
+                f"*(💡 配置有效 GEMINI_API_KEY 可啟用戰利品自動方位識別)*"
+            )
+        elif game_type == GameType.ZZZ:
+            return (
+                f"### 🧭 《絕區零》新艾利都街區與空洞探索指引 (本地離線啟發式)\n\n"
+                f"- **街區收集**：尋訪六分街角落的「遺失的小卡格車」與「調查協會紀念幣」，靠近按 【F】 拾取。\n"
+                f"- **喵吉長官**：完成街區收集後與喵吉長官對話領取頁面印章與菲林。\n"
+                f"- **零號空洞**：電視網格優先規劃低侵蝕安全路線，並收集流派專屬鳴徽。\n\n"
+                f"*(💡 配置有效 GEMINI_API_KEY 可啟用電視網格最佳路徑規劃)*"
+            )
+        else:
+            return (
+                f"### 🧭 《{game_str}》地圖物資探索指引 (本地離線啟發式)\n\n"
+                f"- **物資收集**：跟隨迷你地圖路標前進，靠近掉落物與寶箱按 【F】 進行互動拾取。\n\n"
+                f"*(💡 配置有效 GEMINI_API_KEY 可啟用畫面即時標記與導航路徑)*"
             )
 
     def analyze_screen(
@@ -159,8 +293,12 @@ class GeminiAuxiliaryEngine:
         :param custom_prompt: 玩家自訂提示詞
         :return: 深度 Markdown 分析文字
         """
-        if not self.client:
-            return "⚠️ **提示**：未檢測到 Gemini API Key。Gemini 輔助認知處於離線狀態，Jev 決策核心將依據本地啟發式決策運作。"
+        if not self.client or self._key_invalid:
+            if mode == AnalysisMode.EQUIPMENT_ENHANCE:
+                return self._fallback_equipment_analysis(game_type)
+            elif mode == AnalysisMode.EXPLORATION_MAP:
+                return self._fallback_exploration_guide(game_type)
+            return "⚠️ **提示**：GEMINI_API_KEY 未設定或無效。Gemini 輔助認知處於離線狀態，Jev 決策核心正依據本地啟發式決策正常運作。"
 
         if custom_prompt and custom_prompt.strip():
             game_name = game_type.value if hasattr(game_type, "value") else str(game_type)
@@ -183,6 +321,19 @@ class GeminiAuxiliaryEngine:
                 return response.text
             return "⚠️ Gemini 輔助認知未返回文字結果。"
         except Exception as e:
+            err_str = str(e)
+            if "API_KEY_INVALID" in err_str or "API key not valid" in err_str or "INVALID_ARGUMENT" in err_str:
+                self._key_invalid = True
+                print("[GeminiAuxiliaryEngine] 提示：GEMINI_API_KEY 無效或未授權，已自動切換為離線狀態。")
+                if mode == AnalysisMode.EQUIPMENT_ENHANCE:
+                    return self._fallback_equipment_analysis(game_type)
+                elif mode == AnalysisMode.EXPLORATION_MAP:
+                    return self._fallback_exploration_guide(game_type)
+                return "⚠️ **提示**：GEMINI_API_KEY 無效或未授權。請檢查 .env 設定。"
+            if mode == AnalysisMode.EQUIPMENT_ENHANCE:
+                return self._fallback_equipment_analysis(game_type)
+            elif mode == AnalysisMode.EXPLORATION_MAP:
+                return self._fallback_exploration_guide(game_type)
             return f"❌ **Gemini 輔助認知分析異常**：\n```\n{str(e)}\n```"
 
     def translate_screen(
@@ -199,7 +350,7 @@ class GeminiAuxiliaryEngine:
         :param target_lang: 目標語言
         :return: 結構化 Markdown 翻譯對照報告
         """
-        if not self.client:
+        if not self.client or self._key_invalid:
             return self._fallback_screen_translation(game_type, target_lang)
 
         prompt = (
@@ -235,7 +386,13 @@ class GeminiAuxiliaryEngine:
                 return response.text.strip()
             return "⚠️ Gemini 畫面翻譯未返回內容。"
         except Exception as e:
-            return f"❌ **Gemini 畫面翻譯異常**：\n```\n{str(e)}\n```\n\n" + self._fallback_screen_translation(game_type, target_lang)
+            err_str = str(e)
+            if "API_KEY_INVALID" in err_str or "API key not valid" in err_str or "INVALID_ARGUMENT" in err_str:
+                self._key_invalid = True
+                print("[GeminiAuxiliaryEngine] 提示：GEMINI_API_KEY 無效或未授權，已自動切換為本地離線翻譯對照庫。")
+            else:
+                print(f"[GeminiAuxiliaryEngine] translate_screen 異常: {e}")
+            return self._fallback_screen_translation(game_type, target_lang)
 
     def translate_chat_subtitles(
         self,
@@ -250,7 +407,7 @@ class GeminiAuxiliaryEngine:
         :param target_lang: 目標語言
         :return: (markdown_report, list_of_subtitle_items)
         """
-        if not self.client:
+        if not self.client or self._key_invalid:
             return self._fallback_chat_subtitles(target_lang)
 
         prompt = (
@@ -277,7 +434,12 @@ class GeminiAuxiliaryEngine:
             subtitles = self._extract_subtitles_from_json(text)
             return text, subtitles
         except Exception as e:
-            print(f"[GeminiAuxiliaryEngine] translate_chat_subtitles 異常: {e}")
+            err_str = str(e)
+            if "API_KEY_INVALID" in err_str or "API key not valid" in err_str or "INVALID_ARGUMENT" in err_str:
+                self._key_invalid = True
+                print("[GeminiAuxiliaryEngine] 提示：GEMINI_API_KEY 無效或未授權，已自動切換為離線狀態。")
+            else:
+                print(f"[GeminiAuxiliaryEngine] translate_chat_subtitles 異常: {e}")
             return self._fallback_chat_subtitles(target_lang)
 
     def translate_voice_text(
@@ -294,7 +456,7 @@ class GeminiAuxiliaryEngine:
         if not chinese_text or not chinese_text.strip():
             return ""
 
-        if not self.client:
+        if not self.client or self._key_invalid:
             return self._fallback_voice_translation(chinese_text, target_lang)
 
         prompt = (
@@ -315,7 +477,12 @@ class GeminiAuxiliaryEngine:
                 return clean_text
             return self._fallback_voice_translation(chinese_text, target_lang)
         except Exception as e:
-            print(f"[GeminiAuxiliaryEngine] translate_voice_text 異常: {e}")
+            err_str = str(e)
+            if "API_KEY_INVALID" in err_str or "API key not valid" in err_str or "INVALID_ARGUMENT" in err_str:
+                self._key_invalid = True
+                print("[GeminiAuxiliaryEngine] 提示：GEMINI_API_KEY 無效或未授權，已自動切換為本地離線詞典對照。")
+            else:
+                print(f"[GeminiAuxiliaryEngine] translate_voice_text 異常: {e}")
             return self._fallback_voice_translation(chinese_text, target_lang)
 
     def _extract_subtitles_from_json(self, text: str) -> list[dict]:

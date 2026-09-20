@@ -8,13 +8,16 @@ if __name__ == "__main__" and not __package__:
 import threading
 from typing import Optional
 
-from PyQt6.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer
+from PyQt6.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QLoggingCategory
 from PyQt6.QtGui import QFont, QColor, QPalette, QCursor
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QComboBox, QPushButton, QSlider, QTextBrowser, QFrame,
     QGraphicsDropShadowEffect, QSizePolicy
 )
+
+# 壓制 Windows DirectWrite 對舊版點陣字型 (MS Sans Serif) 拋出的無害字型警告
+QLoggingCategory.setFilterRules("qt.qpa.fonts.warning=false")
 from pynput import keyboard
 
 from game_assistant.core.config import (
@@ -155,6 +158,9 @@ class FloatingSubtitleOverlay(QWidget):
         content_layout.addWidget(self.lbl_original)
 
         self.setStyleSheet("""
+            * {
+                font-family: "Microsoft JhengHei UI", "Microsoft JhengHei", "Segoe UI", sans-serif;
+            }
             #SubtitleFrame {
                 background-color: rgba(12, 18, 28, 0.93);
                 border: 1px solid rgba(0, 229, 255, 0.55);
@@ -531,6 +537,9 @@ class GameAssistantOverlay(QWidget):
 
     def _apply_stylesheet(self):
         self.setStyleSheet("""
+            * {
+                font-family: "Microsoft JhengHei UI", "Microsoft JhengHei", "Segoe UI", sans-serif;
+            }
             #MainFrame {
                 background-color: rgba(18, 22, 32, 0.94);
                 border: 1px solid rgba(0, 229, 255, 0.35);
@@ -745,16 +754,29 @@ class GameAssistantOverlay(QWidget):
         exec_status = "未執行"
         if decision.action_result:
             exec_status = f"已發送 [{decision.action_result.target_key_or_button}]" if decision.action_result.executed else "冷卻中"
-        elif cap == AssistCapability.GUIDANCE:
+        elif cap in (AssistCapability.GUIDANCE, AssistCapability.EXPLORATION, AssistCapability.EQUIPMENT_BUILD):
             exec_status = "指導中"
 
-        self.lbl_card_action.setText(f"⚡ Jev 決策: 【{act}】 (閃避判定: {decision.should_evade})")
-        self.lbl_card_metrics.setText(f"置信度: {conf}% | 延遲: {capture_ms:.1f}ms | 模式: {cap_name} | 操作: {exec_status}")
-        self.status_footer.setText(f"狀態: ⚡ 0.25s 實時決策中 | Jev 決策: {act} | 擷取: {capture_ms:.1f} ms")
+        # 依據能力動態切換決策卡片圖示與文字風格
+        if cap == AssistCapability.EQUIPMENT_BUILD:
+            self.lbl_card_icon.setText("🛡️")
+            self.lbl_card_action.setText(f"🛡️ 裝備決策: 【{act}】 (評分: {decision.telemetry.gear_score:.1f}分)")
+            header_title = "### 🛡️ Jev 裝備調整與強化評定"
+        elif cap == AssistCapability.EXPLORATION:
+            self.lbl_card_icon.setText("🧭")
+            self.lbl_card_action.setText(f"🧭 探索目標: 【{decision.telemetry.target_name or act}】")
+            header_title = "### 🧭 Jev 大世界探索與物資導航"
+        else:
+            self.lbl_card_icon.setText("⚡")
+            self.lbl_card_action.setText(f"⚡ Jev 決策: 【{act}】 (閃避判定: {decision.should_evade})")
+            header_title = "### ⚡ Jev 即時戰術指引"
 
-        # 僅在指導/操作模式且指引內容確實變更時更新輸出區，徹底消除 4 Hz 滾動條重設與閃爍
+        self.lbl_card_metrics.setText(f"置信度: {conf}% | 延遲: {capture_ms:.1f}ms | 模式: {cap_name} | 操作: {exec_status}")
+        self.status_footer.setText(f"狀態: ⚡ 0.25s 實時決策中 | 決策: {act} | 擷取: {capture_ms:.1f} ms")
+
+        # 僅在指導/操作/探索/裝備模式且內容變更時更新輸出區
         if self._active_display_mode == "guidance":
-            content = f"### ⚡ Jev 即時戰術指引\n\n{decision.guidance_text}\n\n"
+            content = f"{header_title}\n\n{decision.guidance_text}\n\n"
             if decision.action_result and decision.action_result.message:
                 content += f"> 🎮 **螢幕操作記錄**：`{decision.action_result.message}` (耗時: {decision.action_result.latency_ms:.1f}ms)\n\n"
             content += f"---\n*0.25s 實時畫面流 (4 Hz) | Jev 延遲: {decision.raw_jev.latency_ms:.1f} ms | 畫面擷取: {capture_ms:.1f} ms*"

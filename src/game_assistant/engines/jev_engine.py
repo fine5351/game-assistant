@@ -46,20 +46,25 @@ class Choice:
             self.criteria = {opt: None for opt in self.options}
 
     def to_dict(self) -> dict:
+        criteria_dict = self.criteria
+        if not criteria_dict and self.options:
+            criteria_dict = {opt: None for opt in self.options}
+        elif isinstance(criteria_dict, list):
+            criteria_dict = {opt: None for opt in criteria_dict}
+        opts = self.options or (list(criteria_dict.keys()) if isinstance(criteria_dict, dict) else [])
         return {
             "type": "choice",
-            "name": self.name,
             "instructions": self.instructions or self.description,
-            "description": self.description or self.instructions,
-            "options": self.options,
-            "criteria": self.criteria
+            "criteria": criteria_dict,
+            "options": opts
         }
 
 
 @dataclass
 class Noul:
-    """Jev Noul Primitive: 評估布林是/否 (Yes/No) 狀態"""
+    """Jev Noul Primitive: 評估布林是/否 (Yes/No) 狀態與機率"""
     instructions: str = ""
+    criteria: Optional[Dict[str, str]] = None
     name: str = ""
     description: str = ""
 
@@ -70,12 +75,13 @@ class Noul:
             self.instructions = self.description
 
     def to_dict(self) -> dict:
-        return {
+        d = {
             "type": "noul",
-            "name": self.name,
-            "instructions": self.instructions or self.description,
-            "description": self.description or self.instructions
+            "instructions": self.instructions or self.description
         }
+        if self.criteria:
+            d["criteria"] = self.criteria
+        return d
 
 
 @dataclass
@@ -95,9 +101,7 @@ class Score:
     def to_dict(self) -> dict:
         return {
             "type": "score",
-            "name": self.name,
             "instructions": self.instructions or self.description,
-            "description": self.description or self.instructions,
             "criteria": self.criteria
         }
 
@@ -111,14 +115,37 @@ class ChoiceResult:
 
 @dataclass
 class NoulResult:
-    noul: bool
+    """
+    Jev Noul 結果：
+    - noul: Yes 的機率值 (0.0 ~ 1.0)。
+    - is_positive(threshold=0.5): 依據閾值判定是否為真。
+    - __bool__: 當進行 if noul_result 時，以 0.5 機率為閾值防禦，杜絕非 0 浮點數誤判。
+    """
+    noul: float = 0.0
     confidence: float = 1.0
+
+    def __post_init__(self):
+        if isinstance(self.noul, bool):
+            self.noul = 1.0 if self.noul else 0.0
+        else:
+            try:
+                self.noul = float(self.noul)
+            except (ValueError, TypeError):
+                self.noul = 0.0
+
+    def is_positive(self, threshold: float = 0.5) -> bool:
+        return self.noul >= threshold
+
+    def __bool__(self) -> bool:
+        return self.noul >= 0.5
 
 
 @dataclass
 class ScoreResult:
     score: float
     confidence: float = 1.0
+    legend: Dict[str, str] = field(default_factory=dict)
+    probabilities: Dict[str, float] = field(default_factory=dict)
 
 
 @dataclass
@@ -181,26 +208,29 @@ class JevDecisionEngine:
         if OFFICIAL_SDK_AVAILABLE and _OfficialClient:
             try:
                 client = _OfficialClient(api_key=self.api_key)
-                official_questions = []
+                official_questions = {}
                 for q_id, q_obj in questions.items():
+                    inst = getattr(q_obj, "instructions", "") or getattr(q_obj, "description", "")
                     if isinstance(q_obj, Choice):
-                        opts = q_obj.options or (list(q_obj.criteria.keys()) if isinstance(q_obj.criteria, dict) else list(q_obj.criteria))
-                        official_questions.append(_OfficialChoice(
-                            name=q_id,
-                            options=opts,
-                            description=q_obj.instructions or q_obj.description
-                        ))
+                        crit = q_obj.criteria
+                        if not crit and q_obj.options:
+                            crit = {opt: None for opt in q_obj.options}
+                        elif isinstance(crit, list):
+                            crit = {opt: None for opt in crit}
+                        official_questions[q_id] = _OfficialChoice(
+                            instructions=inst,
+                            criteria=crit
+                        )
                     elif isinstance(q_obj, Noul):
-                        official_questions.append(_OfficialNoul(
-                            name=q_id,
-                            description=q_obj.instructions or q_obj.description
-                        ))
+                        noul_kwargs = {"instructions": inst}
+                        if getattr(q_obj, "criteria", None):
+                            noul_kwargs["criteria"] = q_obj.criteria
+                        official_questions[q_id] = _OfficialNoul(**noul_kwargs)
                     elif isinstance(q_obj, Score):
-                        official_questions.append(_OfficialScore(
-                            name=q_id,
-                            criteria=q_obj.criteria,
-                            description=q_obj.instructions or q_obj.description
-                        ))
+                        official_questions[q_id] = _OfficialScore(
+                            instructions=inst,
+                            criteria=q_obj.criteria
+                        )
                 sdk_resp = client.system_one(state=state, questions=official_questions)
                 return self._parse_api_response(sdk_resp if isinstance(sdk_resp, dict) else getattr(sdk_resp, "__dict__", {}))
             except Exception as sdk_err:
@@ -240,37 +270,98 @@ class JevDecisionEngine:
             return self._parse_api_response(raw_data)
 
     def _parse_api_response(self, data: dict) -> JevResponse:
+        """
+        解析 TypeSafe Jev 模型回傳資料。
+        標準規範：data["answers"][<question_id>] -> {type, choice/noul/score, probabilities, confidence...}
+        向後相容：data["choices"], data["nouls"], data["scores"]
+        """
         res = JevResponse(raw=data)
-        if "choices" in data:
+
+        # 1. 官方標準結構：data["answers"] 字典映射
+        if "answers" in data and isinstance(data["answers"], dict):
+            for k, v in data["answers"].items():
+                if isinstance(v, dict):
+                    ans_type = v.get("type", "")
+                    if ans_type == "choice":
+                        res.choices[k] = ChoiceResult(
+                            choice=str(v.get("choice", "")),
+                            confidence=float(v.get("confidence", 1.0)),
+                            probabilities=v.get("probabilities", {})
+                        )
+                    elif ans_type == "noul":
+                        # 官方 Noul 回傳 float 機率值 (0.0 ~ 1.0)
+                        res.nouls[k] = NoulResult(
+                            noul=float(v.get("noul", 0.0))
+                        )
+                    elif ans_type == "score":
+                        res.scores[k] = ScoreResult(
+                            score=float(v.get("score", 0.0)),
+                            confidence=float(v.get("confidence", 1.0)),
+                            legend=v.get("legend", {}),
+                            probabilities=v.get("probabilities", {})
+                        )
+                else:
+                    ans_type = getattr(v, "type", "")
+                    if ans_type == "choice" or hasattr(v, "choice"):
+                        res.choices[k] = ChoiceResult(
+                            choice=str(getattr(v, "choice", "")),
+                            confidence=float(getattr(v, "confidence", 1.0)),
+                            probabilities=getattr(v, "probabilities", {})
+                        )
+                    elif ans_type == "noul" or hasattr(v, "noul"):
+                        res.nouls[k] = NoulResult(
+                            noul=float(getattr(v, "noul", 0.0))
+                        )
+                    elif ans_type == "score" or hasattr(v, "score"):
+                        res.scores[k] = ScoreResult(
+                            score=float(getattr(v, "score", 0.0)),
+                            confidence=float(getattr(v, "confidence", 1.0)),
+                            legend=getattr(v, "legend", {}),
+                            probabilities=getattr(v, "probabilities", {})
+                        )
+
+        # 2. 相容舊式 / 本地模擬結構
+        if "choices" in data and isinstance(data["choices"], dict):
             for k, v in data["choices"].items():
-                if isinstance(v, dict):
-                    res.choices[k] = ChoiceResult(
-                        choice=v.get("choice", ""),
-                        confidence=float(v.get("confidence", 1.0)),
-                        probabilities=v.get("probabilities", {})
-                    )
-                else:
-                    res.choices[k] = ChoiceResult(choice=str(v))
+                if k not in res.choices:
+                    if isinstance(v, dict):
+                        res.choices[k] = ChoiceResult(
+                            choice=v.get("choice", ""),
+                            confidence=float(v.get("confidence", 1.0)),
+                            probabilities=v.get("probabilities", {})
+                        )
+                    elif isinstance(v, ChoiceResult):
+                        res.choices[k] = v
+                    else:
+                        res.choices[k] = ChoiceResult(choice=str(v))
 
-        if "nouls" in data:
+        if "nouls" in data and isinstance(data["nouls"], dict):
             for k, v in data["nouls"].items():
-                if isinstance(v, dict):
-                    res.nouls[k] = NoulResult(
-                        noul=bool(v.get("noul", False)),
-                        confidence=float(v.get("confidence", 1.0))
-                    )
-                else:
-                    res.nouls[k] = NoulResult(noul=bool(v))
+                if k not in res.nouls:
+                    if isinstance(v, dict):
+                        res.nouls[k] = NoulResult(
+                            noul=float(v.get("noul", 0.0)),
+                            confidence=float(v.get("confidence", 1.0))
+                        )
+                    elif isinstance(v, NoulResult):
+                        res.nouls[k] = v
+                    else:
+                        res.nouls[k] = NoulResult(noul=v)
 
-        if "scores" in data:
+        if "scores" in data and isinstance(data["scores"], dict):
             for k, v in data["scores"].items():
-                if isinstance(v, dict):
-                    res.scores[k] = ScoreResult(
-                        score=float(v.get("score", 0.0)),
-                        confidence=float(v.get("confidence", 1.0))
-                    )
-                else:
-                    res.scores[k] = ScoreResult(score=float(v))
+                if k not in res.scores:
+                    if isinstance(v, dict):
+                        res.scores[k] = ScoreResult(
+                            score=float(v.get("score", 0.0)),
+                            confidence=float(v.get("confidence", 1.0)),
+                            legend=v.get("legend", {}),
+                            probabilities=v.get("probabilities", {})
+                        )
+                    elif isinstance(v, ScoreResult):
+                        res.scores[k] = v
+                    else:
+                        res.scores[k] = ScoreResult(score=float(v))
 
         return res
 
@@ -332,16 +423,16 @@ class JevDecisionEngine:
                     probabilities=scores_map
                 )
 
-            # 2. 處理 Noul (布林是/否) 類型
+            # 2. 處理 Noul (布林是/否與機率) 類型
             elif isinstance(q_obj, Noul) or (isinstance(q_obj, dict) and q_obj.get("type") == "noul"):
                 # 檢測危險、閃避、滿能量、治療需求、優化需求等
                 is_true = False
                 conf = 0.85
                 inst_lower = (instructions or getattr(q_obj, "description", "")).lower()
-                if "attack" in inst_lower or "danger" in inst_lower or "警示" in instructions:
-                    is_true = ("黃光" in state or "紅光" in state or "danger" in state_lower or "前搖" in state)
-                elif "energy" in inst_lower or "能量" in instructions or "ult" in inst_lower:
-                    is_true = ("滿能量" in state or "energy_full" in state_lower or "ultimateready: true" in state_lower)
+                if "attack" in inst_lower or "danger" in inst_lower or "警示" in instructions or "閃避" in instructions:
+                    is_true = ("黃光" in state or "紅光" in state or "danger" in state_lower or "前搖" in state or "紅圈" in state)
+                elif "energy" in inst_lower or "能量" in instructions or "ult" in inst_lower or "終結技" in instructions:
+                    is_true = ("滿能量" in state or "energy_full" in state_lower or "ultimateready: true" in state_lower or "energy_ready=true" in state_lower or "ult_ready" in state_lower)
                 elif "heal" in inst_lower or "治療" in instructions or "殘血" in instructions:
                     is_true = ("low_hp" in state_lower or "殘血" in state)
                 elif "optimi" in inst_lower or "優化" in instructions or "調整" in instructions:
@@ -350,7 +441,9 @@ class JevDecisionEngine:
                     # 預設依據 instructions 關鍵字在 state 存在與否
                     is_true = any(word in state_lower for word in inst_lower.split() if len(word) > 2)
 
-                res.nouls[q_id] = NoulResult(noul=is_true, confidence=conf)
+                # TypeSafe Noul 回傳 Yes 的機率 (0.0 ~ 1.0)
+                noul_prob = 0.95 if is_true else 0.05
+                res.nouls[q_id] = NoulResult(noul=noul_prob, confidence=conf)
 
             # 3. 處理 Score (數值評估) 類型
             elif isinstance(q_obj, Score) or (isinstance(q_obj, dict) and q_obj.get("type") == "score"):

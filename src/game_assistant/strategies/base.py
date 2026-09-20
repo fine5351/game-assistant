@@ -20,6 +20,12 @@ class TelemetryData:
     danger_detected: bool = False
     threat_level: float = 0.0
     active_character: str = "1"
+    # 擴充：探索蒐集與裝備強化專屬遙測特徵
+    target_name: str = ""
+    has_interactive_target: bool = False
+    gear_score: float = 0.0
+    upgrade_potential: float = 0.0
+    recommended_action: str = ""
     features: Dict[str, Any] = field(default_factory=dict)
 
 

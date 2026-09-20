@@ -156,12 +156,34 @@ class UniversalGameAgent:
             mode = AnalysisMode.VOICE_QA
         elif self.capability == AssistCapability.TRANSLATION:
             mode = AnalysisMode.TRANSLATION
+        elif self.capability == AssistCapability.EQUIPMENT_BUILD:
+            mode = AnalysisMode.EQUIPMENT_ENHANCE
+        elif self.capability == AssistCapability.EXPLORATION:
+            mode = AnalysisMode.EXPLORATION_MAP
 
         return self.gemini_engine.analyze_screen(
             image=image,
             game_type=self.game_type,
             mode=mode,
             custom_prompt=custom_prompt or self.current_user_demand
+        )
+
+    def evaluate_equipment(self, image: Optional[Image.Image] = None) -> str:
+        """專屬裝備與強化深度分析"""
+        if image is None:
+            image, _ = ScreenCapturer.capture(monitor_index=1)
+        return self.gemini_engine.evaluate_equipment_screen(
+            image=image,
+            game_type=self.game_type
+        )
+
+    def guide_exploration(self, image: Optional[Image.Image] = None) -> str:
+        """專屬大地圖探索與素材採集指引"""
+        if image is None:
+            image, _ = ScreenCapturer.capture(monitor_index=1)
+        return self.gemini_engine.guide_exploration_screen(
+            image=image,
+            game_type=self.game_type
         )
 
     def translate_screen(
