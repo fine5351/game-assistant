@@ -18,8 +18,22 @@ from game_assistant.core.config import (
     HOTKEY_VOICE_TRANSLATE,
     HOTKEY_TRANSLATE_SCREEN,
     DEFAULT_TARGET_LANGUAGE,
+    ThinkingEffortLevel,
+    REFLEX_CONFIDENCE_THRESHOLD,
+    NOVELTY_SIMILARITY_THRESHOLD,
 )
 from game_assistant.core.agent import UniversalGameAgent
+from game_assistant.core.nervous_system import (
+    NervousSystemCoordinator,
+    ReflexArc,
+    MemoryTrace,
+    NoveltyLevel,
+    ThinkingEffort,
+    ReflexMemoryStore,
+    NoveltyDetector,
+    ReflexArcRegistry,
+    ConsolidationPipeline,
+)
 from game_assistant.engines.jev_engine import (
     JevDecisionEngine,
     JevResponse,
@@ -81,4 +95,16 @@ __all__ = [
     "TTSEngine",
     "clean_markdown_for_tts",
     "STTEngine",
+    "NervousSystemCoordinator",
+    "ReflexArc",
+    "MemoryTrace",
+    "NoveltyLevel",
+    "ThinkingEffort",
+    "ThinkingEffortLevel",
+    "ReflexMemoryStore",
+    "NoveltyDetector",
+    "ReflexArcRegistry",
+    "ConsolidationPipeline",
+    "REFLEX_CONFIDENCE_THRESHOLD",
+    "NOVELTY_SIMILARITY_THRESHOLD",
 ]

@@ -20,14 +20,26 @@ from game_assistant.strategies.base import (
     BaseGameStrategy, TelemetryData, StrategyDecision, ActionResult
 )
 from game_assistant.strategies.registry import StrategyRegistry, get_game_strategy
+from game_assistant.core.nervous_system import (
+    NervousSystemCoordinator, ReflexArc, MemoryTrace, NoveltyLevel, ThinkingEffort
+)
+from game_assistant.sensory.web_sensory import WebSensoryGatherer
+from game_assistant.organs.base import OrganType, BaseOrganTool
+from game_assistant.organs.registry import OrganRegistry
 
 
 class UniversalGameAgent:
     """
     通用遊戲 Agent 核心架構 (Universal Game Agent)
-    結合 Dual-System 架構：
-    - System 1 (Jev)：0.25 秒高頻反應迴圈，專注於動作選擇、信心評估與毫秒級螢幕操作。
-    - System 2 (Gemini 3.8 Flash)：輔助認知層，負責使用者意圖拆解、戰術規劃與深度視覺分析。
+    以人類神經系統為藍本的自我進化綜合輔助架構：
+    - Jev 為反射神經 (Reflex / System 1)：毫秒級快反應，負責已知模式與固化反射弧的直接輸出。
+    - Gemini / Antigravity CLI 為大腦 (Brain / System 2)：
+      - 簡單相似問題: 快速思考 (effort: medium)
+      - 從未遇過的新問題: 深度慢思考 (effort: max / Deep Thinking)
+    - 升級路徑 (Escalation Path)：Jev 無法得出確定結果或置信度不足時，自動上升大腦思考。
+    - 記憶與固化系統 (Memory & Consolidation)：多層樹狀記憶索引與 Jev 逐層路由，定期提煉固化為 Jev input、output、flow。
+    - 自律感官與器官生長 (Sensory Ears/Eyes & Dynamic Organs)：主動聯網查詢百科攻略，自主編寫程式碼生長出眼睛耳朵與手腳。
+    - 自我進化 (Self-Evolution)：固化後相同情境直接由 Jev 反射輸出，達成神經系統般的肌肉記憶。
     - Strategy Pattern：支援《原神》、《星穹鐵道》、《絕區零》、《泛用遊戲》及未來任意新遊戲之無縫擴充。
     - 全方位輔助能力：操作指導 (Guidance)、代替操作 (Screen Actuation)、即時資料分析 (Telemetry Stats)。
     """
@@ -38,13 +50,25 @@ class UniversalGameAgent:
         capability: AssistCapability = AssistCapability.GUIDANCE,
         jev_engine: Optional[JevDecisionEngine] = None,
         gemini_engine: Optional[GeminiAuxiliaryEngine] = None,
-        actuator: Optional[ScreenActuator] = None
+        actuator: Optional[ScreenActuator] = None,
+        nervous_system: Optional[NervousSystemCoordinator] = None,
+        web_sensory: Optional[WebSensoryGatherer] = None,
+        organ_registry: Optional[OrganRegistry] = None
     ):
         self.game_type = game_type
         self.capability = capability
         self.jev_engine = jev_engine or JevDecisionEngine()
         self.gemini_engine = gemini_engine or GeminiAuxiliaryEngine()
         self.actuator = actuator or ScreenActuator()
+        self.nervous_system = nervous_system or NervousSystemCoordinator(
+            jev_engine=self.jev_engine,
+            gemini_engine=self.gemini_engine
+        )
+        self.web_sensory = web_sensory or WebSensoryGatherer()
+        self.organ_registry = organ_registry or OrganRegistry(
+            actuator=self.actuator,
+            gatherer=self.web_sensory
+        )
 
         self.current_user_demand = ""
         self.current_gemini_directive = ""
@@ -66,17 +90,68 @@ class UniversalGameAgent:
             self.actuator.disable()
 
     def set_user_demand(self, demand: str, image: Optional[Image.Image] = None):
-        """設定玩家需求，並以 Gemini 優先解析為戰術指令"""
+        """
+        設定玩家需求：
+        優先比對是否已存在固化反射弧；若無或需大腦拆解，評估新穎度分級思考
+        (相似問題 medium 快速思考，新問題 max 深度思考)，並留下 Jev 固化所需記憶痕跡。
+        """
         self.current_user_demand = demand
         if demand and demand.strip():
-            # 優先由 Gemini (System 2) 解析需求
+            # 1. 優先檢查是否已命中固化反射弧 (依據當前遊戲模式過濾)
+            matched_arc = self.nervous_system.reflex_registry.find_matching_arc(
+                state=f"[Demand]: {demand}",
+                user_demand=demand,
+                game_type=self.game_type
+            )
+            if matched_arc and matched_arc.deterministic_output:
+                # ⚡ 命中已固化反射神經，毫秒級直接反射戰術指示
+                self.current_gemini_directive = matched_arc.deterministic_output.get(
+                    "guidance_text",
+                    f"⚡ Jev 固化反射：針對【{demand}】執行【{matched_arc.name}】。"
+                )
+                return
+
+            # 2. 評估問題新穎度與思考深度
+            novelty, effort, sim_score, matched_ref = self.nervous_system.novelty_detector.evaluate(
+                state=f"需求: {demand}",
+                user_demand=demand,
+                memory_store=self.nervous_system.memory_store,
+                reflex_registry=self.nervous_system.reflex_registry
+            )
+
+            # 3. Gemini 大腦思考 (依據 effort 動態配置)
             directive = self.gemini_engine.decompose_user_demand(
                 user_demand=demand,
                 game_type=self.game_type,
                 capability=self.capability,
-                image=image
+                image=image,
+                thinking_effort=effort.value
             )
             self.current_gemini_directive = directive
+
+            # 4. 留下神經突觸記憶痕跡 (供後續定期固化管線提煉)
+            schema = self.gemini_engine.extract_reflex_schema_from_directive(
+                directive=directive,
+                user_demand=demand,
+                game_type=self.game_type
+            )
+            mem_id = f"mem_{int(time.time() * 1000)}"
+            trace = MemoryTrace(
+                memory_id=mem_id,
+                timestamp=time.time(),
+                game_type=self.game_type.value if hasattr(self.game_type, "value") else str(self.game_type),
+                user_demand=demand,
+                visual_context=directive[:100],
+                state_text=f"需求: {demand}",
+                telemetry_features={},
+                novelty_level=novelty.value,
+                thinking_effort=effort.value,
+                gemini_directive=directive,
+                primary_action=schema.get("primary_action", "idle"),
+                guidance_text=schema.get("guidance_text", directive[:80]),
+                suggested_questions=schema.get("suggested_questions", {})
+            )
+            self.nervous_system.memory_store.record_trace(trace)
         else:
             self.current_gemini_directive = ""
 
@@ -88,12 +163,15 @@ class UniversalGameAgent:
     def step(self, image: Optional[Image.Image] = None) -> StrategyDecision:
         """
         0.25 秒固定高頻決策主迴圈核心步驟 (Loop Step, 4 Hz)
-        1. 獲取畫面 (若無傳入則自動擷取)
-        2. 透過當前 Strategy 抽取輕量遙測數據
-        3. 建構 Jev Question Schema 與 State
-        4. 呼叫 Jev 進行毫秒級單 pass 決策
-        5. 解釋 Jev 決策並產出 StrategyDecision
-        6. 若為代替操作模式 (AUTONOMOUS)，直接執行螢幕操作
+        神經系統雙向流轉：
+        1. 畫面快照
+        2. 遙測抽取
+        3. 建構 Jev Schema 與 State
+        4. NervousSystemCoordinator 協同決策：
+           - Jev (System 1) 反射神經優先評估，置信度達標立即毫秒級輸出
+           - 置信度不足或無對應反射弧時，自動上升至 Gemini (System 2) 大腦思考
+           - 每次大腦思考皆沉澱記憶痕跡，為自我進化累積神經突觸
+        5. 代替操作螢幕執行 (若為 AUTONOMOUS 模式)
         :return: StrategyDecision
         """
         start_step = time.perf_counter()
@@ -125,22 +203,37 @@ class UniversalGameAgent:
             capability=self.capability
         )
 
-        # 4. Jev System 1 決策
-        jev_response = self.jev_engine.evaluate(state_str, questions)
-
-        # 5. 決策轉譯
-        decision = strategy.interpret_decision(
-            jev_response=jev_response,
+        # 4. 神經系統決策：Jev 反射優先，未果時上升 Gemini 大腦思考並留存記憶
+        decision, jev_response, source_label = self.nervous_system.process_step(
+            state=state_str,
             telemetry=telemetry,
-            capability=self.capability
+            strategy=strategy,
+            capability=self.capability,
+            questions=questions,
+            user_demand=self.current_user_demand,
+            game_type=self.game_type
         )
 
-        # 6. 代替操作螢幕執行 (若為 AUTONOMOUS 模式)
+        # 5. 代替操作螢幕執行 (若為 AUTONOMOUS 模式)
         if self.capability == AssistCapability.AUTONOMOUS:
             action_result = strategy.execute_action(decision, self.actuator)
             decision.action_result = action_result
 
         return decision
+
+    def consolidate_memories(self, force: bool = False) -> List[ReflexArc]:
+        """
+        手動或定期觸發記憶固化整理管線
+        分析累積的大腦記憶，提煉穩定模式並固化為 Jev input、output、flow
+        固化後相同 input 即可直接由 Jev 反射出答案！
+        :param force: 是否強制固化 (未滿閾值亦執行)
+        :return: 本次新固化之反射弧列表
+        """
+        return self.nervous_system.consolidate(force=force)
+
+    def get_nervous_system_stats(self) -> Dict[str, Any]:
+        """獲取神經系統運作統計（反射命中率、大腦思考次數、固化反射弧數、進化階段）"""
+        return self.nervous_system.get_stats()
 
     def generate_data_analysis_report(self) -> str:
         """產生實時資料分析報告"""
@@ -247,6 +340,65 @@ class UniversalGameAgent:
             force=True
         )
         return translated_text, typed
+
+    # ================= 自律器官生長與網路感官接口 =================
+
+    def grow_organ(
+        self,
+        requirement: str,
+        organ_type: OrganType,
+        name: str,
+        organ_id: Optional[str] = None
+    ) -> BaseOrganTool:
+        """
+        自律建置全新器官工具 (眼睛、耳朵、手、腳)
+        調用大腦編寫代碼、AST 安全審查門禁並熱掛載至神經系統
+        """
+        return self.organ_registry.grow_organ(
+            requirement=requirement,
+            organ_type=organ_type,
+            name=name,
+            organ_id=organ_id
+        )
+
+    def fetch_game_knowledge(self, query: str) -> List[Dict[str, Any]]:
+        """透過網路感官查詢遊戲即時攻略與百科條目"""
+        return self.web_sensory.search_game_knowledge(query, self.game_type)
+
+    def fetch_character_build(self, character_name: str) -> Dict[str, Any]:
+        """查詢特定角色培育與裝備配裝推薦"""
+        return self.web_sensory.fetch_character_build_guide(character_name, self.game_type)
+
+    def fetch_exploration_guide(self, location_name: str) -> Dict[str, Any]:
+        """查詢大地圖特產採集點位與解謎路線導引"""
+        return self.web_sensory.fetch_exploration_targets(location_name, self.game_type)
+
+    def fetch_boss_strategy(self, boss_name: str) -> Dict[str, Any]:
+        """查詢首領戰鬥機制與危險大招應對策略"""
+        return self.web_sensory.fetch_boss_mechanics(boss_name, self.game_type)
+
+    def get_evolution_report(self) -> Dict[str, Any]:
+        """
+        獲取綜合神經系統進化報告
+        包含大腦引擎模式、多層記憶索引深度、器官生長總量與固化反射弧統計
+        """
+        brain_provider = getattr(self.gemini_engine, "current_provider_name", "UNKNOWN")
+        memory_stats = self.nervous_system.memory_index.get_index_stats()
+        organ_summary = self.organ_registry.get_summary()
+        nervous_stats = self.nervous_system.get_stats()
+
+        return {
+            "brain_engine": brain_provider,
+            "memory_index": memory_stats,
+            "organs": organ_summary,
+            "nervous_stats": nervous_stats,
+            "status_line": (
+                f"🧠 大腦: {brain_provider} | "
+                f"⚡ 索引: {memory_stats.get('domain_count', 0)}領域/{memory_stats.get('cluster_count', 0)}聚類 | "
+                f"👁️ 器官: {organ_summary.get('total_count', 0)} (生長:{organ_summary.get('dynamic_grown_count', 0)}) | "
+                f"🎯 反射弧: {nervous_stats.get('consolidated_arcs_count', 0)}"
+            )
+        }
 
 
 

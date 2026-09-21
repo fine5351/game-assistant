@@ -26,8 +26,24 @@ from game_assistant.core.config import (
     STT_TIMEOUT,
     STT_PHRASE_TIME_LIMIT,
     PROMPTS,
+    ThinkingEffortLevel,
+    REFLEX_CONFIDENCE_THRESHOLD,
+    NOVELTY_SIMILARITY_THRESHOLD,
+    CONSOLIDATION_AUTO_ENABLED,
+    CONSOLIDATION_INTERVAL_SECONDS,
 )
 from game_assistant.core.agent import UniversalGameAgent
+from game_assistant.core.nervous_system import (
+    NervousSystemCoordinator,
+    ReflexArc,
+    MemoryTrace,
+    NoveltyLevel,
+    ThinkingEffort,
+    ReflexMemoryStore,
+    NoveltyDetector,
+    ReflexArcRegistry,
+    ConsolidationPipeline,
+)
 
 __all__ = [
     "GameType",
@@ -57,6 +73,20 @@ __all__ = [
     "STT_TIMEOUT",
     "STT_PHRASE_TIME_LIMIT",
     "PROMPTS",
+    "ThinkingEffortLevel",
+    "REFLEX_CONFIDENCE_THRESHOLD",
+    "NOVELTY_SIMILARITY_THRESHOLD",
+    "CONSOLIDATION_AUTO_ENABLED",
+    "CONSOLIDATION_INTERVAL_SECONDS",
     "UniversalGameAgent",
+    "NervousSystemCoordinator",
+    "ReflexArc",
+    "MemoryTrace",
+    "NoveltyLevel",
+    "ThinkingEffort",
+    "ReflexMemoryStore",
+    "NoveltyDetector",
+    "ReflexArcRegistry",
+    "ConsolidationPipeline",
 ]
 

@@ -1,0 +1,600 @@
+{
+  "genshin_combat": {
+    "domain_id": "genshin_combat",
+    "name": "原神即時戰鬥與元素反應",
+    "clusters": {
+      "elemental_reaction": {
+        "cluster_id": "elemental_reaction",
+        "name": "元素反應戰術",
+        "description": "水火蒸發、冰火融化、超綻放、超激化反應切人循環",
+        "keywords": [
+          "蒸發",
+          "融化",
+          "超綻放",
+          "激化",
+          "擴散",
+          "元素",
+          "切人",
+          "反應"
+        ],
+        "trace_ids": [
+          "mem_1789947572584_1",
+          "mem_1789947579275_1",
+          "mem_1789947587692_1",
+          "mem_1789947595304_2",
+          "mem_1789947601878",
+          "mem_1789947729113_1",
+          "mem_1789947735187_1",
+          "mem_1789947741338_1",
+          "mem_1789947747453_2",
+          "mem_1789990489563",
+          "mem_1789991104789",
+          "mem_1789991125159",
+          "mem_1789991387029",
+          "mem_1789991452419_1",
+          "mem_1789991463111_1",
+          "mem_1789991473559_1",
+          "mem_1789991487390_2",
+          "mem_1789991666611_1",
+          "mem_1789991673811_1",
+          "mem_1789991689333_1",
+          "mem_1789991696759_2",
+          "mem_1789991704451"
+        ],
+        "reflex_arc_ids": []
+      },
+      "burst_ult": {
+        "cluster_id": "burst_ult",
+        "name": "大招爆發輸出",
+        "description": "能量滿溢大招施放、雷神開大、無敵幀爆發",
+        "keywords": [
+          "大招",
+          "元素爆發",
+          "q",
+          "滿能量",
+          "爆發",
+          "雷神"
+        ],
+        "trace_ids": [
+          "mem_1789990460983",
+          "mem_1789990463871",
+          "mem_1789990467643",
+          "mem_1789990475368",
+          "mem_1789990478387",
+          "mem_1789990575874"
+        ],
+        "reflex_arc_ids": []
+      },
+      "evade_parry": {
+        "cluster_id": "evade_parry",
+        "name": "極限閃避與走位",
+        "description": "敵方紅光前搖警示、無敵幀閃避、拉扯走位",
+        "keywords": [
+          "閃避",
+          "shift",
+          "紅光",
+          "無敵幀",
+          "躲避",
+          "防禦",
+          "走位"
+        ],
+        "trace_ids": [
+          "mem_1789927026048_1",
+          "mem_1789927041048_1",
+          "mem_1789927042903_1",
+          "mem_1789927044149_1",
+          "mem_1789927044874_2",
+          "mem_1789927045446_3",
+          "mem_1789927046096_4",
+          "mem_1789927046717_5",
+          "mem_1789927047923",
+          "mem_1789927268928_1",
+          "mem_1789927283918_1",
+          "mem_1789927285820_1",
+          "mem_1789927287103_1",
+          "mem_1789927287665_2",
+          "mem_1789927288269_3",
+          "mem_1789927288865_4",
+          "mem_1789927289413_5",
+          "mem_1789927290636",
+          "mem_1789927462529_1",
+          "mem_1789927463164_2",
+          "mem_1789927463777_3",
+          "mem_1789927745900_1",
+          "mem_1789927760961_1",
+          "mem_1789927762871_1",
+          "mem_1789927764110_1",
+          "mem_1789927765857_2",
+          "mem_1789927767708",
+          "mem_1789927942069_1",
+          "mem_1789927957975_1",
+          "mem_1789927959884_1",
+          "mem_1789927961212_1",
+          "mem_1789927963136_2",
+          "mem_1789927965031",
+          "mem_1789928045283_1",
+          "mem_1789928061928_1",
+          "mem_1789928064014_1",
+          "mem_1789928065506_1",
+          "mem_1789928067350_2",
+          "mem_1789928069374",
+          "mem_1789928074604_1",
+          "mem_1789928090465_1",
+          "mem_1789928092290_1",
+          "mem_1789928093541_1",
+          "mem_1789928095330_2",
+          "mem_1789928097119",
+          "mem_1789947759270",
+          "mem_1789991503525"
+        ],
+        "reflex_arc_ids": []
+      }
+    },
+    "inverted_index": {
+      "蒸發": [
+        "elemental_reaction"
+      ],
+      "融化": [
+        "elemental_reaction"
+      ],
+      "超綻放": [
+        "elemental_reaction"
+      ],
+      "激化": [
+        "elemental_reaction"
+      ],
+      "擴散": [
+        "elemental_reaction"
+      ],
+      "元素": [
+        "elemental_reaction"
+      ],
+      "切人": [
+        "elemental_reaction"
+      ],
+      "反應": [
+        "elemental_reaction"
+      ],
+      "大招": [
+        "burst_ult"
+      ],
+      "元素爆發": [
+        "burst_ult"
+      ],
+      "q": [
+        "burst_ult"
+      ],
+      "滿能量": [
+        "burst_ult"
+      ],
+      "爆發": [
+        "burst_ult"
+      ],
+      "雷神": [
+        "burst_ult"
+      ],
+      "閃避": [
+        "evade_parry"
+      ],
+      "shift": [
+        "evade_parry"
+      ],
+      "紅光": [
+        "evade_parry"
+      ],
+      "無敵幀": [
+        "evade_parry"
+      ],
+      "躲避": [
+        "evade_parry"
+      ],
+      "防禦": [
+        "evade_parry"
+      ],
+      "走位": [
+        "evade_parry"
+      ]
+    }
+  },
+  "genshin_explore": {
+    "domain_id": "genshin_explore",
+    "name": "原神大世界解謎與特產採集",
+    "clusters": {
+      "specialty_gather": {
+        "cluster_id": "specialty_gather",
+        "name": "區域特產採集",
+        "description": "琉璃袋、塞西莉亞花、幽光星星大世界採集跟跑",
+        "keywords": [
+          "特產",
+          "採集",
+          "琉璃袋",
+          "材料",
+          "植物",
+          "跟跑",
+          "拾取",
+          "f"
+        ],
+        "trace_ids": [],
+        "reflex_arc_ids": []
+      },
+      "chest_puzzle": {
+        "cluster_id": "chest_puzzle",
+        "name": "寶箱與機關解謎",
+        "description": "神瞳引導、仙靈座、元素方碑、各類寶箱開啟",
+        "keywords": [
+          "寶箱",
+          "神瞳",
+          "仙靈",
+          "方碑",
+          "解謎",
+          "機關",
+          "華麗寶箱"
+        ],
+        "trace_ids": [],
+        "reflex_arc_ids": []
+      }
+    },
+    "inverted_index": {
+      "特產": [
+        "specialty_gather"
+      ],
+      "採集": [
+        "specialty_gather"
+      ],
+      "琉璃袋": [
+        "specialty_gather"
+      ],
+      "材料": [
+        "specialty_gather"
+      ],
+      "植物": [
+        "specialty_gather"
+      ],
+      "跟跑": [
+        "specialty_gather"
+      ],
+      "拾取": [
+        "specialty_gather"
+      ],
+      "f": [
+        "specialty_gather"
+      ],
+      "寶箱": [
+        "chest_puzzle"
+      ],
+      "神瞳": [
+        "chest_puzzle"
+      ],
+      "仙靈": [
+        "chest_puzzle"
+      ],
+      "方碑": [
+        "chest_puzzle"
+      ],
+      "解謎": [
+        "chest_puzzle"
+      ],
+      "機關": [
+        "chest_puzzle"
+      ],
+      "華麗寶箱": [
+        "chest_puzzle"
+      ]
+    }
+  },
+  "star_rail_combat": {
+    "domain_id": "star_rail_combat",
+    "name": "星穹鐵道回合戰術與破韌",
+    "clusters": {
+      "weakness_break": {
+        "cluster_id": "weakness_break",
+        "name": "弱點破韌戰術",
+        "description": "弱點屬性壓制、削韌、弱點擊破爆發",
+        "keywords": [
+          "破韌",
+          "弱點",
+          "擊破",
+          "削韌",
+          "韌性",
+          "屬性壓制"
+        ],
+        "trace_ids": [],
+        "reflex_arc_ids": []
+      },
+      "speed_action_order": {
+        "cluster_id": "speed_action_order",
+        "name": "速度軸與行動輪次",
+        "description": "134速度首輪雙動、戰技點平衡、終結技插隊",
+        "keywords": [
+          "速度",
+          "行動條",
+          "戰技點",
+          "sp",
+          "終結技",
+          "插隊",
+          "雙動"
+        ],
+        "trace_ids": [],
+        "reflex_arc_ids": []
+      }
+    },
+    "inverted_index": {
+      "破韌": [
+        "weakness_break"
+      ],
+      "弱點": [
+        "weakness_break"
+      ],
+      "擊破": [
+        "weakness_break"
+      ],
+      "削韌": [
+        "weakness_break"
+      ],
+      "韌性": [
+        "weakness_break"
+      ],
+      "屬性壓制": [
+        "weakness_break"
+      ],
+      "速度": [
+        "speed_action_order"
+      ],
+      "行動條": [
+        "speed_action_order"
+      ],
+      "戰技點": [
+        "speed_action_order"
+      ],
+      "sp": [
+        "speed_action_order"
+      ],
+      "終結技": [
+        "speed_action_order"
+      ],
+      "插隊": [
+        "speed_action_order"
+      ],
+      "雙動": [
+        "speed_action_order"
+      ]
+    }
+  },
+  "star_rail_explore": {
+    "domain_id": "star_rail_explore",
+    "name": "星穹鐵道大世界撲滿與戰利品",
+    "clusters": {
+      "trotter_catch": {
+        "cluster_id": "trotter_catch",
+        "name": "次元撲滿捕捉",
+        "description": "撲滿逃跑警告、遠程秘技開怪先手",
+        "keywords": [
+          "撲滿",
+          "次元撲滿",
+          "秘技",
+          "開怪",
+          "e",
+          "逃跑",
+          "抓捕"
+        ],
+        "trace_ids": [],
+        "reflex_arc_ids": []
+      }
+    },
+    "inverted_index": {
+      "撲滿": [
+        "trotter_catch"
+      ],
+      "次元撲滿": [
+        "trotter_catch"
+      ],
+      "秘技": [
+        "trotter_catch"
+      ],
+      "開怪": [
+        "trotter_catch"
+      ],
+      "e": [
+        "trotter_catch"
+      ],
+      "逃跑": [
+        "trotter_catch"
+      ],
+      "抓捕": [
+        "trotter_catch"
+      ]
+    }
+  },
+  "zzz_combat": {
+    "domain_id": "zzz_combat",
+    "name": "絕區零快節奏戰鬥與極限招架",
+    "clusters": {
+      "yellow_flash_parry": {
+        "cluster_id": "yellow_flash_parry",
+        "name": "黃光極限支援招架",
+        "description": "敵人黃光前搖、空格極限招架、連攜技支援",
+        "keywords": [
+          "黃光",
+          "招架",
+          "極限招架",
+          "格擋",
+          "支援",
+          "連攜",
+          "space",
+          "空格"
+        ],
+        "trace_ids": [],
+        "reflex_arc_ids": []
+      },
+      "red_flash_dodge": {
+        "cluster_id": "red_flash_dodge",
+        "name": "紅光極限閃避反擊",
+        "description": "敵人紅光前搖、右鍵/Shift極限閃避、閃避反擊",
+        "keywords": [
+          "紅光",
+          "極限閃避",
+          "反擊",
+          "閃避",
+          "shift",
+          "躲避"
+        ],
+        "trace_ids": [],
+        "reflex_arc_ids": []
+      }
+    },
+    "inverted_index": {
+      "黃光": [
+        "yellow_flash_parry"
+      ],
+      "招架": [
+        "yellow_flash_parry"
+      ],
+      "極限招架": [
+        "yellow_flash_parry"
+      ],
+      "格擋": [
+        "yellow_flash_parry"
+      ],
+      "支援": [
+        "yellow_flash_parry"
+      ],
+      "連攜": [
+        "yellow_flash_parry"
+      ],
+      "space": [
+        "yellow_flash_parry"
+      ],
+      "空格": [
+        "yellow_flash_parry"
+      ],
+      "紅光": [
+        "red_flash_dodge"
+      ],
+      "極限閃避": [
+        "red_flash_dodge"
+      ],
+      "反擊": [
+        "red_flash_dodge"
+      ],
+      "閃避": [
+        "red_flash_dodge"
+      ],
+      "shift": [
+        "red_flash_dodge"
+      ],
+      "躲避": [
+        "red_flash_dodge"
+      ]
+    }
+  },
+  "zzz_explore": {
+    "domain_id": "zzz_explore",
+    "name": "絕區零空洞探索與街區物資",
+    "clusters": {
+      "hdd_hollow_route": {
+        "cluster_id": "hdd_hollow_route",
+        "name": "空洞電視網格導航",
+        "description": "零號空洞路線、鳴徽選擇、降侵蝕度最優解",
+        "keywords": [
+          "空洞",
+          "電視",
+          "網格",
+          "鳴徽",
+          "侵蝕",
+          "喵吉",
+          "小卡格車"
+        ],
+        "trace_ids": [],
+        "reflex_arc_ids": []
+      }
+    },
+    "inverted_index": {
+      "空洞": [
+        "hdd_hollow_route"
+      ],
+      "電視": [
+        "hdd_hollow_route"
+      ],
+      "網格": [
+        "hdd_hollow_route"
+      ],
+      "鳴徽": [
+        "hdd_hollow_route"
+      ],
+      "侵蝕": [
+        "hdd_hollow_route"
+      ],
+      "喵吉": [
+        "hdd_hollow_route"
+      ],
+      "小卡格車": [
+        "hdd_hollow_route"
+      ]
+    }
+  },
+  "equipment_build": {
+    "domain_id": "equipment_build",
+    "name": "角色養成與裝備聖遺物詞條精算",
+    "clusters": {
+      "substat_cv_rating": {
+        "cluster_id": "substat_cv_rating",
+        "name": "聖遺物/遺器雙暴精算與停損",
+        "description": "雙暴分 (CV) 計算、+4/+8 詞條跳動停損與保留上鎖",
+        "keywords": [
+          "聖遺物",
+          "遺器",
+          "驅動盤",
+          "雙暴",
+          "詞條",
+          "強化",
+          "停損",
+          "上鎖",
+          "主詞條"
+        ],
+        "trace_ids": [],
+        "reflex_arc_ids": []
+      }
+    },
+    "inverted_index": {
+      "聖遺物": [
+        "substat_cv_rating"
+      ],
+      "遺器": [
+        "substat_cv_rating"
+      ],
+      "驅動盤": [
+        "substat_cv_rating"
+      ],
+      "雙暴": [
+        "substat_cv_rating"
+      ],
+      "詞條": [
+        "substat_cv_rating"
+      ],
+      "強化": [
+        "substat_cv_rating"
+      ],
+      "停損": [
+        "substat_cv_rating"
+      ],
+      "上鎖": [
+        "substat_cv_rating"
+      ],
+      "主詞條": [
+        "substat_cv_rating"
+      ]
+    }
+  },
+  "translation": {
+    "domain_id": "translation",
+    "name": "遊戲畫面外文與對話字幕翻譯",
+    "clusters": {},
+    "inverted_index": {}
+  },
+  "general": {
+    "domain_id": "general",
+    "name": "泛用遊戲即時輔助",
+    "clusters": {},
+    "inverted_index": {}
+  }
+}

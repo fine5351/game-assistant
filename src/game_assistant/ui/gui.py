@@ -24,7 +24,7 @@ from game_assistant.core.config import (
     GameType, AssistCapability, DEFAULT_OPACITY,
     HOTKEY_VOICE_TRANSLATE, HOTKEY_TRANSLATE_SCREEN,
     HOTKEY_EMERGENCY_STOP, HOTKEY_TOGGLE_POLL, HOTKEY_MANUAL_TRIGGER, HOTKEY_VOICE_PROMPT,
-    DEFAULT_TARGET_LANGUAGE, TTS_ENABLED
+    HOTKEY_CONSOLIDATE, DEFAULT_TARGET_LANGUAGE, TTS_ENABLED
 )
 
 
@@ -32,7 +32,7 @@ class HotkeyListener(QObject):
     """
     全域熱鍵監聽器 (採用 pynput)
     透過 Qt Signal 將熱鍵事件非同步通知 GUI 主執行緒
-    支援 F6 (語音翻譯輸入), F7 (畫面翻譯), F8 (急停), F9 (0.25s 輪詢), F10 (快照分析), F11 (語音指令)
+    支援 F6 (語音翻譯輸入), F7 (畫面翻譯), F8 (急停), F9 (0.25s 輪詢), F10 (快照分析), F11 (語音指令), F12 (記憶固化)
     """
     voice_translate_signal = pyqtSignal()
     screen_translate_signal = pyqtSignal()
@@ -40,6 +40,7 @@ class HotkeyListener(QObject):
     toggle_poll_signal = pyqtSignal()
     manual_trigger_signal = pyqtSignal()
     voice_prompt_signal = pyqtSignal()
+    consolidate_signal = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -60,6 +61,8 @@ class HotkeyListener(QObject):
                     self.manual_trigger_signal.emit()
                 elif key == keyboard.Key.f11:
                     self.voice_prompt_signal.emit()
+                elif key == keyboard.Key.f12:
+                    self.consolidate_signal.emit()
             except Exception:
                 pass
 
@@ -128,14 +131,14 @@ class FloatingSubtitleOverlay(QWidget):
 
         # 頂部標題列
         header_layout = QHBoxLayout()
-        header_layout.setSpacing(4)
+        header_layout.setSpacing(6)
         lbl_tag = QLabel("🌐 遊戲即時翻譯字幕 (Live Subtitles)")
-        lbl_tag.setFont(QFont("Microsoft JhengHei", 9, QFont.Weight.Bold))
+        lbl_tag.setFont(QFont("Microsoft JhengHei", 14, QFont.Weight.Bold))
         lbl_tag.setStyleSheet("color: #00E5FF;")
 
         btn_close = QPushButton("✕")
-        btn_close.setFixedSize(18, 18)
-        btn_close.setStyleSheet("background: transparent; color: #888888; border: none; font-size: 11px;")
+        btn_close.setFixedSize(26, 26)
+        btn_close.setStyleSheet("background: transparent; color: #888888; border: none; font-size: 17px;")
         btn_close.clicked.connect(self.hide)
 
         header_layout.addWidget(lbl_tag)
@@ -143,16 +146,16 @@ class FloatingSubtitleOverlay(QWidget):
         header_layout.addWidget(btn_close)
         content_layout.addLayout(header_layout)
 
-        # 繁中翻譯字幕主文字 (大字號高辨識)
+        # 繁中翻譯字幕主文字 (大字號高辨識，放大 1.5 倍至 18pt)
         self.lbl_translated = QLabel("等待翻譯字幕...")
-        self.lbl_translated.setFont(QFont("Microsoft JhengHei", 12, QFont.Weight.Bold))
-        self.lbl_translated.setStyleSheet("color: #FFE600; line-height: 1.3;")
+        self.lbl_translated.setFont(QFont("Microsoft JhengHei", 18, QFont.Weight.Bold))
+        self.lbl_translated.setStyleSheet("color: #FFE600; line-height: 1.4;")
         self.lbl_translated.setWordWrap(True)
         content_layout.addWidget(self.lbl_translated)
 
-        # 外文原文輔助文字 (小字號斜體)
+        # 外文原文輔助文字 (放大 1.5 倍至 14pt)
         self.lbl_original = QLabel("")
-        self.lbl_original.setFont(QFont("Segoe UI", 9))
+        self.lbl_original.setFont(QFont("Segoe UI", 14))
         self.lbl_original.setStyleSheet("color: #94A3B8; font-style: italic;")
         self.lbl_original.setWordWrap(True)
         content_layout.addWidget(self.lbl_original)
@@ -242,6 +245,7 @@ class GameAssistantOverlay(QWidget):
     screen_translate_signal = pyqtSignal()
     voice_translate_signal = pyqtSignal(str)
     tts_toggle_signal = pyqtSignal(bool)
+    consolidate_signal = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -264,8 +268,27 @@ class GameAssistantOverlay(QWidget):
             Qt.WindowType.Tool
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
-        self.resize(450, 660)
-        self.setMinimumSize(340, 220)
+
+        # 尺寸與定位：佔據畫面左右寬度一半，上下佔滿 (置於螢幕右側常駐面板)
+        try:
+            screen = QApplication.primaryScreen()
+            if screen:
+                geom = screen.availableGeometry()
+                half_width = geom.width() // 2
+                full_height = geom.height()
+                self.setGeometry(
+                    geom.x() + geom.width() - half_width,
+                    geom.y(),
+                    half_width,
+                    full_height
+                )
+                self.setMinimumSize(max(400, half_width // 2), 350)
+            else:
+                self.resize(960, 1080)
+                self.setMinimumSize(400, 350)
+        except Exception:
+            self.resize(960, 1080)
+            self.setMinimumSize(400, 350)
 
         # 外層主容器
         self.main_frame = QFrame(self)
@@ -285,33 +308,33 @@ class GameAssistantOverlay(QWidget):
 
         # 內容 Main Layout
         self.content_layout = QVBoxLayout(self.main_frame)
-        self.content_layout.setContentsMargins(12, 10, 12, 12)
-        self.content_layout.setSpacing(8)
+        self.content_layout.setContentsMargins(14, 12, 14, 14)
+        self.content_layout.setSpacing(10)
 
         # --- 1. 標題與拖曳列 ---
         self.header_frame = QFrame()
         self.header_frame.setObjectName("HeaderFrame")
         header_layout = QHBoxLayout(self.header_frame)
-        header_layout.setContentsMargins(6, 4, 6, 4)
+        header_layout.setContentsMargins(8, 6, 8, 6)
 
         title_label = QLabel("🎮 Jev 通用遊戲 Agent")
-        title_label.setFont(QFont("Microsoft JhengHei", 10, QFont.Weight.Bold))
+        title_label.setFont(QFont("Microsoft JhengHei", 15, QFont.Weight.Bold))
         title_label.setStyleSheet("color: #00E5FF;")
 
         self.status_badge = QLabel("⏸️ 0.25s 待命 [F9]")
         self.status_badge.setStyleSheet(
             "color: #FFB300; background-color: rgba(255, 179, 0, 0.15); "
-            "padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold;"
+            "padding: 4px 10px; border-radius: 6px; font-size: 17px; font-weight: bold;"
         )
 
         self.btn_collapse = QPushButton("─")
-        self.btn_collapse.setFixedSize(24, 24)
+        self.btn_collapse.setFixedSize(36, 36)
         self.btn_collapse.setObjectName("HeaderBtn")
         self.btn_collapse.setToolTip("收合/展開面板")
         self.btn_collapse.clicked.connect(self.toggle_collapse)
 
         btn_close = QPushButton("✕")
-        btn_close.setFixedSize(24, 24)
+        btn_close.setFixedSize(36, 36)
         btn_close.setObjectName("CloseBtn")
         btn_close.setToolTip("關閉程式")
         btn_close.clicked.connect(QApplication.instance().quit)
@@ -367,17 +390,17 @@ class GameAssistantOverlay(QWidget):
         self.decision_card = QFrame()
         self.decision_card.setObjectName("DecisionCard")
         card_layout = QHBoxLayout(self.decision_card)
-        card_layout.setContentsMargins(8, 6, 8, 6)
+        card_layout.setContentsMargins(12, 8, 12, 8)
 
         self.lbl_card_icon = QLabel("⚡")
-        self.lbl_card_icon.setFont(QFont("Segoe UI Emoji", 14))
+        self.lbl_card_icon.setFont(QFont("Segoe UI Emoji", 21))
 
         v_card = QVBoxLayout()
-        v_card.setSpacing(2)
+        v_card.setSpacing(4)
         self.lbl_card_action = QLabel("決策: 準備中 (待命中)")
-        self.lbl_card_action.setStyleSheet("color: #FFFFFF; font-size: 11px; font-weight: bold;")
+        self.lbl_card_action.setStyleSheet("color: #FFFFFF; font-size: 17px; font-weight: bold;")
         self.lbl_card_metrics = QLabel("置信度: --% | 模式: 操作指導 | 執行狀態: 待機")
-        self.lbl_card_metrics.setStyleSheet("color: #00E5FF; font-size: 10px;")
+        self.lbl_card_metrics.setStyleSheet("color: #00E5FF; font-size: 15px;")
         v_card.addWidget(self.lbl_card_action)
         v_card.addWidget(self.lbl_card_metrics)
 
@@ -419,12 +442,18 @@ class GameAssistantOverlay(QWidget):
         self.btn_voice_prompt.setToolTip("按下 F11 或點擊進行麥克風語音提問 (由 Gemini 處理需求再由 Jev 執行)")
         self.btn_voice_prompt.clicked.connect(lambda: self.voice_prompt_signal.emit())
 
+        self.btn_consolidate = QPushButton("🧬 記憶固化 (F12)")
+        self.btn_consolidate.setObjectName("ConsolidateBtn")
+        self.btn_consolidate.setToolTip("手動整理大腦思考記憶，固化為 Jev 反射神經弧 (F12)")
+        self.btn_consolidate.clicked.connect(lambda: self.consolidate_signal.emit())
+
         self.btn_tts_toggle = QPushButton("🔊 朗讀: ON")
         self.btn_tts_toggle.setObjectName("TTSBtn")
         self.btn_tts_toggle.setToolTip("切換 AI 分析結果是否自動語音朗讀")
         self.btn_tts_toggle.clicked.connect(self._on_toggle_tts_clicked)
 
         bar_row2.addWidget(self.btn_voice_prompt, 3)
+        bar_row2.addWidget(self.btn_consolidate, 2)
         bar_row2.addWidget(self.btn_tts_toggle, 2)
 
         bar_row3 = QHBoxLayout()
@@ -451,7 +480,7 @@ class GameAssistantOverlay(QWidget):
         # 透明度滑桿列
         opacity_layout = QHBoxLayout()
         opacity_label = QLabel("透明度:")
-        opacity_label.setStyleSheet("color: #AAAAAA; font-size: 11px;")
+        opacity_label.setStyleSheet("color: #AAAAAA; font-size: 17px;")
 
         self.slider_opacity = QSlider(Qt.Orientation.Horizontal)
         self.slider_opacity.setRange(20, 100)
@@ -459,7 +488,7 @@ class GameAssistantOverlay(QWidget):
         self.slider_opacity.valueChanged.connect(self._change_opacity)
 
         self.lbl_opacity_val = QLabel(f"{int(DEFAULT_OPACITY * 100)}%")
-        self.lbl_opacity_val.setStyleSheet("color: #00E5FF; font-size: 11px; font-weight: bold;")
+        self.lbl_opacity_val.setStyleSheet("color: #00E5FF; font-size: 17px; font-weight: bold;")
 
         opacity_layout.addWidget(opacity_label)
         opacity_layout.addWidget(self.slider_opacity)
@@ -471,13 +500,16 @@ class GameAssistantOverlay(QWidget):
         self.output_browser.setObjectName("OutputBrowser")
         self.output_browser.setOpenExternalLinks(True)
         self.output_browser.setHtml(
-            "<div style='color: #888888; text-align: center; margin-top: 25px;'>"
-            "🚀 <b>Jev 通用遊戲 Agent 已就緒</b><br><br>"
-            "核心決策：<b>TypeSafe Jev (System 1)</b><br>"
-            "輔助認知：<b>Gemini 3.8 Flash (System 2)</b><br><br>"
+            "<div style='color: #888888; text-align: center; margin-top: 15px; font-size: 18px;'>"
+            "🚀 <b>自律進化通用遊戲神經助理已就緒</b><br><br>"
+            "反射神經：<b>TypeSafe Jev (System 1)</b><br>"
+            "認知大腦：<b>Antigravity CLI / Gemini (System 2)</b><br>"
+            "記憶架構：<b>Jev 驅動多層樹狀索引 (Domains ➔ Clusters ➔ Traces)</b><br>"
+            "自律進化：<b>網路情報感官 (耳/眼) + 自律生長動態工具 (手/腳)</b><br><br>"
             "按下 <b style='color:#00E5FF;'>F9</b> 啟動每 0.25 秒高頻實時決策<br>"
             "按下 <b style='color:#FFB300;'>F10</b> 手動快照分析<br>"
             "按下 <b style='color:#E040FB;'>F11</b> 麥克風語音發問<br>"
+            "按下 <b style='color:#00E5FF;'>F12</b> 立即整理記憶並固化反射弧<br>"
             "按下 <b style='color:#00E5FF;'>F7</b> 外文畫面與對話即時翻譯<br>"
             "按下 <b style='color:#FFB300;'>F6</b> 中文語音翻譯並自動輸入聊天框<br>"
             "按下 <b style='color:#FF5252;'>F8</b> 緊急停止代替操作"
@@ -485,9 +517,14 @@ class GameAssistantOverlay(QWidget):
         )
         body_layout.addWidget(self.output_browser)
 
+        # 神經系統與自律器官狀態條 (HUD)
+        self.lbl_nervous_hud = QLabel("🧠 大腦: 就緒 | ⚡ 多層記憶: 就緒 | 👁️ 感官致動器官: 就緒")
+        self.lbl_nervous_hud.setStyleSheet("color: #00E5FF; font-size: 15px; font-weight: bold;")
+        body_layout.addWidget(self.lbl_nervous_hud)
+
         # 狀態頁腳
         self.status_footer = QLabel("狀態: 就緒 | 輪詢間隔: 0.25s (4 Hz) | 延遲: -- ms")
-        self.status_footer.setStyleSheet("color: #777777; font-size: 10px;")
+        self.status_footer.setStyleSheet("color: #888888; font-size: 15px;")
         body_layout.addWidget(self.status_footer)
 
         self.content_layout.addWidget(self.body_container)
@@ -508,14 +545,14 @@ class GameAssistantOverlay(QWidget):
             self.btn_tts_toggle.setText("🔊 朗讀: ON")
             self.btn_tts_toggle.setStyleSheet(
                 "QPushButton { background-color: rgba(0, 229, 255, 0.15); color: #00E5FF; "
-                "border: 1px solid #00E5FF; border-radius: 6px; padding: 6px; font-size: 11px; font-weight: bold; }"
+                "border: 1px solid #00E5FF; border-radius: 8px; padding: 8px 12px; font-size: 17px; font-weight: bold; }"
                 "QPushButton:hover { background-color: rgba(0, 229, 255, 0.3); }"
             )
         else:
             self.btn_tts_toggle.setText("🔇 朗讀: OFF")
             self.btn_tts_toggle.setStyleSheet(
                 "QPushButton { background-color: rgba(255, 255, 255, 0.05); color: #888888; "
-                "border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; padding: 6px; font-size: 11px; }"
+                "border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px 12px; font-size: 17px; }"
                 "QPushButton:hover { background-color: rgba(255, 255, 255, 0.12); color: #CCCCCC; }"
             )
 
@@ -534,6 +571,17 @@ class GameAssistantOverlay(QWidget):
         """復原語音按鈕狀態"""
         self.btn_voice_prompt.setText("🎤 語音發問 (F11)")
         self.btn_voice_prompt.setEnabled(True)
+
+    def set_status_consolidating(self):
+        """切換為 固化中... 狀態"""
+        self.btn_consolidate.setText("⏳ 固化中...")
+        self.btn_consolidate.setEnabled(False)
+
+    def reset_consolidate_button(self):
+        """復原記憶固化按鈕狀態"""
+        self.btn_consolidate.setText("🧬 記憶固化 (F12)")
+        self.btn_consolidate.setEnabled(True)
+
 
     def _apply_stylesheet(self):
         self.setStyleSheet("""
@@ -558,8 +606,8 @@ class GameAssistantOverlay(QWidget):
                 background: transparent;
                 color: #CCCCCC;
                 border: none;
-                font-size: 14px;
-                border-radius: 4px;
+                font-size: 21px;
+                border-radius: 6px;
             }
             #HeaderBtn:hover {
                 background-color: rgba(255, 255, 255, 0.15);
@@ -569,8 +617,8 @@ class GameAssistantOverlay(QWidget):
                 background: transparent;
                 color: #FF5252;
                 border: none;
-                font-size: 14px;
-                border-radius: 4px;
+                font-size: 21px;
+                border-radius: 6px;
             }
             #CloseBtn:hover {
                 background-color: #FF5252;
@@ -580,9 +628,9 @@ class GameAssistantOverlay(QWidget):
                 background-color: rgba(30, 38, 54, 0.85);
                 color: #E0E0E0;
                 border: 1px solid rgba(255, 255, 255, 0.15);
-                border-radius: 6px;
-                padding: 4px 8px;
-                font-size: 11px;
+                border-radius: 8px;
+                padding: 6px 12px;
+                font-size: 17px;
             }
             QComboBox:hover {
                 border-color: #00E5FF;
@@ -592,15 +640,16 @@ class GameAssistantOverlay(QWidget):
                 color: #E0E0E0;
                 selection-background-color: #00E5FF;
                 selection-color: #000000;
+                font-size: 17px;
             }
             QPushButton#PrimaryBtn {
                 background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #00B0FF, stop:1 #00E5FF);
                 color: #000000;
                 font-weight: bold;
                 border: none;
-                border-radius: 6px;
-                padding: 6px;
-                font-size: 11px;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 17px;
             }
             QPushButton#PrimaryBtn:hover {
                 background-color: #40C4FF;
@@ -610,9 +659,9 @@ class GameAssistantOverlay(QWidget):
                 color: #FF5252;
                 border: 1px solid #FF5252;
                 font-weight: bold;
-                border-radius: 6px;
-                padding: 6px;
-                font-size: 11px;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 17px;
             }
             QPushButton#EmergencyBtn:hover {
                 background-color: rgba(255, 82, 82, 0.5);
@@ -622,9 +671,9 @@ class GameAssistantOverlay(QWidget):
                 background-color: rgba(255, 255, 255, 0.08);
                 color: #E0E0E0;
                 border: 1px solid rgba(255, 255, 255, 0.2);
-                border-radius: 6px;
-                padding: 6px;
-                font-size: 11px;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 17px;
             }
             QPushButton#ActionBtn:hover {
                 background-color: rgba(255, 255, 255, 0.15);
@@ -634,9 +683,9 @@ class GameAssistantOverlay(QWidget):
                 background-color: rgba(156, 39, 176, 0.25);
                 color: #E040FB;
                 border: 1px solid #E040FB;
-                border-radius: 6px;
-                padding: 6px;
-                font-size: 11px;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 17px;
                 font-weight: bold;
             }
             QPushButton#VoiceBtn:hover {
@@ -648,13 +697,31 @@ class GameAssistantOverlay(QWidget):
                 color: #777777;
                 border-color: #555555;
             }
+            QPushButton#ConsolidateBtn {
+                background-color: rgba(0, 230, 118, 0.2);
+                color: #00E676;
+                border: 1px solid #00E676;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 17px;
+                font-weight: bold;
+            }
+            QPushButton#ConsolidateBtn:hover {
+                background-color: rgba(0, 230, 118, 0.35);
+                color: #FFFFFF;
+            }
+            QPushButton#ConsolidateBtn:disabled {
+                background-color: rgba(100, 100, 100, 0.2);
+                color: #777777;
+                border-color: #555555;
+            }
             QPushButton#TransBtn {
                 background-color: rgba(0, 188, 212, 0.22);
                 color: #00E5FF;
                 border: 1px solid #00E5FF;
-                border-radius: 6px;
-                padding: 6px;
-                font-size: 11px;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 17px;
                 font-weight: bold;
             }
             QPushButton#TransBtn:hover {
@@ -665,9 +732,9 @@ class GameAssistantOverlay(QWidget):
                 background-color: rgba(255, 179, 0, 0.2);
                 color: #FFB300;
                 border: 1px solid #FFB300;
-                border-radius: 6px;
-                padding: 6px;
-                font-size: 11px;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 17px;
                 font-weight: bold;
             }
             QPushButton#VoiceTransBtn:hover {
@@ -680,29 +747,29 @@ class GameAssistantOverlay(QWidget):
                 border-color: #555555;
             }
             QSlider::groove:horizontal {
-                height: 4px;
+                height: 6px;
                 background: rgba(255, 255, 255, 0.2);
-                border-radius: 2px;
+                border-radius: 3px;
             }
             QSlider::sub-page:horizontal {
                 background: #00E5FF;
-                border-radius: 2px;
+                border-radius: 3px;
             }
             QSlider::handle:horizontal {
                 background: #FFFFFF;
-                width: 12px;
-                margin-top: -4px;
-                margin-bottom: -4px;
-                border-radius: 6px;
+                width: 18px;
+                margin-top: -6px;
+                margin-bottom: -6px;
+                border-radius: 9px;
             }
             #OutputBrowser {
                 background-color: rgba(10, 14, 22, 0.7);
                 border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 8px;
+                border-radius: 10px;
                 color: #E2E8F0;
-                padding: 8px;
-                font-size: 12px;
-                line-height: 1.5;
+                padding: 12px;
+                font-size: 18px;
+                line-height: 1.6;
             }
         """)
 
@@ -715,16 +782,25 @@ class GameAssistantOverlay(QWidget):
         self.setWindowOpacity(opacity)
 
     def toggle_collapse(self):
-        """控制視窗收合與展開"""
+        """控制視窗收合與展開 (維持畫面左右一半寬度)"""
         self.is_collapsed = not self.is_collapsed
+        screen = QApplication.primaryScreen()
+        geom = screen.availableGeometry() if screen else None
+        half_width = (geom.width() // 2) if geom else 960
+        full_height = geom.height() if geom else 1080
+        x_pos = (geom.x() + geom.width() - half_width) if geom else 960
+        y_pos = geom.y() if geom else 0
+
         if self.is_collapsed:
             self.body_container.hide()
             self.btn_collapse.setText("□")
-            self.resize(400, 60)
+            self.setMinimumHeight(50)
+            self.setGeometry(x_pos, y_pos, half_width, 75)
         else:
             self.body_container.show()
             self.btn_collapse.setText("─")
-            self.resize(440, 600)
+            self.setMinimumHeight(350)
+            self.setGeometry(x_pos, y_pos, half_width, full_height)
 
     def set_poll_status(self, active: bool):
         """更新 0.25s 輪詢狀態標籤"""
@@ -733,14 +809,14 @@ class GameAssistantOverlay(QWidget):
             self.status_badge.setText("⚡ 0.25s 決策中 [F9]")
             self.status_badge.setStyleSheet(
                 "color: #00E5FF; background-color: rgba(0, 229, 255, 0.2); "
-                "padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold;"
+                "padding: 4px 10px; border-radius: 6px; font-size: 17px; font-weight: bold;"
             )
             self.btn_toggle_poll.setText("⏸️ 暫停輪詢 (F9)")
         else:
             self.status_badge.setText("⏸️ 待命 [F9]")
             self.status_badge.setStyleSheet(
                 "color: #FFB300; background-color: rgba(255, 179, 0, 0.15); "
-                "padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold;"
+                "padding: 4px 10px; border-radius: 6px; font-size: 17px; font-weight: bold;"
             )
             self.btn_toggle_poll.setText("⚡ 0.25s 決策輪詢 (F9)")
 
@@ -825,9 +901,14 @@ class GameAssistantOverlay(QWidget):
         self.output_browser.setMarkdown(markdown_text)
         self.status_footer.setText(f"狀態: 更新完成 | 耗時: {capture_ms:.1f} ms")
 
+    def update_nervous_hud(self, hud_text: str):
+        """更新神經系統與自律器官狀態條 (HUD)"""
+        if hasattr(self, "lbl_nervous_hud") and hud_text:
+            self.lbl_nervous_hud.setText(hud_text)
+
     def set_status_loading(self):
         """切換為分析中狀態"""
-        self.status_footer.setText("狀態: 🧠 Gemini 3.8 輔助認知分析中...")
+        self.status_footer.setText("狀態: 🧠 大腦認知推論中...")
 
     def _on_voice_translate_clicked(self):
         target_lang = self.combo_target_lang.currentData() or "英文"

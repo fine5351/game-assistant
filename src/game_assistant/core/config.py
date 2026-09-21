@@ -28,6 +28,8 @@ HOTKEY_TOGGLE_POLL = "f9"     # F9: 切換 0.25s 自動決策輪詢 / 暫停
 HOTKEY_MANUAL_TRIGGER = "f10" # F10: 手動快照分析一次
 HOTKEY_CAPTURE_NOW = HOTKEY_MANUAL_TRIGGER # 相容別名
 HOTKEY_VOICE_PROMPT = "f11"   # F11: 觸發麥克風語音指令發問 (STT)
+HOTKEY_CONSOLIDATE = "f12"     # F12: 手動觸發神經系統記憶固化與自我進化 (Consolidation)
+
 
 # 翻譯相關設定
 DEFAULT_TARGET_LANGUAGE = "英文" # 玩家語音發問預設翻譯輸出語言
@@ -41,6 +43,20 @@ TTS_VOLUME = 1.0              # 音量 (0.0 ~ 1.0)
 STT_LANGUAGE = "zh-TW"        # 預設辨識語言 (繁體中文)
 STT_TIMEOUT = 5               # 無聲音等待逾時 (秒)
 STT_PHRASE_TIME_LIMIT = 8     # 單次發言長度上限 (秒)
+
+# 人類神經系統架構設定 (Jev 反射神經 System 1 + Gemini 大腦 System 2)
+class ThinkingEffortLevel(str, Enum):
+    """Gemini 大腦思考深度分級"""
+    MEDIUM = "medium"  # 簡單相似問題快速思考 (Gemini effort medium)
+    MAX = "max"        # 從未遇過的新問題仔細思考 (Gemini effort max / Deep Thinking)
+
+REFLEX_CONFIDENCE_THRESHOLD = 0.70   # Jev 反射神經置信度門檻 (低於此門檻自動上升大腦思考)
+NOVELTY_SIMILARITY_THRESHOLD = 0.45  # 相似度判定門檻 (>=此值為相似問題用 medium，否則為新問題用 max)
+CONSOLIDATION_AUTO_ENABLED = True    # 是否啟用定時自我進化記憶固化
+CONSOLIDATION_INTERVAL_SECONDS = 30.0 # 定時固化週期 (秒)
+MIN_MEMORIES_TO_CONSOLIDATE = 2      # 觸發模式固化所需最少記憶痕跡筆數
+MEMORY_STORE_PATH = "data/memory/traces.json"       # 記憶痕跡相對路徑
+REFLEX_ARCS_PATH = "data/memory/reflex_arcs.json"   # 固化反射弧相對路徑
 
 
 

@@ -1,0 +1,3013 @@
+[
+  {
+    "memory_id": "mem_1789927026048_1",
+    "timestamp": 1789927026.0488002,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 語文翻譯 (Translation & Subtitles)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927041048_1",
+    "timestamp": 1789927041.0485528,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927042903_1",
+    "timestamp": 1789927042.9037414,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927044149_1",
+    "timestamp": 1789927044.149934,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927044874_2",
+    "timestamp": 1789927044.8740613,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927045446_3",
+    "timestamp": 1789927045.4461434,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927046096_4",
+    "timestamp": 1789927046.0961084,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927046717_5",
+    "timestamp": 1789927046.7179012,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927047923",
+    "timestamp": 1789927047.923047,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927268928_1",
+    "timestamp": 1789927268.9280128,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 語文翻譯 (Translation & Subtitles)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927283918_1",
+    "timestamp": 1789927283.9180183,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927285820_1",
+    "timestamp": 1789927285.8208077,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927287103_1",
+    "timestamp": 1789927287.1036632,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927287665_2",
+    "timestamp": 1789927287.6658225,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927288269_3",
+    "timestamp": 1789927288.269046,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927288865_4",
+    "timestamp": 1789927288.8651423,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927289413_5",
+    "timestamp": 1789927289.413462,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927290636",
+    "timestamp": 1789927290.636943,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927462529_1",
+    "timestamp": 1789927462.5295973,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927463164_2",
+    "timestamp": 1789927463.1648116,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927463777_3",
+    "timestamp": 1789927463.7771254,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927745900_1",
+    "timestamp": 1789927745.9005265,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 語文翻譯 (Translation & Subtitles)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927760961_1",
+    "timestamp": 1789927760.9617405,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927762871_1",
+    "timestamp": 1789927762.8712745,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927764110_1",
+    "timestamp": 1789927764.1100562,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927765857_2",
+    "timestamp": 1789927765.8574731,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927767708",
+    "timestamp": 1789927767.7082455,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927942069_1",
+    "timestamp": 1789927942.0691876,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 語文翻譯 (Translation & Subtitles)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927957975_1",
+    "timestamp": 1789927957.9754808,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927959884_1",
+    "timestamp": 1789927959.8844912,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927961212_1",
+    "timestamp": 1789927961.212334,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927963136_2",
+    "timestamp": 1789927963.1360955,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789927965031",
+    "timestamp": 1789927965.031059,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928045283_1",
+    "timestamp": 1789928045.2830908,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 語文翻譯 (Translation & Subtitles)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928061928_1",
+    "timestamp": 1789928061.9281604,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928064014_1",
+    "timestamp": 1789928064.014589,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928065506_1",
+    "timestamp": 1789928065.5064187,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928067350_2",
+    "timestamp": 1789928067.3507926,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928069374",
+    "timestamp": 1789928069.3741152,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928074604_1",
+    "timestamp": 1789928074.6041496,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 語文翻譯 (Translation & Subtitles)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928090465_1",
+    "timestamp": 1789928090.4658294,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928092290_1",
+    "timestamp": 1789928092.2904024,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928093541_1",
+    "timestamp": 1789928093.5411782,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928095330_2",
+    "timestamp": 1789928095.3304882,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789928097119",
+    "timestamp": 1789928097.1198385,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：極限閃避防禦\n2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n3. 警戒條件：鎖定敵方紅光或紅圈警示\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947572584_1",
+    "timestamp": 1789947572.5847843,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 【HUD 戰術即時指令 (Directive)】\n\n* **遙測基準**：HP 80%｜威脅層級：低 (Safe)\n\n---\n\n#### 1. 核心目標\n* **循環啟動與元素覆蓋**（高血量安全期，全力鋪墊後台掛元素與產球充能）\n",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 【HUD 戰術即時指令 (Directive)】\n\n* **遙測基準**：HP 80%｜威脅層級：低 (Safe)\n\n---\n\n#### 1. 核心目標\n* **循環啟動與元素覆蓋**（高血量安全期，全力鋪墊後台掛元素與產球充能）\n\n#### 2. 推薦技能序列與優先級\n1. **[優先級 1 - 後台啟動]**：切輔助/副 C（3/4 號位）$\\rightarrow$ **EQ**（施放後台增益/掛元素）\n2. **[優先級 2 - 聚怪/充能]**：切風系/充能位（2 號位）$\\rightarrow$ **E / 擴散**（削韌並聚集產球）\n3. **[優先級 3 - 主 C 爆發]**：切主 C（1 號位）$\\rightarrow$ **Q / 站場輸出（E + A/重擊循環）**\n\n#### 3. 警戒條件\n* **閃避觸發**：遇敵方前搖紅光／地面警戒圈時，立即中斷普攻執行 **Shift（極限閃避）**。\n* **招架/霸體**：具招架機制角色（如北斗/雲堇）見攻擊判定瞬間按 **E**；無霸體角色避免在蓄力硬直中硬吃重擊。\n* **血量防線**：若血量跌破 **0.50** 或判定危險狀態轉為 `True`，即刻切換生存位施放護盾或治療。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947579275_1",
+    "timestamp": 1789947579.2759156,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 即時戰術指令 (Directive)\n\n* **狀態評估**：血量良好 (80%)、安全態勢 (危險=False) → 轉入**全火力循環與元素反應覆蓋**模式。\n\n---\n\n#### 1. 核心目標\n* **高速鋪場與元素連鎖輸出",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 即時戰術指令 (Directive)\n\n* **狀態評估**：血量良好 (80%)、安全態勢 (危險=False) → 轉入**全火力循環與元素反應覆蓋**模式。\n\n---\n\n#### 1. 核心目標\n* **高速鋪場與元素連鎖輸出 (Rapid Rotation & Damage Output)**\n  * 最大化後台傷害與元素充能，壓制當前目標韌性。\n\n#### 2. 推薦技能序列與優先級\n* **優先級**：後台脫手 (Buff/產球) > 元素爆發 (Q) > 主力輸出 (E/普攻)\n* **執行序列**：\n  1. `切 2 號位 (輔助/副 C)` ➔ `短 E` ➔ `Q` (掛元素/加攻)\n  2. `切 3 號位 (風/草反應位)` ➔ `E` (聚怪/擴散/綻放觸發)\n  3. `切 1 號位 (主 C)` ➔ `Q` ➔ `E` ➔ `持續 A-A-重擊循環`\n\n#### 3. 警戒條件 (反應觸發器)\n* **紅光警示 / 前搖動作** ➔ 立即中斷輸出，執行「向後衝刺 (Sprint Dash)」觸發無敵幀 (I-Frame)。\n* **體力歸零 (<20%)** ➔ 立即停止重擊與連續閃避，切換走位保持距離。\n* **目標霸體蓄力** ➔ 保留 1 次衝刺窗口，優先切換具備護盾/招架技能角色補防。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947587692_1",
+    "timestamp": 1789947587.692888,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### [TACTICAL HUD // 即時戰術指示]\n\n> **狀態評估**：HP 80%（安全水位）｜威脅感知：LOW（非危險期）｜節奏：主動進攻壓制\n\n---\n\n#### 1. 核心目標\n* **主動產球充能 ＆ 鋪設後台元素反應*",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### [TACTICAL HUD // 即時戰術指示]\n\n> **狀態評估**：HP 80%（安全水位）｜威脅感知：LOW（非危險期）｜節奏：主動進攻壓制\n\n---\n\n#### 1. 核心目標\n* **主動產球充能 ＆ 鋪設後台元素反應**（高血量窗口期全力輸出，建立傷害循環）\n\n#### 2. 推薦技能序列與優先級\n1. **[優先級 1 - 啟動輔助]**：切輔助位（2/3 號） $\\rightarrow$ 施放 **E（元素戰技）** 脫手鋪場產球\n2. **[優先級 2 - 元素擴散/反應]**：切風系/觸發位 $\\rightarrow$ **E/Q** 減抗或觸發核心反應\n3. **[優先級 3 - 爆發輸出]**：切主 C $\\rightarrow$ **Q（大招）** $\\rightarrow$ **E + 普攻/重擊** 站場連段輸出\n\n#### 3. 警戒條件\n* **閃避觸發**：近戰紅圈/起手前搖前 0.3s $\\rightarrow$ 單次側向衝刺（Shift/右鍵）無敵幀規避。\n* **耐力監控**：耐力條低於 25% 立即轉入平移走位，停止連續重擊與衝刺。\n* **血量防線**：若承傷血量跌破 60% 或危險態翻轉為 `True`，中斷站場序列，立即切奶/盾角色開 **E/Q** 防暴斃。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947595304_2",
+    "timestamp": 1789947595.3049884,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 戰術決策指示 (Directive: Jev-HUD-01)\n\n* **情境評估**：血量 80%（安全）、非受威脅狀態（無即時致死判定），優先建立循環與最大化輸出。\n\n---\n\n#### 1. 核心目標\n* **啟動元素循環 & ",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術決策指示 (Directive: Jev-HUD-01)\n\n* **情境評估**：血量 80%（安全）、非受威脅狀態（無即時致死判定），優先建立循環與最大化輸出。\n\n---\n\n#### 1. 核心目標\n* **啟動元素循環 & 鋪場輸出**（優先確保副 C/輔助技能覆蓋，觸發核心元素反應）。\n\n#### 2. 推薦技能序列與優先級\n* **序列**：`切輔助位 (2號)` $\\rightarrow$ `E (上元素/產球)` $\\rightarrow$ `Q (脫手爆發)` $\\rightarrow$ `切主 C (1號)` $\\rightarrow$ `輸出循環 (AA + 重擊 / 元素戰技)`\n* **優先級**：\n  1. **P0**：輔助脫手 Q 充能達標立即施放\n  2. **P1**：主 C 站場吃球並維持反應覆蓋\n  3. **P2**：補 E 產球重置循環\n\n#### 3. 警戒條件\n* **黃光/地面警示圈**：維持輸出節奏，位移微調走位避開核心判定。\n* **紅光/高威脅前搖**：立即中斷普攻後搖，施放 `Dash (右鍵/Shift)` 觸發無敵幀 (i-frame)。\n* **血量低於 0.50 或 危險=True**：即時中斷站場輸出，切生存位施放護盾/回血。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947601878",
+    "timestamp": 1789947601.878819,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "### 戰術即時指令 (Tactical Directive)\n\n#### 1. 核心目標\n* **極限閃避優先**：保留體力條（至少維持 30% 以上），杜絕貪刀。\n* **高頻元素反應與破盾/破韌",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術即時指令 (Tactical Directive)\n\n#### 1. 核心目標\n* **極限閃避優先**：保留體力條（至少維持 30% 以上），杜絕貪刀。\n* **高頻元素反應與破盾/破韌**：快切輔助掛元素，觸發增幅/劇變反應壓低 Boss 韌性與血量。\n* **無敵幀 (i-frame) 規避爆發**：利用爆發技能動畫抵消全場大範圍判定。\n\n---\n\n#### 2. 推薦技能序列與優先級\n* **優先級**：`生存閃避 > 後台生存/護盾 > 後台脫手掛元素 > 主輸出爆發`\n* **操作循環序列**：\n  1. **起手防護**：切 4 號位（護盾/治療） $\\rightarrow$ `E`（展開抗打斷/護盾）\n  2. **元素鋪底**：切 3 號位 $\\rightarrow$ `E` / `Q`（脫手附著） $\\rightarrow$ 切 2 號位 $\\rightarrow$ `E` / `Q`（擴散/增傷/反應）\n  3. **主核站場**：切 1 號位（主 C） $\\rightarrow$ `Q`（鎖定增益） $\\rightarrow$ `E` $\\rightarrow$ `普攻/重擊連段`\n  4. **循環終止與規避**：Boss 動作抬手瞬間，**立即中斷連段** $\\rightarrow$ 按下 `Dash`（右鍵/Shift）穿身或拉開。\n\n---\n\n#### 3. 警戒與反射條件 (Guard Conditions)\n* **【紅光 / 地面高亮範圍圈】** $\\rightarrow$ **立即雙擊閃避 (Dash)** 或 **開大招 (Q) 借無敵幀硬抗**；嚴禁原地起跳。\n* **【Boss 蓄力 / 前搖抬手】** $\\rightarrow$ **停刀停止動作後搖**，側向 45 度角滑步閃避，繞至側後方盲區。\n* **【護盾破裂 / 角色受擊硬直】** $\\rightarrow$ **秒切輔助位** $\\rightarrow$ 即刻補 `E` 護盾或開 `Q` 抬血，拉開安全距離重新整隊。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947729113_1",
+    "timestamp": 1789947729.1137989,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 戰術指示 (Directive) // HUD 快速決策\n\n- **核心目標**：**快速鋪場與元素反應循環 (DPS Ramp-up)**\n  - 當前血量充足 (80%) 且無立即威脅，優先啟動爆發前置作業。\n\n- **推薦技能",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術指示 (Directive) // HUD 快速決策\n\n- **核心目標**：**快速鋪場與元素反應循環 (DPS Ramp-up)**\n  - 當前血量充足 (80%) 且無立即威脅，優先啟動爆發前置作業。\n\n- **推薦技能序列與優先級**：\n  1. **[優先級 1]** 切後台輔助 (2/3 號位) $\\rightarrow$ 施放脫手技能 (**E** / **Q**) 觸發元素附著與增益\n  2. **[優先級 2]** 切副 C / 擴散位 $\\rightarrow$ **E** 聚怪或減抗（翠綠 4 件套效應）\n  3. **[優先級 3]** 切主 C (1 號位) $\\rightarrow$ **Q** 開啟爆發 $\\rightarrow$ 進入主力循環輸出 (**A/重擊/E**)\n\n- **警戒條件**：\n  - **白/黃光前搖**：敵方蓄力重擊或護盾霸體判定 $\\rightarrow$ 預先側向衝刺 (Dash) 保留無敵幀。\n  - **紅圈/紅光地毯**：高額範圍傷害預警 $\\rightarrow$ 立即點按衝刺閃避 (i-frame) 或利用大招無敵幀頂掉。\n  - **體力低於 30%**：強制停止連續衝刺/重擊，切換走位拉扯以回覆體力條。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "- **推薦技能序列與優先級**：",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947735187_1",
+    "timestamp": 1789947735.18749,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 即時戰術決策指令 (Directive)\n\n* **情境評估**：血量 80%（充裕安全區間）、危險旗標 False。\n* **戰術方針**：全油門主動壓迫，極大化輸出節奏。\n\n---\n\n#### 1. 核心目標\n* **自動打怪 ",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 即時戰術決策指令 (Directive)\n\n* **情境評估**：血量 80%（充裕安全區間）、危險旗標 False。\n* **戰術方針**：全油門主動壓迫，極大化輸出節奏。\n\n---\n\n#### 1. 核心目標\n* **自動打怪 / 循環鋪場**：建立元素後台附著，快速積攢大招能量並觸發高頻元素反應（蒸發／融化／激化／擴散）。\n\n#### 2. 推薦技能序列與優先級\n* **優先級**：`輔助增益 > 後台掛元素 > 主 C 爆發輸出`\n* **動作序列**：\n  1. **切 2 號位** $\\rightarrow$ `E`（展開護盾 / 增傷領域）\n  2. **切 3 號位** $\\rightarrow$ `Q` $\\rightarrow$ `E`（後台掛元素 / 充能球吸收）\n  3. **切 1 號位 (主 C)** $\\rightarrow$ `E` $\\rightarrow$ `Q` $\\rightarrow$ 進入標準輸出手法（如 `A+重擊+跳/閃` 取消後搖）\n\n#### 3. 警戒與中斷條件 (Interrupt Triggers)\n* **黃光預警**：無視擊退，持續站樁輸出（若有霸體/護盾）或短衝刺取消後搖。\n* **紅光 / 前搖危險提示**：立即中斷普攻 $\\rightarrow$ **右鍵/Shift 極限衝刺閃避（無敵幀 i-frame）**。\n* **體力警戒**：體力槽 $< 25\\%$ 時禁止衝刺取消後搖，改採跳躍取消。\n* **血量閥值**：血量降至 $< 0.50$ 或 `危險=True` 立即觸發生存中斷，切換生存位釋放補血／套盾技能。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947741338_1",
+    "timestamp": 1789947741.3380408,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 戰術決策指示 (Directive: Genshin-Combat-01)\n\n* **遙測基準**：HP 80%｜威脅等級：低 (Safe)｜行動模式：爆發循環 / 資源運作\n\n---\n\n#### 1. 核心目標\n* **建立元素反",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術決策指示 (Directive: Genshin-Combat-01)\n\n* **遙測基準**：HP 80%｜威脅等級：低 (Safe)｜行動模式：爆發循環 / 資源運作\n\n---\n\n#### 1. 核心目標\n* **建立元素反應循環與能量充填**：血量健康且無立即威脅，優先鋪場脫手技能並壓制敵方韌性。\n\n#### 2. 推薦技能序列與優先級\n* **優先級**：`輔助增益 > 脫手掛元素 > 主 C 爆發站場`\n* **推薦序列**：\n  1. **切 2 號位 (輔助/盾輔)**：`E`（產球 / 觸發增益）\n  2. **切 3 號位 (副 C/掛元素)**：`E -> Q`（鋪設脫手元素場）\n  3. **切 1 號位 (主輸出)**：`E -> Q -> 普攻/重擊輸出`\n\n#### 3. 警戒條件\n* **地面紅圈 / 蓄力光效**：立即中斷普攻，執行一次 `Shift` 衝刺無敵幀閃避。\n* **角色受擊擊飛**：受擊瞬間連打 `Space` 或換人取消硬直。\n* **耐力低於 30%**：停止重擊與連續衝刺，轉入平 A 站位微調回耐。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947747453_2",
+    "timestamp": 1789947747.4530878,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 【操作指導 Directive】狀態評估：常態進攻 / 循環建立\n\n**狀態遙測**：HP 80% ｜ 威脅狀態：安全（Danger = False）\n\n---\n\n#### 1. 核心目標\n* **快速建立元素反應輪轉**，加速隊伍",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 【操作指導 Directive】狀態評估：常態進攻 / 循環建立\n\n**狀態遙測**：HP 80% ｜ 威脅狀態：安全（Danger = False）\n\n---\n\n#### 1. 核心目標\n* **快速建立元素反應輪轉**，加速隊伍能量回流，壓制敵方韌性條。\n\n#### 2. 推薦技能序列與優先級\n* **優先級**：後台脫手／增益 ＞ 擴散／反應觸發 ＞ 主力駐場爆發\n* **推薦指令流**：\n  1. `切 2 號位` → `短按 E / Q`（上掛元素／施加護盾／領域展開）\n  2. `切 3 號位` → `E`（擴散減抗 / 副 C 脫手爆發）\n  3. `切 1 號位` → `Q 啟動` → `A/重擊循環`（主力駐場輸出）\n\n#### 3. 警戒條件\n* **前搖紅光 / 蓄力指示**：立即中斷普攻後搖，施展 `Shift 極限閃避`（保留至少 1 格體力）。\n* **血量低於 0.50 或高危突襲**：立即切輔助位施放 `Q/E 護盾或抬血`，轉入防守反擊。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789947759270",
+    "timestamp": 1789947759.2709773,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "### 戰術指示 (Directive) // HUD: GENSHIN-COMBAT-01\n\n#### 1. 核心目標\n* **生存優先 + 韌性壓制**：維持無敵幀 (i-frame) 覆蓋，抓取",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術指示 (Directive) // HUD: GENSHIN-COMBAT-01\n\n#### 1. 核心目標\n* **生存優先 + 韌性壓制**：維持無敵幀 (i-frame) 覆蓋，抓取攻擊後搖打滿元素反應，快速削減 Boss 護盾與韌性條。\n\n---\n\n#### 2. 推薦技能序列與優先級\n> **最高原則**：任何技能施放皆可被「衝刺/大招無敵幀」強制中斷。\n\n1. **P0（起手生存）**：`輔助位 4` $\\to$ **E (護盾/霸體)** $\\to$ 確保抗打斷與減傷。\n2. **P1（增益鋪底）**：`副 C 位 2/3` $\\to$ **Q (後台爆發)** $\\to$ **E (產球/掛元素)**。\n3. **P2（主 C 爆發）**：`主 C 位 1` $\\to$ **Q** $\\to$ **E** $\\to$ **3A+重擊循環 (打滿輸出窗口)**。\n4. **P3（能量回收）**：若 Boss 進入大招蓄力/長後搖，切輔助位吃微粒補充循環。\n\n---\n\n#### 3. 警戒條件 (反應觸發器)\n* **【紅光蓄力 / 地面紅圈】**：\n  * **動作**：立即**單擊衝刺 (Shift / 右鍵)**，利用衝刺前半段 0.2 秒無敵幀穿越判定線，禁止連續狂按防體力耗盡。\n* **【高危全屏大招 / 致命前搖】**：\n  * **動作**：手動保留任一角色 **Q (元素爆發)**，見揮擊前瞬發 Q 進入長無敵幀硬抗。\n* **【Boss 進入虛弱 / 癱瘓】**：\n  * **動作**：解除閃避預備，直接切換 **主 C 全技能傾瀉**，不留充能。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789990448_0"
+  },
+  {
+    "memory_id": "mem_1789990460983",
+    "timestamp": 1789990460.9832897,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "這個遊戲的玩法",
+    "visual_context": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「這個遊戲的玩法」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. ",
+    "state_text": "需求: 這個遊戲的玩法",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「這個遊戲的玩法」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條件：保持拉扯走位，遇危險立即閃避\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_個遊_1789990478_0"
+  },
+  {
+    "memory_id": "mem_1789990463871",
+    "timestamp": 1789990463.8715856,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "將這個",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「將這個」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條",
+    "state_text": "需求: 將這個",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「將這個」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條件：保持拉扯走位，遇危險立即閃避\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_個遊_1789990478_0"
+  },
+  {
+    "memory_id": "mem_1789990467643",
+    "timestamp": 1789990467.6435065,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "依照射接",
+    "visual_context": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「依照射接」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條",
+    "state_text": "需求: 依照射接",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「依照射接」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條件：保持拉扯走位，遇危險立即閃避\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_個遊_1789990478_0"
+  },
+  {
+    "memory_id": "mem_1789990475368",
+    "timestamp": 1789990475.3687947,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "看到這個畫面中他有白點代表這個格子不能動",
+    "visual_context": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「看到這個畫面中他有白點代表這個格子不能動」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即",
+    "state_text": "需求: 看到這個畫面中他有白點代表這個格子不能動",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「看到這個畫面中他有白點代表這個格子不能動」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條件：保持拉扯走位，遇危險立即閃避\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_個遊_1789990478_0"
+  },
+  {
+    "memory_id": "mem_1789990478387",
+    "timestamp": 1789990478.3878517,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "粉色",
+    "visual_context": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「粉色」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條件：",
+    "state_text": "需求: 粉色",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「粉色」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條件：保持拉扯走位，遇危險立即閃避\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_個遊_1789990478_0"
+  },
+  {
+    "memory_id": "mem_1789990489563",
+    "timestamp": 1789990489.563648,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "網紅色變粉色王紫色變藍色紫色王可能不是紫色是淺藍色深藍色黃",
+    "visual_context": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「網紅色變粉色王紫色變藍色紫色王可能不是紫色是淺藍色深藍色黃」維持最佳攻防\n2. 推薦操作：技",
+    "state_text": "需求: 網紅色變粉色王紫色變藍色紫色王可能不是紫色是淺藍色深藍色黃",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【大腦戰術指示 (敏捷快速思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「網紅色變粉色王紫色變藍色紫色王可能不是紫色是淺藍色深藍色黃」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條件：保持拉扯走位，遇危險立即閃避\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_紫色_1789990598_0"
+  },
+  {
+    "memory_id": "mem_1789990575874",
+    "timestamp": 1789990575.874884,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "錢的畫面",
+    "visual_context": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「錢的畫面」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條",
+    "state_text": "需求: 錢的畫面",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "【大腦戰術指示 (深度慢思考) - 原神 (Genshin Impact)】：\n1. 核心目標：因應需求「錢的畫面」維持最佳攻防\n2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n3. 警戒條件：保持拉扯走位，遇危險立即閃避\n\n*(💡 當前為本地離線啟發式戰術；若需啟用 Gemini 3.8 Flash 深度意圖解析，請於 .env 配置有效 GEMINI_API_KEY)*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_紫色_1789990598_0"
+  },
+  {
+    "memory_id": "mem_1789991104789",
+    "timestamp": 1789991104.7894533,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "告訴我這些色塊移動的步驟",
+    "visual_context": "### 戰術指示：色塊光譜漸層重構 (Directive HUD)\n\n**座標定義說明**：以 `(第幾橫排, 第幾直行)` 標記。\n* 橫排 $1 \\sim 7$：由上至下數\n* 直行 $1 \\si",
+    "state_text": "需求: 告訴我這些色塊移動的步驟",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 戰術指示：色塊光譜漸層重構 (Directive HUD)\n\n**座標定義說明**：以 `(第幾橫排, 第幾直行)` 標記。\n* 橫排 $1 \\sim 7$：由上至下數\n* 直行 $1 \\sim 5$：由左至右數\n* *(帶有白色方點之色塊為錨定鎖定塊，不可移動)*\n\n---\n\n### 1. 核心目標\n* **漸層重構**：利用錨定塊建立四角邊界光譜（左上**桃紅**、右上**深靛**、左下**黃綠**、右下**亮青**），透過換位將上下顛倒的冷暖色塊快速歸位。\n* **已就位色塊（請勿觸碰）**：\n  * `(2, 2)` 灰粉色、`(2, 5)` 深藍色、`(4, 3)` 石板灰（此 3 格已在正確位置）。\n\n---\n\n### 2. 推薦技能序列與優先級（共 13 步快速解法）\n\n依照以下三個階段執行色塊對調，按順序無腦互換即可通關：\n\n#### 【第一階段：獨立互換】（1 步）\n1. 點擊 **`(2, 3)`** 與 **`(6, 3)`** 互換\n   * *(薄荷綠與暗紫粉同時就位)*\n\n---\n\n#### 【第二階段：五色循環鏈】（4 步）\n以 `(1, 2)` 作為中繼塊，依序與目標點交換：\n1. 點擊 **`(1, 2)`** 與 **`(4, 4)`** 互換\n2. 點擊 **`(1, 2)`** 與 **`(2, 4)`** 互換\n3. 點擊 **`(1, 2)`** 與 **`(2, 1)`** 互換\n4. 點擊 **`(1, 2)`** 與 **`(6, 5)`** 互換\n   * *(完成左上暖色過渡與右下天青藍歸位)*\n\n---\n\n#### 【第三階段：九色大循環鏈】（8 步）\n以 `(1, 4)` 作為中繼塊，依序與目標點交換：\n1. 點擊 **`(1, 4)`** 與 **`(6, 2)`** 互換\n2. 點擊 **`(1, 4)`** 與 **`(6, 4)`** 互換\n3. 點擊 **`(1, 4)`** 與 **`(6, 1)`** 互換\n4. 點擊 **`(1, 4)`** 與 **`(1, 3)`** 互換\n5. 點擊 **`(1, 4)`** 與 **`(7, 4)`** 互換\n6. 點擊 **`(1, 4)`** 與 **`(7, 2)`** 互換\n7. 點擊 **`(1, 4)`** 與 **`(4, 2)`** 互換\n8. 點擊 **`(1, 4)`** 與 **`(7, 3)`** 互換\n   * *(全盤色彩完美漸層，自動觸發通關)*\n\n---\n\n### 3. 警戒條件\n* **嚴禁點擊錨定塊**：白點方塊無反應，點擊會中斷連續選取狀態導致步數錯亂。\n* **嚴格遵守順序**：第二、三階段依賴中繼塊滾動歸位，若順序顛倒請利用左側重置鍵（旋轉箭頭）刷新重來。",
+    "primary_action": "switch_2",
+    "guidance_text": "### 2. 推薦技能序列與優先級（共 13 步快速解法）",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "switch_2",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 switch_2？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991125159",
+    "timestamp": 1789991125.1592596,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "告訴我這些色塊移動的步驟",
+    "visual_context": "### 1. 核心目標\n* **色彩漸層重構**：利用已固定的白點色塊為錨點，將頂部誤置的「青/綠色塊」與底層誤置的「紫/粉色塊」進行對位交換，達成由上至下（粉紫至黃綠青）的雙向均勻過渡。\n\n---\n",
+    "state_text": "需求: 告訴我這些色塊移動的步驟",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 1. 核心目標\n* **色彩漸層重構**：利用已固定的白點色塊為錨點，將頂部誤置的「青/綠色塊」與底層誤置的「紫/粉色塊」進行對位交換，達成由上至下（粉紫至黃綠青）的雙向均勻過渡。\n\n---\n\n### 2. 推薦操作序列（座標以 `[行, 列]` 表示，左上為 `[1, 1]`）\n\n> **優先級 1：頂底色系大置換（將頂部冷綠換出，紫紅歸位）**\n1. **交換 `[1, 3]` (亮青) ↔ `[6, 1]` (深紫)**\n2. **交換 `[1, 4]` (灰綠) ↔ `[7, 3]` (暗紫)**\n3. **交換 `[1, 2]` (灰藍) ↔ `[4, 4]` (純紫)**\n\n> **優先級 2：上層過渡色歸位（構建 Row 1~2 粉紫階梯）**\n4. **交換 `[2, 1]` (亮青) ↔ `[2, 4]` (珊瑚粉)**（使珊瑚粉落入第 1 列粉色軸）\n5. **交換 `[2, 3]` (薄荷綠) ↔ `[6, 5]` (紫紅)**\n6. **交換 `[2, 4]` (原換過來的亮青) ↔ `[6, 3]` (粉紫)**\n\n> **優先級 3：下層黃綠/青藍精準對齊（構建 Row 6~7 暖黃至亮青）**\n7. **交換 `[6, 4]` (淡黃) ↔ `[6, 1]` (此時位置上的黃/雜色)**（確保 `[5, 1]` 黃色正下方為 `[6, 1]` 淡黃）\n8. **交換 `[7, 4]` (淺草綠) ↔ `[7, 2]` (灰褐)**（使 `[7, 1]` 檸檬綠右側平滑接上淺綠）\n9. **調整剩餘青綠色塊**：將較深青色排至 `[6, 3]` ~ `[6, 4]`，明亮水青排至 `[7, 3]` ~ `[7, 4]`。\n\n---\n\n### 3. 警戒與校驗條件\n* **絕對鎖定**：帶有 **白色圓點** 的方塊為固定錨點，不可點擊移動，完全以它們的顏色作為對齊基準：\n  * **第 1 欄 (左邊緣)**：粉 → 珊瑚 → 杏 → 暖黃 → 檸檬綠\n  * **第 5 欄 (右邊緣)**：深藍 → 靛青 → 鐵藍 → 寶藍 → 亮青\n  * **第 3、5 行**：已完全固定，直接比對上下鄰近格的色相差即可確認是否歸位。",
+    "primary_action": "idle",
+    "guidance_text": "### 2. 推薦操作序列（座標以 `[行, 列]` 表示，左上為 `[1, 1]`）",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "idle",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 idle？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991387029",
+    "timestamp": 1789991387.0298111,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "在分析當前畫面我該怎麼操作",
+    "visual_context": "### 戰術決策指示 (Directive - Level 4 色階還原)\n\n#### 1. 核心目標\n* **解謎目標**：依照色相與明度還原 7×5 網格色彩漸變。\n* **盤面診斷**：第 3、",
+    "state_text": "需求: 在分析當前畫面我該怎麼操作",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 戰術決策指示 (Directive - Level 4 色階還原)\n\n#### 1. 核心目標\n* **解謎目標**：依照色相與明度還原 7×5 網格色彩漸變。\n* **盤面診斷**：第 3、5 行及四角邊緣（帶白色方點）均為**固定錨點**，第 4 行與第 7 行已正確；需重構並歸位**第 1、2 行（高彩度/中間調紫紅過渡）**與**第 6 行（黃綠至青藍過渡）**的錯位色塊，共需 **7 次交換**。\n\n---\n\n#### 2. 推薦操作序列與優先級 (對調指引)\n> **座標定義**：由上至下為 **第 1～7 行**，由左至右為 **第 1～5 列**，表示為 `(行, 列)`。\n\n* **【優先級 1：上半部紫紅色階歸位 (第 1、2 行)】**\n  1. **交換 `(1, 2)` ↔ `(2, 2)`**：將高彩度「洋紅色」送上第 1 行。\n  2. **交換 `(2, 2)` ↔ `(2, 4)`**：使「灰粉色」歸位於 `(2, 2)`，「暗藍紫色」歸位於 `(2, 4)`。\n  3. **交換 `(1, 3)` ↔ `(2, 3)`**：將「梅紫色」送上第 1 行。\n  4. **交換 `(1, 4)` ↔ `(2, 3)`**：將「深紫色」歸位於 `(1, 4)`，「灰紫色」歸位於 `(2, 3)`。\n  *(完成後頂層將呈現：粉紅 ➔ 洋紅 ➔ 梅紫 ➔ 深紫 ➔ 靛藍 之平滑純色過渡)*\n\n* **【優先級 2：下半部青綠色階理順 (第 6 行)】**\n  5. **交換 `(6, 2)` ↔ `(6, 5)`**：將極突兀的「亮青色」移至右側。\n  6. **交換 `(6, 2)` ↔ `(6, 4)`**：將「淺灰綠」移回左側黃綠旁。\n  7. **交換 `(6, 3)` ↔ `(6, 4)`**：調順中央的「海綠」與「藍綠」過渡。\n  *(完成後第 6 行呈現：芥黃 ➔ 灰綠 ➔ 海綠 ➔ 藍綠 ➔ 亮青)*\n\n---\n\n#### 3. 警戒條件\n* **絕對錨點鎖定**：凡色塊中央帶有 **白色方形錨點**（第 3 行全員、第 5 行全員、第 4/7 行首尾）**嚴禁觸碰與點選**。\n* **色彩斷層中斷**：交換後目視相鄰色塊若出現「高彩度跳變」（例如亮青色出現在黃綠區、高飽和粉紫緊鄰冷藍），代表座標偏差，應立即撤回。",
+    "primary_action": "solve_puzzle",
+    "guidance_text": "#### 2. 推薦操作序列與優先級 (對調指引)",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "solve_puzzle",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 solve_puzzle？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991452419_1",
+    "timestamp": 1789991452.419151,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### ［TACTICAL DIRECTIVE // 操作指導 HUD］\n\n**當前狀態評估**：血量健康 (80%) ｜ 環境威脅：低 (Danger=False) ｜ 戰術模式：主動輸出循環\n\n---\n\n#### 1. 核心目標\n* *",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### ［TACTICAL DIRECTIVE // 操作指導 HUD］\n\n**當前狀態評估**：血量健康 (80%) ｜ 環境威脅：低 (Danger=False) ｜ 戰術模式：主動輸出循環\n\n---\n\n#### 1. 核心目標\n* **【全隊循環展開・元素反應最大化】**\n  * 無需防禦/補血操作，專注於後台脫手鋪場、觸發元素共鳴/減抗，並切入主 C 進行極限爆發輸出。\n\n#### 2. 推薦技能序列與優先級\n> **執行原則**：輔助增益 → 脫手掛元素 → 主 C 駐場收割\n\n1. **[P0 - 增益/減抗]** 切 4 號位（輔助/風套）➔ `Q`（爆發）➔ `長按 E`\n2. **[P1 - 脫手附著]** 切 2/3 號位（副 C）➔ `E` ➔ `Q`（產生微粒並提供後台傷害）\n3. **[P2 - 主力輸出]** 切 1 號位（主 C）➔ `E`（開啟增強/附魔狀態）➔ `A/CA 輸出序列`（打滿持續時間）\n\n#### 3. 警戒條件\n* **敵方前搖（紅圈 / 蓄力光效）**：立即透過「衝刺（Dash）」觸發無敵幀（i-frame）取消普攻硬直，維持輸出節奏。\n* **耐力閾值**：體力低於 25% 時強制停止重擊，保留至少 1 次衝刺保命餘量。\n* **血量突降 (< 50%)**：中止當前軸向，優先切生存位（護盾/治療）重整態勢。",
+    "primary_action": "normal_attack",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "normal_attack",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 normal_attack？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991463111_1",
+    "timestamp": 1789991463.111436,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 即時戰術指令 (Tactical Directive)\n\n#### 1. 核心目標\n* **循環展開與主動壓制**（健康血線安全期：建立後台協同、快速產球充能並觸發元素連鎖反應）。\n\n---\n\n#### 2. 推薦技能序列與優先級\n",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 即時戰術指令 (Tactical Directive)\n\n#### 1. 核心目標\n* **循環展開與主動壓制**（健康血線安全期：建立後台協同、快速產球充能並觸發元素連鎖反應）。\n\n---\n\n#### 2. 推薦技能序列與優先級\n* **執行序列**：\n  1. **切 2 號位（後台/掛元素）** $\\rightarrow$ `E`（釋放脫手技）/ `Q`（大招覆蓋）\n  2. **切 3 號位（增益/輔助）** $\\rightarrow$ `E`（產球/增傷/聚怪）\n  3. **切 1 號位（主 C）** $\\rightarrow$ `Q`（爆發）$\\rightarrow$ `E` $\\rightarrow$ 普攻/重擊循環\n* **技能優先級**：\n  * **P0**：後台脫手技 CD 轉好即切人施放（保持常態協同攻擊）。\n  * **P1**：主 C 元素爆發與核心強化連段。\n  * **P2**：常規平 A 銜接與產球吸收。\n\n---\n\n#### 3. 警戒條件\n* **紅光 / 攻擊前搖** $\\rightarrow$ 立即觸發 `Shift` 衝刺無敵幀（極限閃避）。\n* **體力低於 30%** $\\rightarrow$ 強制停止重擊與連閃，切換為走位平 A 回體。\n* **血量突降 < 0.50 或危險標籤轉為 True** $\\rightarrow$ 中斷當前輸出序列，優先切盾輔補盾或施放治療。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991473559_1",
+    "timestamp": 1789991473.5596704,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 【戰術指示 (Tactical Directive)】\n\n* **狀態評估**：HP 80%（健康）｜威脅等級：LOW（安全爆發窗口）\n\n---\n\n#### 1. 核心目標\n* **主目標**：建立元素附著循環與增傷後台（Rotat",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 【戰術指示 (Tactical Directive)】\n\n* **狀態評估**：HP 80%（健康）｜威脅等級：LOW（安全爆發窗口）\n\n---\n\n#### 1. 核心目標\n* **主目標**：建立元素附著循環與增傷後台（Rotation Ramp-up）。\n* **次目標**：削韌壓制、產球充能。\n\n#### 2. 推薦技能序列與優先級\n* **P1（啟動增益）**：切換 2 號位（輔助/盾輔） $\\rightarrow$ **E**（脫手產球/抗打斷）。\n* **P2（元素擴散/反應）**：切換 3 號位（副 C） $\\rightarrow$ **Q** $\\rightarrow$ **E**（脫手大招掛元素）。\n* **P3（爆發輸出）**：切換 1 號位（主 C） $\\rightarrow$ **Q** $\\rightarrow$ **E** $\\rightarrow$ **AAA + 重擊循環**。\n\n#### 3. 警戒條件\n* **閃避觸發**：偵測到敵方起手紅光／大範圍蓄力特效 $\\rightarrow$ 立即利用**衝刺無敵幀（Dash i-frame）**穿透判定。\n* **狀態轉移**：\n  * 若 `危險 = True` 或 `血量 < 0.50` $\\rightarrow$ 中斷連段，優先切換護盾／治療位釋放保命技能。\n  * 若 `體力條 < 40` $\\rightarrow$ 立即停止衝刺與重擊，保留至少 1 次極限閃避能量。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991487390_2",
+    "timestamp": 1789991487.3902378,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 【戰況判定：進攻姿態（Offensive Setup）】\n> **遙測解析**：血量 80%（安全閾值內）｜ 威脅指標：無（危險 = False）  \n> **當前態勢**：無迫切生存壓力，處於標準進攻推進與元素爆發輪切窗口。\n\n-",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 【戰況判定：進攻姿態（Offensive Setup）】\n> **遙測解析**：血量 80%（安全閾值內）｜ 威脅指標：無（危險 = False）  \n> **當前態勢**：無迫切生存壓力，處於標準進攻推進與元素爆發輪切窗口。\n\n---\n\n#### 1. 核心目標\n* **元素反應鋪場與破韌壓制**（啟動後台技能，快速建立增傷/連鎖反應鏈）。\n\n#### 2. 推薦技能序列與優先級\n* **[P1 - 先手增益/掛元素]**：切 **3 號位**（輔助/掛件）$\\rightarrow$ **E**（脫手技能 / 觸發增益）\n* **[P2 - 減抗擴散/充能]**：切 **2 號位**（副 C / 增幅）$\\rightarrow$ **E / Q**（引爆前置反應 / 擴散削抗）\n* **[P3 - 站場爆發]**：切 **1 號位**（主 C）$\\rightarrow$ **Q**（開大享受滿 Buff）$\\rightarrow$ **E + 普攻/重擊** 循環輸出\n\n#### 3. 警戒條件\n* **地面紅圈 / 擴散光圈（危險預警）**：優先使用主 C 的 **Q 技能無敵幀（I-Frame）** 頂招輸出；若無 Q 則單次 **Shift 衝刺閃避**。\n* **怪物抬手霸體 / 強力揮擊**：終止後搖動作，單向 **側向衝刺** 規避擊飛。\n* **血量低於 50% 或危險態翻轉（Danger = True）**：立即打斷輸出序列，優先切換生存/護盾位開 **E/Q** 保命。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991503525",
+    "timestamp": 1789991503.5259075,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "### 【Guidance HUD // 即時戰術指示】\n\n#### 1. 核心目標\n* **生存優先**：無敵幀（i-frame）躲避致命連段。\n* **戰術爆發**：抓 Boss 出招後搖（Rec",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 【Guidance HUD // 即時戰術指示】\n\n#### 1. 核心目標\n* **生存優先**：無敵幀（i-frame）躲避致命連段。\n* **戰術爆發**：抓 Boss 出招後搖（Recovery Window）打滿元素反應迴圈。\n\n---\n\n#### 2. 推薦技能序列與優先級\n> **優先級**：`緊急迴避 > 護盾/治療續航 > 脫手後台技 > 前台爆發輸出`\n\n1. **開局/充能期**：\n   * 切輔助（盾/補） $\\rightarrow$ **E**（上霸體/護盾保底）\n   * 切後台副 C $\\rightarrow$ **Q $\\rightarrow$ E**（掛元素、鎖定脫手傷害）\n2. **爆發破韌期**（Boss 癱瘓或大招後搖）：\n   * 切主 C $\\rightarrow$ **Q（開大爆發） $\\rightarrow$ E $\\rightarrow$ 普攻/重擊連段**\n3. **收尾重置**：\n   * 留 1 段衝刺體力 $\\rightarrow$ 切輔助吃球充能循環。\n\n---\n\n#### 3. 警戒與反射條件\n* **【紅光預警 / 蓄力前搖】** $\\rightarrow$ **立即側向雙閃**（利用衝刺前 0.2 秒無敵幀穿過判定，切忌直線後撤）。\n* **【大範圍地面紅圈 / 落雷】** $\\rightarrow$ **即刻起跳下落** 或 **連按兩次衝刺脫離邊緣**。\n* **【體力低於 25%】** $\\rightarrow$ **停手停止重擊**，轉為走位平 A，保留至少 1 次保命衝刺。\n* **【無護盾且 Boss 抬手】** $\\rightarrow$ **嚴禁貪刀，強制打斷普攻後搖進行切人/翻滾**。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991666611_1",
+    "timestamp": 1789991666.6111288,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 【戰術指示 Directive // 操作指導模式】\n\n* **狀態評估**：HP 80%（安全）、威脅等級：低（非危險態）\n\n---\n\n#### 1. 核心目標\n* **循環充能與脫手掛元素**：無生存壓力，最大化後台傷害與能量回",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 【戰術指示 Directive // 操作指導模式】\n\n* **狀態評估**：HP 80%（安全）、威脅等級：低（非危險態）\n\n---\n\n#### 1. 核心目標\n* **循環充能與脫手掛元素**：無生存壓力，最大化後台傷害與能量回圈，準備啟動爆發輪次。\n\n#### 2. 推薦技能序列與優先級\n* **優先級**：輔助脫手 > 副 C 爆發 > 主 C 站場輸出\n* **動作序列**：\n  1. **切 4 號位 (輔助/風/草/盾)** $\\rightarrow$ **E**（增益/擴散/掛底元素）\n  2. **切 3 號位 (副 C)** $\\rightarrow$ **Q $\\rightarrow$ E**（後台協同輸出＋吃球充能）\n  3. **切 1 號位 (主 C)** $\\rightarrow$ **E $\\rightarrow$ 普攻 / 重擊循環輸出**\n\n#### 3. 警戒條件\n* **閃避觸發**：近身紅圈/蓄力前搖 $\\rightarrow$ **衝刺無敵幀 (Shift / 右鍵)**\n* **走位預警**：地面元素殘留/高韌性霸體衝撞 $\\rightarrow$ **保持中距離側移**\n* **能量中斷**：前台未接球 $\\rightarrow$ **強制切回充能位補 E 產球**",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991673811_1",
+    "timestamp": 1789991673.8113542,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 戰術指令 (Directive)\n\n- **狀態評估**：血量健康 (80%)、無立即威脅。進入主動循環輸出姿態。\n\n---\n\n#### 1. 核心目標\n- **高頻元素反應與後台鋪場**（加速產球充能、疊加元素附著、穩定破韌削血）",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術指令 (Directive)\n\n- **狀態評估**：血量健康 (80%)、無立即威脅。進入主動循環輸出姿態。\n\n---\n\n#### 1. 核心目標\n- **高頻元素反應與後台鋪場**（加速產球充能、疊加元素附著、穩定破韌削血）\n\n#### 2. 推薦技能序列與優先級\n> **優先級**：後台脫手／增益 > 元素充能 > 前台駐場爆發\n- **標準動作鏈**：\n  1. `切 2 號位` $\\rightarrow$ `短按 E`（鋪設脫手技能／後台掛元素）\n  2. `切 3 號位` $\\rightarrow$ `E` $\\rightarrow$ `Q`（隊伍增益／聚怪／擴散反應）\n  3. `切 1 號位 (主C)` $\\rightarrow$ `E` $\\rightarrow$ `Q` $\\rightarrow$ `重擊 / 普攻循環 (A×3 + Dash)`\n\n#### 3. 警戒與中斷條件 (Interrupt Conditions)\n- **硬控 / 範圍紅光**：立即中斷普攻 $\\rightarrow$ `右鍵 / Shift (閃避幀無敵)`\n- **近戰前搖紅光 / 揮擊判定**：`閃避 (Dash)` 調整身位至目標側後方\n- **霸體蓄力 / 金黃閃爍**：拉開距離或利用元素爆發（Q技能）無敵幀規避\n- **血量低於 0.50 或 危險=True**：立即切換生存位（奶媽/護盾）釋放 E/Q 防護",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991689333_1",
+    "timestamp": 1789991689.3337648,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 【戰術指導 HUD：常態輸出循環】\n\n- **狀態評估**：血量健康（80%）／安全環境（危險=False）／無立即減員威脅\n\n---\n\n#### 1. 核心目標\n> **元素後台鋪設與反應爆發（極速循環）**\n\n#### 2. 推",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 【戰術指導 HUD：常態輸出循環】\n\n- **狀態評估**：血量健康（80%）／安全環境（危險=False）／無立即減員威脅\n\n---\n\n#### 1. 核心目標\n> **元素後台鋪設與反應爆發（極速循環）**\n\n#### 2. 推薦技能序列與優先級\n> **優先級**：後台脫手掛元素 > 主力充能/拐力釋放 > 主 C 戰場爆發\n> \n> **標準輸出鏈**：\n> `切 4 號位 (輔助) -> E -> Q`  \n> `-> 切 3 號位 (副 C) -> E -> Q`  \n> `-> 切 2 號位 (增傷/風系) -> E (擴散/減抗)`  \n> `-> 切 1 號位 (主 C) -> Q -> 強化 E -> 駐場 A/重擊`\n\n#### 3. 警戒條件\n> - **閃避預警**：敵方蓄力紅圈／抬手起手時，立即保留 1 次衝刺體力（Shift/右鍵）。\n> - **霸體與防禦**：若隊伍含護盾角，先手盾碎即刻補盾；血量低於 0.50 時切換生存優先。\n> - **空窗應對**：若技能冷卻中，主 C 保持墊步走位普攻攢充能，切忌原地站樁。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991696759_2",
+    "timestamp": 1789991696.7595153,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 戰術指示 HUD (Directive: ENGAGE)\n\n* **遙測基準**：HP 80%｜威脅等級：LOW (危險=False)｜戰術態勢：全面進攻\n\n---\n\n#### 1. 核心目標\n* **快速鋪場與元素連鎖反應**（輸",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術指示 HUD (Directive: ENGAGE)\n\n* **遙測基準**：HP 80%｜威脅等級：LOW (危險=False)｜戰術態勢：全面進攻\n\n---\n\n#### 1. 核心目標\n* **快速鋪場與元素連鎖反應**（輸出最大化，壓制敵方韌性）\n\n#### 2. 推薦技能序列與優先級\n* **優先級**：`輔助脫手掛元素` > `副 C 爆發減抗` > `主 C 駐場輸出`\n* **推薦指令流**：\n  1. **切 2 號位** $\\rightarrow$ `E`（啟動護盾 / 脫手技能鋪場）\n  2. **切 3 號位** $\\rightarrow$ `E` / `Q`（擴散 / 觸發增傷減抗）\n  3. **切 1 號位 (主 C)** $\\rightarrow$ `Q` $\\rightarrow$ `E` $\\rightarrow$ **普攻/重擊循環打滿爆發窗口**\n\n#### 3. 警戒條件\n* **黃光/起手蓄力**：保持輸出貼臉，利用大招無敵幀（Burst I-Frame）直接硬頂。\n* **紅光/地脈紅圈**：單次衝刺（Shift/右鍵）極限閃避，立即接普攻取消後搖。\n* **血量閥值警戒**：若 HP 突降至 `< 0.50`，立刻中斷輸出輪次，強制切換奶媽/盾輔抬血。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789991704451",
+    "timestamp": 1789991704.4514,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "### [戰術決策指示 - HUD Tactical Directive]\n\n#### 1. 核心目標\n* **極限生存與破韌爆發**：以「無傷閃避」為最高優先級，其次維持元素附著與連鎖反應輸出，抓取",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### [戰術決策指示 - HUD Tactical Directive]\n\n#### 1. 核心目標\n* **極限生存與破韌爆發**：以「無傷閃避」為最高優先級，其次維持元素附著與連鎖反應輸出，抓取 Boss 出招後搖進行韌性條壓制。\n\n---\n\n#### 2. 推薦技能序列與優先級（通用標準輪轉）\n* **優先級**：`緊急迴避 (Dash)` > `生存護盾/治療 (E/Q)` > `後台掛元素/增益 (E/Q)` > `站場主 C 爆發輸出 (Q -> E -> A/重擊)`\n* **標準循環序列**：\n  1. **切 2 號位（生存位/護盾）** $\\rightarrow$ `E`（展開抗打斷護盾）\n  2. **切 3/4 號位（後台增益/副 C）** $\\rightarrow$ `Q` $\\rightarrow$ `E`（施放脫手大招與元素附著）\n  3. **切 1 號位（主 C）** $\\rightarrow$ `Q` $\\rightarrow$ `E` $\\rightarrow$ **爆發輸出（普攻/重擊銜接）**\n  4. **體力耗盡或技能冷卻時** $\\rightarrow$ 預留體力條 $\\ge 25\\%$，隨時準備後撤。\n\n---\n\n#### 3. 警戒條件（反射神經指令）\n* **【Boss 抬手 / 前搖蓄力】** $\\rightarrow$ **立即停刀，預判軸線**，保留體力。\n* **【紅光示警 / 地面範圍紅圈】** $\\rightarrow$ **立即側向/後向極限衝刺 (Dash)**，利用 0.2 秒無敵幀（i-frame）穿透攻擊判定。\n* **【連續全域多段打擊】** $\\rightarrow$ **切換角色開大招 (Q)**，利用長無敵幀硬扛傷害，或保持雙衝刺節奏拉開安全距離。\n* **【護盾破裂 / 角色受擊擊飛】** $\\rightarrow$ **落地瞬間受身衝刺** $\\rightarrow$ **立即切換治療/盾輔補位**，禁止主 C 貪刀。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級（通用標準輪轉）",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  }
+]

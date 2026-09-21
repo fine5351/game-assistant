@@ -13,7 +13,7 @@ import urllib.error
 from dataclasses import dataclass, field
 from typing import Optional, Dict, Any, List
 
-from game_assistant.core.config import TYPESAFE_API_KEY, JEV_MODEL_NAME, JEV_API_URL
+from game_assistant.core.config import TYPESAFE_API_KEY, JEV_MODEL_NAME, JEV_API_URL, REFLEX_CONFIDENCE_THRESHOLD
 
 # 嘗試載入官方 typesafe-sdk
 try:
@@ -150,34 +150,46 @@ class ScoreResult:
 
 @dataclass
 class JevResponse:
-    """Jev System 1 決策回傳結構"""
+    """Jev System 1 決策回傳結構 (反射神經響應)"""
     choices: Dict[str, ChoiceResult] = field(default_factory=dict)
     nouls: Dict[str, NoulResult] = field(default_factory=dict)
     scores: Dict[str, ScoreResult] = field(default_factory=dict)
     latency_ms: float = 0.0
     model: str = JEV_MODEL_NAME
     raw: Dict[str, Any] = field(default_factory=dict)
+    is_reflex: bool = False             # 是否由已固化之反射弧直接反射輸出
+    matched_arc_id: Optional[str] = None # 命中的反射弧 ID
+    overall_confidence: float = 1.0     # 綜合決策置信度
+    needs_escalation: bool = False      # 置信度不足或無確定結果，需上升至大腦 (Gemini System 2) 思考
 
 
 class JevDecisionEngine:
     """
-    TypeSafe AI - Jev (System 1) 高速即時決策引擎
-    專為 0.25 秒高頻遊戲迴圈設計，支援 Choice, Noul, Score 結構化決策。
+    TypeSafe AI - Jev (System 1) 高速即時決策引擎 / 人類神經系統之「反射神經」
+    專為 0.25 秒高頻遊戲迴圈設計，支援 Choice, Noul, Score 結構化決策與已知反射弧毫秒級反射。
     具備官方 SDK、標準 REST API 與無網路/本地離線啟發式模擬器三重降級防護。
+    當決策置信度未達門檻時，標記 needs_escalation=True 觸發大腦深度思考。
     """
 
     def __init__(
         self,
         api_key: Optional[str] = None,
         api_url: str = JEV_API_URL,
-        model: str = JEV_MODEL_NAME
+        model: str = JEV_MODEL_NAME,
+        confidence_threshold: float = REFLEX_CONFIDENCE_THRESHOLD
     ):
         self.api_key = api_key or TYPESAFE_API_KEY
         self.api_url = api_url
         self.model = model
+        self.confidence_threshold = confidence_threshold
+        self.reflex_arcs: Dict[str, Any] = {}
 
     def update_api_key(self, api_key: str):
         self.api_key = api_key
+
+    def register_reflex_arc(self, arc_id: str, arc_data: Any):
+        """註冊固化反射弧"""
+        self.reflex_arcs[arc_id] = arc_data
 
     def evaluate(self, state: str, questions: Dict[str, Any]) -> JevResponse:
         """
@@ -188,18 +200,35 @@ class JevDecisionEngine:
         """
         start_time = time.perf_counter()
 
+        response = None
         # 優先嘗試透過官方 SDK 或 HTTP REST API 請求真實 Jev 模型
         if self.api_key and self.api_key.strip():
             try:
                 response = self._request_api(state, questions)
-                response.latency_ms = (time.perf_counter() - start_time) * 1000.0
-                return response
             except Exception as e:
                 print(f"[JevDecisionEngine] Jev 遠端請求失敗，切換為本地確定性決策器: {e}")
 
         # 若無 API Key 或連線異常，採用本地高精度確定性決策器 (Local Heuristic Engine)
-        response = self._evaluate_local_heuristics(state, questions)
+        if response is None:
+            response = self._evaluate_local_heuristics(state, questions)
+
         response.latency_ms = (time.perf_counter() - start_time) * 1000.0
+
+        # 計算綜合置信度並評估是否需上升大腦思考 (needs_escalation)
+        confs = []
+        if response.choices:
+            confs.extend(c.confidence for c in response.choices.values())
+        if response.scores:
+            confs.extend(s.confidence for s in response.scores.values())
+
+        if confs:
+            response.overall_confidence = round(sum(confs) / len(confs), 2)
+            if min(confs) < self.confidence_threshold:
+                response.needs_escalation = True
+        elif not response.choices and not response.nouls and not response.scores:
+            response.overall_confidence = 0.0
+            response.needs_escalation = True
+
         return response
 
     def _request_api(self, state: str, questions: Dict[str, Any]) -> JevResponse:

@@ -6,32 +6,59 @@ if __name__ == "__main__" and not __package__:
         sys.path.insert(0, _src)
 
 import os
-from typing import Optional
+import re
+from typing import Optional, Dict, Any, List
 from PIL import Image
 from google import genai
+from google.genai import types
+from enum import Enum
 from game_assistant.core.config import GEMINI_API_KEY, MODEL_NAME, GameType, AnalysisMode, AssistCapability, PROMPTS
+from game_assistant.engines.antigravity_engine import AntigravityCliEngine
+
+
+class BrainProviderType(str, Enum):
+    """大腦推論後端提供者"""
+    AUTO = "auto"                              # 自動探測 (優先 agy CLI -> Gemini API -> 離線啟發)
+    ANTIGRAVITY_CLI = "antigravity_cli"        # 本機已授權之 Antigravity CLI (免金鑰)
+    GEMINI_API = "gemini_api"                  # 遠端 Google Gemini API (需有效 API Key)
+    OFFLINE_HEURISTIC = "offline_heuristic"    # 本地離線確定性啟發式戰術庫
 
 
 class GeminiAuxiliaryEngine:
     """
-    Gemini 3.8 Flash 輔助認知引擎 (System 2 - Slow Thinking)
-    由主決策模型轉為輔助引擎：
-    1. 負責深度多模態視覺畫面剖析 (高階戰況、裝備詞條、大地圖解謎)
-    2. 負責將玩家語音/文字需求 (User Demand) 拆解為 Jev 可執行的結構化戰術指令 (Strategy Directive)
+    Gemini 3.8 Flash / Antigravity CLI 輔助認知引擎 (System 2 - 大腦慢思考)
+    作為人類神經系統架構之「大腦」：
+    1. 具備多後端 Provider (Antigravity CLI 免金鑰大腦 / Google Gemini SDK / 本地啟發)
+    2. 具備思考深度分級 (Thinking Effort):
+       - 簡單相似問題: 快速思考 (effort: medium)
+       - 從未遇過的新問題: 深度慢思考 (effort: max / Deep Thinking)
+    3. 負責將玩家語音/文字需求 (User Demand) 拆解為 Jev 可執行的結構化戰術指令 (Strategy Directive)
+    4. 產出滿足 Jev 反射固化需求之結構化記憶特徵
+    5. 負責深度多模態視覺畫面剖析與自律工具代碼合成
     """
 
-    def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or GEMINI_API_KEY
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        provider: BrainProviderType = BrainProviderType.AUTO,
+        antigravity_cli: Optional[AntigravityCliEngine] = None
+    ):
+        self.api_key = api_key if api_key is not None else GEMINI_API_KEY
         self.model_name = MODEL_NAME
         self.client = None
         self._key_invalid = False
-        self._init_client()
+        self.provider_preference = provider
+        self.antigravity_cli = antigravity_cli or AntigravityCliEngine()
+        self.active_provider = BrainProviderType.OFFLINE_HEURISTIC
+        self._init_providers()
 
-    def _init_client(self):
+    def _init_providers(self):
         self._key_invalid = False
         placeholder_keys = ("", "your_gemini_api_key_here", "your_api_key_here")
         key_val = (self.api_key or "").strip()
-        if key_val and key_val not in placeholder_keys:
+        has_valid_key = bool(key_val and key_val not in placeholder_keys)
+
+        if has_valid_key:
             try:
                 self.client = genai.Client(api_key=key_val)
             except Exception as e:
@@ -40,24 +67,47 @@ class GeminiAuxiliaryEngine:
         else:
             self.client = None
 
+        # 依據偏好判定作用中大腦 Provider
+        if self.provider_preference == BrainProviderType.ANTIGRAVITY_CLI:
+            if self.antigravity_cli.is_available():
+                self.active_provider = BrainProviderType.ANTIGRAVITY_CLI
+            else:
+                self.active_provider = BrainProviderType.OFFLINE_HEURISTIC
+        elif self.provider_preference == BrainProviderType.GEMINI_API:
+            if self.client:
+                self.active_provider = BrainProviderType.GEMINI_API
+            else:
+                self.active_provider = BrainProviderType.OFFLINE_HEURISTIC
+        else:
+            # AUTO 模式：優先檢查本地已授權 Antigravity CLI，免金鑰即可高智力推論
+            if self.antigravity_cli.is_available():
+                self.active_provider = BrainProviderType.ANTIGRAVITY_CLI
+            elif self.client and not self._key_invalid:
+                self.active_provider = BrainProviderType.GEMINI_API
+            else:
+                self.active_provider = BrainProviderType.OFFLINE_HEURISTIC
+
     def update_api_key(self, api_key: str):
         """動態更新 API Key"""
         self.api_key = api_key
-        self._init_client()
+        self._init_providers()
+
 
     def decompose_user_demand(
         self,
         user_demand: str,
         game_type: GameType,
         capability: AssistCapability,
-        image: Optional[Image.Image] = None
+        image: Optional[Image.Image] = None,
+        thinking_effort: str = "medium"
     ) -> str:
         """
-        階段 1：由 Gemini 優先處理玩家需求，拆解為供 Jev 即時微觀決策之戰術指令 (Directive)
-        :param user_demand: 玩家透過語音 (STT) 或文字輸入之需求 (如「幫我閃避紅光攻擊」、「現在要切誰輸出」)
+        由 Gemini 大腦處理玩家需求，支援思考深度分級 (medium 快速思考 / max 深度思考)
+        :param user_demand: 玩家透過語音 (STT) 或文字輸入之需求
         :param game_type: 遊戲類型
-        :param capability: 輔助能力 (操作指導、代替操作、資料分析)
+        :param capability: 輔助能力
         :param image: 可選畫面截圖
+        :param thinking_effort: 'medium' (相似問題快速思考) 或 'max' (新問題深度思考)
         :return: 結構化戰術指導文字
         """
         if not user_demand or not user_demand.strip():
@@ -65,29 +115,57 @@ class GeminiAuxiliaryEngine:
 
         demand_lower = user_demand.lower()
 
+        # 1. 優先使用 Antigravity CLI 大腦推論 (免金鑰通道)
+        if self.active_provider == BrainProviderType.ANTIGRAVITY_CLI and not image:
+            res = self.antigravity_cli.decompose_user_demand(
+                user_demand=user_demand,
+                game_type=game_type,
+                capability=capability,
+                thinking_effort=thinking_effort
+            )
+            if res:
+                return res
+
+        # 2. 備援：Google Gemini SDK 或本地啟發降級
         if not self.client or self._key_invalid:
-            return self._fallback_decompose(user_demand, game_type, capability, is_offline=self._key_invalid)
+            return self._fallback_decompose(user_demand, game_type, capability, is_offline=self._key_invalid, thinking_effort=thinking_effort)
+
 
         game_name = game_type.value if hasattr(game_type, "value") else str(game_type)
         cap_name = capability.value if hasattr(capability, "value") else str(capability)
+        effort_desc = "深度深思 (Deep Thinking)" if thinking_effort == "max" else "敏捷快速思考"
         prompt = (
-            f"你是一位頂級遊戲戰術決策專家 (Gemini 3.8 Flash)。\n"
+            f"你是一位頂級遊戲戰術決策專家 (Gemini 3.8 Flash - 大腦認知核心)。\n"
             f"當前遊戲：{game_name}\n"
             f"輔助模式：{cap_name}\n"
+            f"思考模式：【{effort_desc}】\n"
             f"玩家提出了具體需求：【{user_demand.strip()}】。\n"
             "請將玩家需求轉化為極度簡潔的即時戰術指示 (Directive)，格式包含：\n"
             "1. 核心目標 (例如：破韌、極限閃避、元素反應、自動打怪)\n"
             "2. 推薦技能序列與優先級 (例如：切 2 號位 -> E -> 普攻)\n"
             "3. 警戒條件 (例如：遇黃光招架、遇紅光閃避)\n"
-            "請以繁體中文回答，適合後續 Jev 高頻決策器直接取用。"
+            "請以繁體中文回答，適合後續 Jev 反射神經固化與高頻決策器直接取用。"
         )
 
         try:
             contents = [image, prompt] if image else [prompt]
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=contents
-            )
+
+            # 依據思考深度動態配置 ThinkingConfig (medium vs max)
+            gen_config = None
+            if hasattr(types, "ThinkingConfig") and hasattr(types, "ThinkingLevel"):
+                try:
+                    t_level = types.ThinkingLevel.HIGH if thinking_effort == "max" else types.ThinkingLevel.MEDIUM
+                    gen_config = types.GenerateContentConfig(
+                        thinking_config=types.ThinkingConfig(thinking_level=t_level)
+                    )
+                except Exception:
+                    gen_config = None
+
+            call_kwargs = {"model": self.model_name, "contents": contents}
+            if gen_config is not None:
+                call_kwargs["config"] = gen_config
+
+            response = self.client.models.generate_content(**call_kwargs)
             if response and response.text:
                 return response.text.strip()
             return f"戰術目標：因應需求【{user_demand}】執行最佳輸出與防守。"
@@ -98,69 +176,71 @@ class GeminiAuxiliaryEngine:
                 print("[GeminiAuxiliaryEngine] 提示：GEMINI_API_KEY 無效或未授權，已自動切換為本地離線啟發式戰術規則庫。請於 .env 配置有效金鑰。")
             else:
                 print(f"[GeminiAuxiliaryEngine] decompose_user_demand 異常: {e}")
-            return self._fallback_decompose(user_demand, game_type, capability, is_offline=True)
+            return self._fallback_decompose(user_demand, game_type, capability, is_offline=True, thinking_effort=thinking_effort)
 
     def _fallback_decompose(
         self,
         user_demand: str,
         game_type: GameType,
         capability: AssistCapability,
-        is_offline: bool = False
+        is_offline: bool = False,
+        thinking_effort: str = "medium"
     ) -> str:
         demand_lower = user_demand.lower()
         game_str = game_type.value if hasattr(game_type, "value") else str(game_type)
+        effort_tag = "深度慢思考" if thinking_effort == "max" else "敏捷快速思考"
         if "閃避" in user_demand or "dodge" in demand_lower or "紅光" in user_demand or "危險" in user_demand:
             res = (
-                f"【戰術指示 - {game_str}】：\n"
+                f"【大腦戰術指示 ({effort_tag}) - {game_str}】：\n"
                 f"1. 核心目標：極限閃避防禦\n"
                 f"2. 推薦操作：抓準攻擊前搖無敵幀，立即按下 Shift / 右鍵\n"
                 f"3. 警戒條件：鎖定敵方紅光或紅圈警示"
             )
         elif "招架" in user_demand or "parry" in demand_lower or "黃光" in user_demand:
             res = (
-                f"【戰術指示 - {game_str}】：\n"
+                f"【大腦戰術指示 ({effort_tag}) - {game_str}】：\n"
                 f"1. 核心目標：極限招架反擊\n"
                 f"2. 推薦操作：敵方閃黃光瞬間按下 Space / C 觸發支援突擊\n"
                 f"3. 警戒條件：失衡積蓄最大化"
             )
         elif "大招" in user_demand or "終結技" in user_demand or "burst" in demand_lower or "ult" in demand_lower:
             res = (
-                f"【戰術指示 - {game_str}】：\n"
+                f"【大腦戰術指示 ({effort_tag}) - {game_str}】：\n"
                 f"1. 核心目標：終結技/大招爆發破韌\n"
                 f"2. 推薦操作：按下 1-4 號位大招或 Q 鍵進行立即插隊輸出\n"
                 f"3. 警戒條件：確認敵方處於弱點或失衡易傷狀態"
             )
         elif "反應" in user_demand or "元素" in user_demand or "蒸發" in user_demand or "融化" in user_demand:
             res = (
-                f"【戰術指示 - {game_str}】：\n"
+                f"【大腦戰術指示 ({effort_tag}) - {game_str}】：\n"
                 f"1. 核心目標：元素反應增傷鏈\n"
                 f"2. 推薦操作：切換 2 號位掛水/火/雷 ➔ 切回 1 號位主 C 施放戰技 E 與平 A\n"
                 f"3. 警戒條件：維持元素附著覆蓋"
             )
         elif any(kw in user_demand for kw in ["探索", "採集", "寶箱", "撲滿", "神瞳", "卡格車", "解謎", "撿"]):
             res = (
-                f"【探索與採集指示 - {game_str}】：\n"
+                f"【大腦探索與採集指示 ({effort_tag}) - {game_str}】：\n"
                 f"1. 核心目標：大世界珍貴物資全收集與地圖解謎\n"
                 f"2. 推薦操作：靠近目標標記按 【F】 互動拾取；若遇撲滿立即施放秘技先手開怪\n"
                 f"3. 警戒條件：關注迷你地圖特產標記與高低差神瞳"
             )
         elif any(kw in user_demand for kw in ["裝備", "強化", "聖遺物", "遺器", "光碟", "詞條", "雙暴", "調律", "洗練"]):
             res = (
-                f"【裝備與強化分析指示 - {game_str}】：\n"
+                f"【大腦裝備與強化分析指示 ({effort_tag}) - {game_str}】：\n"
                 f"1. 核心目標：主副詞條精準評分與強化及時停損\n"
                 f"2. 推薦操作：極品雙暴胚子立即【上鎖】；詞條歪斜立即【停損做狗糧/拆解】；稀缺部位考慮自塑塵脂定向\n"
                 f"3. 警戒條件：關注 134 速度閾值與雙暴 1:2 配比"
             )
         elif "分析" in user_demand or "資料" in user_demand:
             res = (
-                f"【戰術指示 - {game_str}】：\n"
+                f"【大腦戰術指示 ({effort_tag}) - {game_str}】：\n"
                 f"1. 核心目標：戰鬥遙測與資源分析\n"
                 f"2. 推薦操作：統計威脅度與 SP/能量循環\n"
                 f"3. 警戒條件：監控血量低於 30% 與戰技點耗盡"
             )
         else:
             res = (
-                f"【戰術指示 - {game_str}】：\n"
+                f"【大腦戰術指示 ({effort_tag}) - {game_str}】：\n"
                 f"1. 核心目標：因應需求「{user_demand}」維持最佳攻防\n"
                 f"2. 推薦操作：技能 E/Q 冷卻好即施放，穿插普攻壓制\n"
                 f"3. 警戒條件：保持拉扯走位，遇危險立即閃避"
@@ -283,14 +363,16 @@ class GeminiAuxiliaryEngine:
         image: Image.Image,
         game_type: GameType,
         mode: AnalysisMode,
-        custom_prompt: Optional[str] = None
+        custom_prompt: Optional[str] = None,
+        thinking_effort: str = "medium"
     ) -> str:
         """
-        深度多模態視覺畫面剖析 (快照分析 F10 / 裝備遺器評估 / 地圖解謎)
+        深度多模態視覺畫面剖析 (快照分析 F10 / 裝備遺器評估 / 地圖解謎)，支援思考深度分級
         :param image: PIL Image 物件
         :param game_type: 遊戲類型
         :param mode: 分析模式
         :param custom_prompt: 玩家自訂提示詞
+        :param thinking_effort: 'medium' (快速思考) 或 'max' (深度思考)
         :return: 深度 Markdown 分析文字
         """
         if not self.client or self._key_invalid:
@@ -302,8 +384,10 @@ class GeminiAuxiliaryEngine:
 
         if custom_prompt and custom_prompt.strip():
             game_name = game_type.value if hasattr(game_type, "value") else str(game_type)
+            effort_text = "深度深思" if thinking_effort == "max" else "快速分析"
             final_prompt = (
                 f"玩家提出了關於畫面的具體問題：【{custom_prompt.strip()}】。\n"
+                f"思考模式：【{effort_text}】\n"
                 f"請結合當前遊戲畫面與遊戲類型 ({game_name})，給出精準且直接的解答與戰術指引。請以繁體中文回答。"
             )
         else:
@@ -313,10 +397,21 @@ class GeminiAuxiliaryEngine:
             )
 
         try:
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=[image, final_prompt]
-            )
+            gen_config = None
+            if hasattr(types, "ThinkingConfig") and hasattr(types, "ThinkingLevel"):
+                try:
+                    t_level = types.ThinkingLevel.HIGH if thinking_effort == "max" else types.ThinkingLevel.MEDIUM
+                    gen_config = types.GenerateContentConfig(
+                        thinking_config=types.ThinkingConfig(thinking_level=t_level)
+                    )
+                except Exception:
+                    gen_config = None
+
+            call_kwargs = {"model": self.model_name, "contents": [image, final_prompt]}
+            if gen_config is not None:
+                call_kwargs["config"] = gen_config
+
+            response = self.client.models.generate_content(**call_kwargs)
             if response and response.text:
                 return response.text
             return "⚠️ Gemini 輔助認知未返回文字結果。"
@@ -688,6 +783,136 @@ class GeminiAuxiliaryEngine:
                 return v
 
         return f"{prefix}: {chinese_text}"
+
+    def extract_reflex_schema_from_directive(
+        self,
+        directive: str,
+        user_demand: str = "",
+        game_type: GameType = GameType.GENERAL
+    ) -> Dict[str, Any]:
+        """
+        從 Gemini 大腦產出之戰術指示中，結構化提煉供 Jev 反射固化之要素：
+        - primary_action: 萃取核心動作
+        - guidance_text: 萃取建議指引文字
+        - keywords: 關鍵字觸發詞
+        - suggested_questions: 供 Jev Choice/Noul/Score 固化之結構
+        """
+        text_lower = f"{directive} {user_demand}".lower()
+
+        action = "idle"
+        if "閃避" in directive or "dodge" in text_lower or "紅光" in text_lower:
+            action = "dash_dodge"
+        elif "招架" in directive or "parry" in text_lower or "黃光" in text_lower:
+            action = "parry_assist_space"
+        elif "大招" in directive or "終結技" in directive or "burst" in text_lower:
+            action = "burst_q"
+        elif "戰技" in directive or "放e" in text_lower or "skill_e" in text_lower or "技能 e" in text_lower:
+            action = "skill_e"
+        elif "普攻" in directive or "平a" in text_lower or "normal_attack" in text_lower:
+            action = "normal_attack"
+        elif "治療" in directive or "補血" in directive or "回血" in directive:
+            action = "heal"
+        elif "4 號位" in directive or "四號位" in directive:
+            action = "switch_4"
+        elif "3 號位" in directive or "三號位" in directive:
+            action = "switch_3"
+        elif "反應" in directive or "元素" in directive or "切換" in directive or "2 號位" in directive or "二號位" in directive:
+            action = "switch_2"
+        elif "寶箱" in directive or "拾取" in directive or "採集" in directive:
+            action = "open_chest"
+        elif "神瞳" in directive:
+            action = "collect_oculus"
+        elif "解謎" in directive or "方碑" in directive or "機關" in directive:
+            action = "solve_puzzle"
+        elif "上鎖" in directive or "保留" in directive:
+            action = "lock_and_keep"
+        elif "停損" in directive or "做狗糧" in directive or "拆解" in directive:
+            action = "stop_and_salvage"
+        elif "自塑塵脂" in directive:
+            action = "craft_with_resin"
+        elif "校音器" in directive:
+            action = "tune_with_calibrator"
+
+        keywords = []
+        for kw in [
+            "紅光", "黃光", "危險", "前搖", "閃避", "招架", "大招", "終結技", "元素反應",
+            "蒸發", "融化", "超導", "感電", "破盾", "戰技", "普攻", "治療", "寶箱", "採集",
+            "神瞳", "撲滿", "雙暴", "上鎖", "停損", "自塑塵脂", "校音器", "方碑", "解謎"
+        ]:
+            if kw in directive or kw in user_demand:
+                keywords.append(kw)
+
+        # 尋找推薦操作或主要指示行
+        guidance = ""
+        for line in directive.splitlines():
+            line_str = line.strip()
+            if not line_str:
+                continue
+            if "推薦操作" in line_str or "推薦" in line_str:
+                guidance = re.sub(r'^\d+[\.、]\s*', '', line_str).strip()
+                break
+            elif "核心目標" in line_str and not guidance:
+                guidance = re.sub(r'^\d+[\.、]\s*', '', line_str).strip()
+
+        if not guidance:
+            non_headers = [l.strip() for l in directive.splitlines() if l.strip() and not l.strip().startswith("【") and not l.strip().startswith("#")]
+            if non_headers:
+                guidance = non_headers[0]
+            else:
+                first_line = directive.splitlines()[0] if directive.splitlines() else directive
+                guidance = first_line.strip("【】*-# ")
+
+        return {
+            "primary_action": action,
+            "guidance_text": guidance,
+            "keywords": keywords,
+            "suggested_questions": {
+                "tactical_action": {
+                    "type": "choice",
+                    "instructions": f"評估針對場景的最佳動作",
+                    "options": [action, "idle"]
+                },
+                "should_act": {
+                    "type": "noul",
+                    "instructions": f"是否立即執行 {action}？"
+                },
+                "urgency": {
+                    "type": "score",
+                    "instructions": f"此動作之緊迫程度",
+                    "criteria": ["低", "中", "高"]
+                }
+            }
+        }
+
+    def synthesize_tool_code(
+        self,
+        tool_spec: str,
+        game_type: Optional[GameType] = None,
+        context_info: str = ""
+    ) -> Optional[str]:
+        """
+        透過大腦 (Antigravity CLI / Gemini) 自主編寫 Python 工具代碼
+        """
+        if self.active_provider == BrainProviderType.ANTIGRAVITY_CLI:
+            return self.antigravity_cli.synthesize_tool_code(tool_spec, game_type, context_info)
+        elif self.client and not self._key_invalid:
+            try:
+                game_str = game_type.value if game_type and hasattr(game_type, "value") else str(game_type or "泛用遊戲")
+                prompt = (
+                    "你是一位頂尖的 Python 遊戲周邊工具架構師。\n"
+                    f"目標遊戲：{game_str}\n"
+                    f"工具規格需求：\n{tool_spec}\n"
+                    f"周邊上下文：\n{context_info}\n\n"
+                    "請為遊戲助理自主生長一個合規的 Python 工具模組代碼。\n"
+                    "只輸出純 Python 代碼區塊 (使用 ```python ... ``` 包裹)。"
+                )
+                resp = self.client.models.generate_content(model=self.model_name, contents=[prompt])
+                if resp and resp.text:
+                    return resp.text.strip()
+            except Exception:
+                pass
+        return None
+
 
 
 # 向下相容別名

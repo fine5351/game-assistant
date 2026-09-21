@@ -6,7 +6,8 @@ from PyQt6.QtCore import QThread, pyqtSignal, QTimer, QObject
 
 from game_assistant.core.config import (
     GEMINI_API_KEY, TYPESAFE_API_KEY, DEFAULT_POLL_INTERVAL,
-    GameType, AssistCapability, AnalysisMode, TTS_ENABLED
+    GameType, AssistCapability, AnalysisMode, TTS_ENABLED,
+    CONSOLIDATION_AUTO_ENABLED, CONSOLIDATION_INTERVAL_SECONDS
 )
 from game_assistant.utils.screen_capture import ScreenCapturer
 from game_assistant.core.agent import UniversalGameAgent
@@ -301,11 +302,50 @@ class TTSWorker(QThread):
             self.tts_finished.emit()
 
 
+class ConsolidationWorker(QThread):
+    """
+    非同步神經記憶固化 Worker 執行緒 (Consolidation Worker)
+    在背景分析累積之 Gemini 大腦思考記憶，提煉共通模式並固化為 Jev 反射弧 (input, output, flow)
+    完全不阻塞 Jev 0.25s 實時反射與 UI 60 FPS 渲染
+    """
+    consolidation_started = pyqtSignal()
+    consolidation_finished = pyqtSignal(list, dict)  # new_arcs, stats
+    consolidation_error = pyqtSignal(str)
+
+    def __init__(self, agent: UniversalGameAgent):
+        super().__init__()
+        self.agent = agent
+        self.force = False
+        self._is_busy = False
+
+    def is_busy(self) -> bool:
+        return self._is_busy
+
+    def request_consolidation(self, force: bool = False) -> bool:
+        if self._is_busy:
+            return False
+        self.force = force
+        self.start()
+        return True
+
+    def run(self):
+        self._is_busy = True
+        self.consolidation_started.emit()
+        try:
+            new_arcs = self.agent.consolidate_memories(force=self.force)
+            stats = self.agent.get_nervous_system_stats()
+            self.consolidation_finished.emit(new_arcs, stats)
+        except Exception as e:
+            self.consolidation_error.emit(f"❌ 記憶固化異常：{str(e)}")
+        finally:
+            self._is_busy = False
+
+
 class GameAssistantController(QObject):
     """
     通用遊戲 Agent 主控制器
     整合 Jev 0.25s 實時決策迴圈、Gemini 3.8 Flash 輔助認知、多遊戲 Strategy、
-    螢幕代替操作、GUI 懸浮面板、全域熱鍵與非同步 Worker。
+    人類神經系統自我進化 (反射神經 + 大腦 + 記憶固化管線)、螢幕代替操作、GUI 與全域熱鍵。
     """
     def __init__(self):
         super().__init__()
@@ -331,6 +371,7 @@ class GameAssistantController(QObject):
         self.tts_worker = TTSWorker(self.tts_engine)
         self.trans_worker = ScreenTranslationWorker(self.agent)
         self.voice_trans_worker = VoiceTranslationWorker(self.agent, self.stt_engine)
+        self.consolidation_worker = ConsolidationWorker(self.agent)
 
         self.tts_enabled = TTS_ENABLED
 
@@ -338,6 +379,13 @@ class GameAssistantController(QObject):
         self.poll_timer = QTimer(self)
         self.poll_timer.setInterval(int(DEFAULT_POLL_INTERVAL * 1000))
         self.poll_timer.timeout.connect(self._on_poll_timer_tick)
+
+        # 定時自動自我進化固化管線 (預設每 30 秒整理一次記憶)
+        self.consolidation_timer = QTimer(self)
+        self.consolidation_timer.setInterval(int(CONSOLIDATION_INTERVAL_SECONDS * 1000))
+        self.consolidation_timer.timeout.connect(self._on_consolidation_timer_tick)
+        if CONSOLIDATION_AUTO_ENABLED:
+            self.consolidation_timer.start()
 
         self._bind_signals()
         self.hotkey_listener.start()
@@ -356,6 +404,7 @@ class GameAssistantController(QObject):
         self.overlay.tts_toggle_signal.connect(self._on_tts_toggled)
         self.overlay.screen_translate_signal.connect(self.trigger_screen_translation)
         self.overlay.voice_translate_signal.connect(self.trigger_voice_translation)
+        self.overlay.consolidate_signal.connect(lambda: self.trigger_consolidation(force=True))
 
         # 全域熱鍵訊號
         self.hotkey_listener.emergency_stop_signal.connect(self.emergency_stop)
@@ -364,6 +413,8 @@ class GameAssistantController(QObject):
         self.hotkey_listener.voice_prompt_signal.connect(self.trigger_voice_prompt)
         self.hotkey_listener.screen_translate_signal.connect(self.trigger_screen_translation)
         self.hotkey_listener.voice_translate_signal.connect(self.trigger_voice_translation)
+        self.hotkey_listener.consolidate_signal.connect(lambda: self.trigger_consolidation(force=True))
+
 
         # Jev 0.25s 決策迴圈訊號
         self.jev_worker.decision_ready.connect(self._on_jev_decision_ready)
@@ -398,24 +449,87 @@ class GameAssistantController(QObject):
         self.tts_worker.tts_started.connect(self._on_tts_started)
         self.tts_worker.tts_finished.connect(self._on_tts_finished)
 
+        # 神經固化 Worker 訊號
+        self.consolidation_worker.consolidation_started.connect(self._on_consolidation_started)
+        self.consolidation_worker.consolidation_finished.connect(self._on_consolidation_finished)
+        self.consolidation_worker.consolidation_error.connect(self._on_consolidation_error)
+
     def _check_api_keys(self):
         info_lines = []
-        if not TYPESAFE_API_KEY:
-            info_lines.append("- **TypeSafe Jev API Key**: 未設定（啟用本地確定性啟發決策器）")
-        else:
-            info_lines.append("- **TypeSafe Jev API Key**: 🟢 已就緒")
+        evo_report = self.agent.get_evolution_report()
+        brain_provider = evo_report.get("brain_engine", "UNKNOWN")
 
-        if not GEMINI_API_KEY or GEMINI_API_KEY == "your_gemini_api_key_here":
-            info_lines.append("- **Gemini 3.8 Flash Key**: ⚠️ 未設定（Gemini 輔助意圖解析處於離線狀態）")
+        if not TYPESAFE_API_KEY:
+            info_lines.append("- **TypeSafe Jev (System 1)**: 🟢 本地確定性啟發反射弧已就緒")
         else:
-            info_lines.append("- **Gemini 3.8 Flash Key**: 🟢 已就緒")
+            info_lines.append("- **TypeSafe Jev (System 1)**: 🟢 SDK 連線就緒")
+
+        if "Antigravity" in brain_provider:
+            info_lines.append(f"- **大腦認知 (System 2)**: 🟢 **{brain_provider}** (免金鑰本地大腦推論就緒)")
+        elif GEMINI_API_KEY and GEMINI_API_KEY != "your_gemini_api_key_here":
+            info_lines.append("- **大腦認知 (System 2)**: 🟢 Google Gemini 3.8 Flash SDK 已就緒")
+        else:
+            info_lines.append("- **大腦認知 (System 2)**: 🛡️ 本地啟發推論規則保護中")
+
+        mem_stats = evo_report.get("memory_index", {})
+        organ_sum = evo_report.get("organs", {})
+        nervous_stats = evo_report.get("nervous_stats", {})
+
+        info_lines.append(
+            f"- **多層樹狀記憶索引**: ⚡ {mem_stats.get('domain_count', 0)} 大領域 / {mem_stats.get('cluster_count', 0)} 個意圖機制聚類桶"
+        )
+        info_lines.append(
+            f"- **感官與致動器官庫**: 👁️ {organ_sum.get('total_count', 0)} 個已掛載器官 (動態生長: {organ_sum.get('dynamic_grown_count', 0)})"
+        )
+        info_lines.append(
+            f"- **神經反射弧與進化**: 🎯 固化反射弧 {nervous_stats.get('consolidated_arcs_count', 0)} 個 | 命中率: {nervous_stats.get('reflex_hit_rate', 0.0)}%"
+        )
 
         msg = (
-            "### 🎮 Jev 通用遊戲 Agent 引擎狀態\n\n" +
+            "### 🎮 Jev 自律進化遊戲神經系統已就緒 (Hierarchical Memory & Dynamic Organs)\n\n" +
             "\n".join(info_lines) +
             "\n\n按下 **F9** 即可開始每 0.25 秒高頻戰況分析與操作！"
         )
         self.overlay.update_result(msg)
+        self.overlay.update_nervous_hud(evo_report.get("status_line", ""))
+
+    def _on_consolidation_timer_tick(self):
+        """定時觸發記憶整理與模式固化"""
+        self.trigger_consolidation(force=False)
+
+    def trigger_consolidation(self, force: bool = True):
+        """手動或定時觸發記憶固化管線 (將 Gemini 大腦成果固化為 Jev 反射弧)"""
+        if not self.consolidation_worker.is_busy():
+            self.consolidation_worker.request_consolidation(force=force)
+
+    def _on_consolidation_started(self):
+        self.overlay.set_status_consolidating()
+        self.overlay.status_footer.setText("狀態: 🧬 神經系統正在整理記憶並固化為 Jev 反射神經...")
+
+    def _on_consolidation_finished(self, new_arcs: list, stats: dict):
+        self.overlay.reset_consolidate_button()
+        if new_arcs:
+            arc_names = "、".join(f"【{a.name}】" for a in new_arcs[:3])
+            self.overlay.status_footer.setText(f"狀態: ✨ 成功固化 {len(new_arcs)} 個 Jev 反射神經：{arc_names}！")
+            msg = (
+                f"### 🧬 神經系統自我進化成功\n\n"
+                f"本次成功將大腦思考記憶固化為 **{len(new_arcs)}** 個全新 Jev 反射弧：\n" +
+                "\n".join(f"- **{a.name}** (觸發特徵: `{', '.join(a.trigger_keywords)}`)" for a in new_arcs) +
+                f"\n\n- **當前進化階段**：`{stats.get('current_evolution_stage')}`\n"
+                f"- **固化反射弧總數**：`{stats.get('total_reflex_arcs')}` 個\n"
+                f"- **反射命中率**：`{stats.get('reflex_hit_rate')}%`\n\n"
+                f"*往後遇到相同或相似情境，系統將直接由 Jev 毫秒級反射輸出，無需進入大腦思考！*"
+            )
+            self.overlay.update_result(msg)
+        else:
+            hit_rate = stats.get('reflex_hit_rate', 0.0)
+            total_arcs = stats.get('total_reflex_arcs', 0)
+            self.overlay.status_footer.setText(f"狀態: 🧬 神經系統運作中 (反射命中率: {hit_rate}%, 固化反射弧: {total_arcs} 個)")
+
+    def _on_consolidation_error(self, err_msg: str):
+        self.overlay.reset_consolidate_button()
+        print(f"[GameAssistantController] {err_msg}")
+
 
     def _on_game_changed(self, game_type):
         if game_type:
@@ -473,6 +587,12 @@ class GameAssistantController(QObject):
         else:
             self.overlay.update_decision_hud(decision, capture_ms)
 
+        # 定期同步神經 HUD
+        self._step_counter = getattr(self, "_step_counter", 0) + 1
+        if self._step_counter % 20 == 0:
+            evo_report = self.agent.get_evolution_report()
+            self.overlay.update_nervous_hud(evo_report.get("status_line", ""))
+
         # 若判定危險閃避且開啟 TTS，進行即時語音告警
         if self.tts_enabled and decision.should_evade and not self.tts_worker.isRunning():
             self.tts_worker.speak_text("注意閃避！")
@@ -481,7 +601,7 @@ class GameAssistantController(QObject):
         self.overlay.update_result(error_msg)
 
     def trigger_deep_analysis(self):
-        """手動觸發 Gemini 3.8 Flash 深度多模態視覺快照分析 (F10)"""
+        """手動觸發大腦深度多模態視覺快照分析 (F10)"""
         if self.deep_worker.is_busy():
             return
         self.overlay.set_status_loading()
@@ -510,8 +630,8 @@ class GameAssistantController(QObject):
 
     def _on_stt_finished(self, recognized_text: str):
         self.overlay.reset_voice_button()
-        self.overlay.status_footer.setText(f"狀態: 🎤 辨識成功：「{recognized_text}」，Gemini 拆解意圖中...")
-        # 階段 1：交由 Gemini 處理使用者需求
+        self.overlay.status_footer.setText(f"狀態: 🎤 辨識成功：「{recognized_text}」，大腦拆解意圖中...")
+        # 階段 1：交由大腦處理使用者需求
         self.intent_worker.request_intent_decomposition(recognized_text)
 
     def _on_stt_error(self, error_msg: str):
@@ -519,21 +639,25 @@ class GameAssistantController(QObject):
         self.overlay.update_result(f"⚠️ **語音辨識提醒**：\n\n{error_msg}")
 
     def _on_intent_started(self):
-        self.overlay.status_footer.setText("狀態: 🧠 Gemini 3.8 Flash 正在將需求拆解為戰術指示...")
+        self.overlay.status_footer.setText("狀態: 🧠 大腦正在將需求拆解為戰術指示...")
 
     def _on_intent_finished(self, directive: str):
         self.overlay.status_footer.setText("狀態: 🟢 戰術意圖已傳入 Jev 決策迴圈！")
         display_md = (
             f"### 🎤 玩家語音需求解析完成\n\n"
             f"**原始需求**：`{self.agent.current_user_demand}`\n\n"
-            f"**Gemini (System 2) 戰術指示**：\n\n{directive}\n\n"
+            f"**大腦 (System 2) 戰術指示**：\n\n{directive}\n\n"
             f"---\n*已即刻接入 Jev 0.25 秒高頻決策迴圈，即刻執行微觀操作或指導。*"
         )
         self.overlay.show_intent_result(display_md)
         if self.tts_enabled:
             self.tts_worker.speak_text(directive)
 
-        # 關鍵銜接：先由 gemini 處理使用者需求，再接入 jev 處理
+        # 同步更新 HUD
+        evo_report = self.agent.get_evolution_report()
+        self.overlay.update_nervous_hud(evo_report.get("status_line", ""))
+
+        # 關鍵銜接：先由大腦處理使用者需求，再接入 jev 處理
         self._trigger_jev_step()
 
     def _on_intent_error(self, err_msg: str):
@@ -614,12 +738,14 @@ class GameAssistantController(QObject):
 
     def stop(self):
         self.poll_timer.stop()
+        self.consolidation_timer.stop()
         self.hotkey_listener.stop()
         self.tts_worker.stop_speaking()
         self.floating_subtitle.close()
         for worker in (
             self.jev_worker, self.intent_worker, self.deep_worker,
-            self.stt_worker, self.tts_worker, self.trans_worker, self.voice_trans_worker
+            self.stt_worker, self.tts_worker, self.trans_worker, self.voice_trans_worker,
+            self.consolidation_worker
         ):
             if worker.isRunning():
                 worker.quit()
