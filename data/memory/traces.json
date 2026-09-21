@@ -2621,8 +2621,8 @@
         ]
       }
     },
-    "is_consolidated": false,
-    "consolidation_arc_id": null
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_normal_attack_網路_1789992000_0"
   },
   {
     "memory_id": "mem_1789991463111_1",
@@ -2665,8 +2665,8 @@
         ]
       }
     },
-    "is_consolidated": false,
-    "consolidation_arc_id": null
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789991790_0"
   },
   {
     "memory_id": "mem_1789991473559_1",
@@ -2709,8 +2709,8 @@
         ]
       }
     },
-    "is_consolidated": false,
-    "consolidation_arc_id": null
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789991790_0"
   },
   {
     "memory_id": "mem_1789991487390_2",
@@ -2753,8 +2753,8 @@
         ]
       }
     },
-    "is_consolidated": false,
-    "consolidation_arc_id": null
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789991790_0"
   },
   {
     "memory_id": "mem_1789991503525",
@@ -2792,8 +2792,8 @@
         ]
       }
     },
-    "is_consolidated": false,
-    "consolidation_arc_id": null
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_我打_1789991790_1"
   },
   {
     "memory_id": "mem_1789991666611_1",
@@ -2836,8 +2836,8 @@
         ]
       }
     },
-    "is_consolidated": false,
-    "consolidation_arc_id": null
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789991790_0"
   },
   {
     "memory_id": "mem_1789991673811_1",
@@ -2880,8 +2880,8 @@
         ]
       }
     },
-    "is_consolidated": false,
-    "consolidation_arc_id": null
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789991790_0"
   },
   {
     "memory_id": "mem_1789991689333_1",
@@ -2924,8 +2924,8 @@
         ]
       }
     },
-    "is_consolidated": false,
-    "consolidation_arc_id": null
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789991790_0"
   },
   {
     "memory_id": "mem_1789991696759_2",
@@ -2968,8 +2968,8 @@
         ]
       }
     },
-    "is_consolidated": false,
-    "consolidation_arc_id": null
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_原神_1789991790_0"
   },
   {
     "memory_id": "mem_1789991704451",
@@ -2984,6 +2984,162 @@
     "gemini_directive": "### [戰術決策指示 - HUD Tactical Directive]\n\n#### 1. 核心目標\n* **極限生存與破韌爆發**：以「無傷閃避」為最高優先級，其次維持元素附著與連鎖反應輸出，抓取 Boss 出招後搖進行韌性條壓制。\n\n---\n\n#### 2. 推薦技能序列與優先級（通用標準輪轉）\n* **優先級**：`緊急迴避 (Dash)` > `生存護盾/治療 (E/Q)` > `後台掛元素/增益 (E/Q)` > `站場主 C 爆發輸出 (Q -> E -> A/重擊)`\n* **標準循環序列**：\n  1. **切 2 號位（生存位/護盾）** $\\rightarrow$ `E`（展開抗打斷護盾）\n  2. **切 3/4 號位（後台增益/副 C）** $\\rightarrow$ `Q` $\\rightarrow$ `E`（施放脫手大招與元素附著）\n  3. **切 1 號位（主 C）** $\\rightarrow$ `Q` $\\rightarrow$ `E` $\\rightarrow$ **爆發輸出（普攻/重擊銜接）**\n  4. **體力耗盡或技能冷卻時** $\\rightarrow$ 預留體力條 $\\ge 25\\%$，隨時準備後撤。\n\n---\n\n#### 3. 警戒條件（反射神經指令）\n* **【Boss 抬手 / 前搖蓄力】** $\\rightarrow$ **立即停刀，預判軸線**，保留體力。\n* **【紅光示警 / 地面範圍紅圈】** $\\rightarrow$ **立即側向/後向極限衝刺 (Dash)**，利用 0.2 秒無敵幀（i-frame）穿透攻擊判定。\n* **【連續全域多段打擊】** $\\rightarrow$ **切換角色開大招 (Q)**，利用長無敵幀硬扛傷害，或保持雙衝刺節奏拉開安全距離。\n* **【護盾破裂 / 角色受擊擊飛】** $\\rightarrow$ **落地瞬間受身衝刺** $\\rightarrow$ **立即切換治療/盾輔補位**，禁止主 C 貪刀。",
     "primary_action": "dash_dodge",
     "guidance_text": "#### 2. 推薦技能序列與優先級（通用標準輪轉）",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_我打_1789991790_1"
+  },
+  {
+    "memory_id": "mem_1789991976504",
+    "timestamp": 1789991976.5041962,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "網路搜尋",
+    "visual_context": "### 【HUD 戰術決策指示】\n\n#### 1. 核心目標\n* **啟動測試並建立「火打冰融化 (Forward Melt)」極限爆發環境**：透過希諾寧減抗增傷、茜特菈莉後台掛冰與護盾，掩護瑪薇卡",
+    "state_text": "需求: 網路搜尋",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 【HUD 戰術決策指示】\n\n#### 1. 核心目標\n* **啟動測試並建立「火打冰融化 (Forward Melt)」極限爆發環境**：透過希諾寧減抗增傷、茜特菈莉後台掛冰與護盾，掩護瑪薇卡打出滿額夜魂融化核爆。\n\n---\n\n#### 2. 推薦技能序列與優先級\n* **戰鬥啟動**：按 **`F`** 鍵開啟木樁／首領挑戰。\n* **推薦輪轉循環 (Rotation)**：\n  1. **切 3 號位 (希諾寧)**：`E` ➜ 普攻 2 次 (啟動雙音浪減抗/觸發燼城套增傷) ➜ `Q`\n  2. **切 2 號位 (尼可)**：`Q` ➜ `E` (提供團隊增益/前置附著)\n  3. **切 4 號位 (茜特菈莉)**：`E` (開盾/後台附冰) ➜ `Q` (後台強冰領域)\n  4. **切 1 號位 (瑪薇卡)**：`Q` (吃到冰附著觸發融化核爆) ➜ `E` (進入夜魂駕駛形態) ➜ 強化重擊/普攻持續融化輸出\n* **技能優先級**：減抗/增益覆蓋 (希諾寧/尼可) ＞ 後台掛冰 (茜特菈莉) ＞ 主 C 融化爆發 (瑪薇卡 Q ＞ 摩托車強化輸出)。\n\n---\n\n#### 3. 警戒條件\n* **附著檢視**：瑪薇卡施放 `Q` 核爆前，確認目標頭頂有**冰元素標記**，避免火底反向消耗。\n* **站位警戒**：挑戰啟動瞬間注意首領初始位移，希諾寧開 `E` 需貼臉命中以確保減抗光環生效。\n* **循環結束信號**：瑪薇卡夜魂值耗盡退場時，立即切回 3 號位重複循環，不可盲目平 A。",
+    "primary_action": "normal_attack",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "normal_attack",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 normal_attack？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_normal_attack_網路_1789992000_0"
+  },
+  {
+    "memory_id": "mem_1789992102258",
+    "timestamp": 1789992102.2589557,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "有你進行操作",
+    "visual_context": "### 【戰術決策指令 (Tactical Directives)】\n\n#### 1. 核心目標\n*   **啟動納塔夜魂循環與減抗增益，建立後台冰底觸發高倍率「融化 (Melt)」，瑪薇卡 Q 技能",
+    "state_text": "需求: 有你進行操作",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 【戰術決策指令 (Tactical Directives)】\n\n#### 1. 核心目標\n*   **啟動納塔夜魂循環與減抗增益，建立後台冰底觸發高倍率「融化 (Melt)」，瑪薇卡 Q 技能核爆爆發。**\n\n---\n\n#### 2. 推薦技能序列與優先級\n*   **執行優先級**：減抗增傷 (3) > 掛冰護盾 (4) > 團隊充能增益 (2) > 主C核爆收割 (1)\n*   **標準打擊序列**：\n    1. **切 3 號 (希諾寧)**：`E` ➜ `普攻 ×2` (啟動減抗 + 勇者套 40% 全隊增傷) ➜ `Q`\n    2. **切 4 號 (茜特菈莉)**：`E` ➜ `Q` (生成護盾、夜魂後台掛冰提供融化底)\n    3. **切 2 號 (尼可)**：`Q` ➜ `E` (釋放大招釋放後台增益/充能)\n    4. **切 1 號 (瑪薇卡)**：`Q` (吃到全增益觸發融化核爆) ➜ `E` (進入馳馳/強化狀態) ➜ `持續重擊/普攻` 駐場清空血條\n\n---\n\n#### 3. 警戒條件\n*   **遇敵方抬手前搖 (丘丘暴徒揮擊/衝鋒)**：在切人過渡期使用 `Shift` 衝刺閃避；瑪薇卡爆發階段直接利用 `Q` 技能無敵幀硬頂。\n*   **護盾破損/血量受威脅**：茜特菈莉護盾未生成前避免原地站樁；若被打斷優先拉開半個身位。\n*   **增益重置節點**：瑪薇卡強化狀態結束或計時器每 15 秒，立即重啟上述 3 ➜ 4 ➜ 2 ➜ 1 循環。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_有你_1789992210_0"
+  },
+  {
+    "memory_id": "mem_1789992206733",
+    "timestamp": 1789992206.7334907,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "人操作",
+    "visual_context": "【即時戰術指示】\n\n**1. 核心目標**\n* 終結殘血目標（斬殺收尾）/ 維持融化蒸發最高循環輸出。\n\n**2. 推薦技能序列與優先級**\n* **即刻斬殺：** `瑪薇卡 Q (爆發終結)` \n*",
+    "state_text": "需求: 人操作",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "【即時戰術指示】\n\n**1. 核心目標**\n* 終結殘血目標（斬殺收尾）/ 維持融化蒸發最高循環輸出。\n\n**2. 推薦技能序列與優先級**\n* **即刻斬殺：** `瑪薇卡 Q (爆發終結)` \n* **若進入下一輪循環：**\n  * `切 3 號位 希諾寧 -> E -> A*2`（觸發減抗與勇者套增傷）\n  * `切 4 號位 茜特菈莉 -> E / Q`（後台掛冰）\n  * `切 2 號位 尼可 -> E / Q`（後台增益/副產物）\n  * `切回 1 號位 瑪薇卡 -> E -> 開車普攻/重擊融化爆發`\n\n**3. 警戒條件**\n* **貼臉揮擊/下砸：** 敵人抬手前搖即刻按閃避（Shift/右鍵）或直接施放瑪薇卡 `Q` 利用無敵幀規避。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "**2. 推薦技能序列與優先級**",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": true,
+    "consolidation_arc_id": "arc_learned_dash_dodge_有你_1789992210_0"
+  },
+  {
+    "memory_id": "mem_1789992326726",
+    "timestamp": 1789992326.7261655,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "為什麼你不會長出手",
+    "visual_context": "**【大腦認知核心狀態：物理終端（手）缺失，神經反射信號已同步至操作 HUD】**  \n*「我若長出手，深淵早已平定。既然只有你有手，請立即由你的神經接管操作。」*\n\n---\n\n### 即時戰術指示 ",
+    "state_text": "需求: 為什麼你不會長出手",
+    "telemetry_features": {},
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "**【大腦認知核心狀態：物理終端（手）缺失，神經反射信號已同步至操作 HUD】**  \n*「我若長出手，深淵早已平定。既然只有你有手，請立即由你的神經接管操作。」*\n\n---\n\n### 即時戰術指示 (Tactical Directive)\n\n#### 1. 核心目標\n* **貼臉融化核爆／終結對峙**：利用當前近身僵直狀態，完成輔助增益鋪墊後，引導瑪薇卡 Q 進行高額爆發清場。\n\n---\n\n#### 2. 推薦技能序列與優先級\n* **執行邏輯**：減抗掛冰 ＞ 護盾鋪墊 ＞ 主 C 核爆啟動\n* **推薦輸入序列**：\n  1. **切 3 號位 (希諾寧)** ➔ `E` + `普攻 2 次`（觸發夜魂減抗與勇者套增傷）\n  2. **切 4 號位 (茜特菈莉)** ➔ `E` ➔ `Q`（提供護盾防打斷＋高頻掛冰環境）\n  3. **切 2 號位 (尼可)** ➔ `E` / `Q`（補足增益或後台協同）\n  4. **切 1 號位 (瑪薇卡)** ➔ **`Q` (元素爆發·融化核爆)** ➔ `長按 E` 進入驅動模式 ➔ `連續普攻/重擊` 壓制至斬殺\n\n---\n\n#### 3. 警戒條件\n* **巨斧抬手前搖（紅光危險）**：丘丘暴徒起手重砸時，優先以 **瑪薇卡 Q 的啟動無敵幀** 頂掉傷害，切勿空按跳躍中斷節奏。\n* **附魔/夜魂條警報**：瑪薇卡夜魂值耗盡或驅動結束時，不可盲目平砍，立即重複 3 ➔ 4 號位充能循環。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦技能序列與優先級",
     "suggested_questions": {
       "tactical_action": {
         "type": "choice",

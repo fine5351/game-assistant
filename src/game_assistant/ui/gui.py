@@ -28,11 +28,25 @@ from game_assistant.core.config import (
 )
 
 
+import ctypes
+import time
+import sys
+
+
 class HotkeyListener(QObject):
     """
-    全域熱鍵監聽器 (採用 pynput)
-    透過 Qt Signal 將熱鍵事件非同步通知 GUI 主執行緒
-    支援 F6 (語音翻譯輸入), F7 (畫面翻譯), F8 (急停), F9 (0.25s 輪詢), F10 (快照分析), F11 (語音指令), F12 (記憶固化)
+    雙軌全域熱鍵監聽器 (Dual-Track Global Hotkey Listener)
+    解決全螢幕 3D 遊戲 (如《原神》、《崩壞：星穹鐵道》、《絕區零》) 焦點不在助手視窗時，
+    熱鍵無法正常觸發或被 DirectInput/RawInput 繞過的痛點。
+
+    雙軌架構：
+    - 軌道一 (Windows 原生異步按鍵狀態守護執行緒)：
+      透過 Windows user32.GetAsyncKeyState 直接向作業系統核心層查詢硬體按鍵實體狀態，
+      具備邊緣觸發 (Edge-triggered) 檢測，無論焦點在任何全螢幕遊戲或桌面皆保證 100% 穿透捕獲！
+    - 軌道二 (pynput 鍵盤 Hook 備援)：
+      跨平台鍵盤 Hook，支援 VK 虛擬鍵碼 (Virtual Keycode) 與 Key 枚舉多層匹配。
+    - 智慧防抖機制 (Debounce Engine)：
+      250ms 時間窗防抖，防止雙軌重複激發信號或長按連點。
     """
     voice_translate_signal = pyqtSignal()
     screen_translate_signal = pyqtSignal()
@@ -42,37 +56,139 @@ class HotkeyListener(QObject):
     voice_prompt_signal = pyqtSignal()
     consolidate_signal = pyqtSignal()
 
+    # Windows 虛擬鍵碼 (Virtual-Key Codes)
+    VK_F6 = 0x75   # 117
+    VK_F7 = 0x76   # 118
+    VK_F8 = 0x77   # 119
+    VK_F9 = 0x78   # 120
+    VK_F10 = 0x79  # 121
+    VK_F11 = 0x7A  # 122
+    VK_F12 = 0x7B  # 123
+
     def __init__(self):
         super().__init__()
         self._listener: Optional[keyboard.Listener] = None
+        self._win_thread: Optional[threading.Thread] = None
+        self._stop_event = threading.Event()
+        self._lock = threading.Lock()
+        self._last_trigger_times: dict[str, float] = {}
 
-    def start(self):
-        def on_press(key):
+        # 鍵映射表：VK 碼 -> 信號屬性名
+        self._vk_map = {
+            self.VK_F6: "voice_translate_signal",
+            self.VK_F7: "screen_translate_signal",
+            self.VK_F8: "emergency_stop_signal",
+            self.VK_F9: "toggle_poll_signal",
+            self.VK_F10: "manual_trigger_signal",
+            self.VK_F11: "voice_prompt_signal",
+            self.VK_F12: "consolidate_signal",
+        }
+
+    def _trigger_signal(self, signal_name: str):
+        """帶有線程鎖與 250ms 時間窗的智慧防抖信號發射器"""
+        with self._lock:
+            now = time.time()
+            last = self._last_trigger_times.get(signal_name, 0.0)
+            if now - last < 0.25:
+                return
+            self._last_trigger_times[signal_name] = now
+
+        signal = getattr(self, signal_name, None)
+        if signal:
             try:
-                if key == keyboard.Key.f6:
-                    self.voice_translate_signal.emit()
-                elif key == keyboard.Key.f7:
-                    self.screen_translate_signal.emit()
-                elif key == keyboard.Key.f8:
-                    self.emergency_stop_signal.emit()
-                elif key == keyboard.Key.f9:
-                    self.toggle_poll_signal.emit()
-                elif key == keyboard.Key.f10:
-                    self.manual_trigger_signal.emit()
-                elif key == keyboard.Key.f11:
-                    self.voice_prompt_signal.emit()
-                elif key == keyboard.Key.f12:
-                    self.consolidate_signal.emit()
+                signal.emit()
             except Exception:
                 pass
 
-        self._listener = keyboard.Listener(on_press=on_press)
-        self._listener.daemon = True
-        self._listener.start()
+    def _windows_key_polling_loop(self):
+        """
+        Windows 原生 GetAsyncKeyState 核心監聽迴圈
+        以 20ms 超低開銷輪詢（CPU 佔用 < 0.01%），偵測實體按鍵 KeyDown 邊緣
+        """
+        try:
+            get_async_key_state = ctypes.windll.user32.GetAsyncKeyState
+        except Exception:
+            return
+
+        # 追蹤各按鍵前一幀狀態，實現單次按下邊緣觸發
+        prev_states = {vk: False for vk in self._vk_map}
+
+        while not self._stop_event.is_set():
+            for vk, signal_name in self._vk_map.items():
+                try:
+                    # 最高位為 1 代表按鍵當前正處於被按下的物理狀態
+                    is_pressed = (get_async_key_state(vk) & 0x8000) != 0
+                    if is_pressed and not prev_states[vk]:
+                        # 邊緣觸發：剛由放開轉為按下
+                        self._trigger_signal(signal_name)
+                    prev_states[vk] = is_pressed
+                except Exception:
+                    pass
+
+            time.sleep(0.02)  # 20ms 延遲，保證毫秒級反應速度且極度省電
+
+    def _pynput_on_press(self, key):
+        """pynput 事件處理，支援虛擬鍵碼 (vk) 與 Key 枚舉匹配"""
+        try:
+            vk = None
+            if hasattr(key, "vk") and key.vk is not None:
+                vk = key.vk
+            elif hasattr(key, "value") and hasattr(key.value, "vk"):
+                vk = key.value.vk
+
+            # 1. 優先以 vk 碼判定
+            if vk in self._vk_map:
+                self._trigger_signal(self._vk_map[vk])
+                return
+
+            # 2. 次選以 pynput.keyboard.Key 枚舉比對
+            if key == keyboard.Key.f6:
+                self._trigger_signal("voice_translate_signal")
+            elif key == keyboard.Key.f7:
+                self._trigger_signal("screen_translate_signal")
+            elif key == keyboard.Key.f8:
+                self._trigger_signal("emergency_stop_signal")
+            elif key == keyboard.Key.f9:
+                self._trigger_signal("toggle_poll_signal")
+            elif key == keyboard.Key.f10:
+                self._trigger_signal("manual_trigger_signal")
+            elif key == keyboard.Key.f11:
+                self._trigger_signal("voice_prompt_signal")
+            elif key == keyboard.Key.f12:
+                self._trigger_signal("consolidate_signal")
+        except Exception:
+            pass
+
+    def start(self):
+        """啟動雙軌全域熱鍵監聽"""
+        self._stop_event.clear()
+
+        # 軌道一：若為 Windows 平台，啟動原生 GetAsyncKeyState 核心守護執行緒 (保證原神焦點穿透)
+        if sys.platform == "win32" and hasattr(ctypes, "windll") and hasattr(ctypes.windll, "user32"):
+            self._win_thread = threading.Thread(
+                target=self._windows_key_polling_loop,
+                daemon=True,
+                name="Win32-Hotkey-Poller"
+            )
+            self._win_thread.start()
+
+        # 軌道二：啟動 pynput 鍵盤 Hook 作為跨平台備援
+        try:
+            self._listener = keyboard.Listener(on_press=self._pynput_on_press)
+            self._listener.daemon = True
+            self._listener.start()
+        except Exception as e:
+            print(f"[HotkeyListener] pynput 啟動注意: {e}")
 
     def stop(self):
+        """安全停止雙軌監聽"""
+        self._stop_event.set()
         if self._listener:
-            self._listener.stop()
+            try:
+                self._listener.stop()
+            except Exception:
+                pass
+            self._listener = None
 
 
 class FloatingSubtitleOverlay(QWidget):

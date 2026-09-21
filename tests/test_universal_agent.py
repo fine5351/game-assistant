@@ -569,6 +569,57 @@ class TestPackageStructureAndExports(unittest.TestCase):
         self.assertFalse(overlay.is_collapsed)
         self.assertGreaterEqual(overlay.height(), 350)
 
+    def test_hotkey_listener_dual_track_and_debounce(self):
+        """測試 HotkeyListener 雙軌監聽、虛擬鍵碼對映與 250ms 防抖機制"""
+        import time
+        from unittest.mock import MagicMock
+        from game_assistant.ui.gui import HotkeyListener
+        from pynput import keyboard
+
+        listener = HotkeyListener()
+
+        # 1. 驗證虛擬鍵碼 (VK) 映射表涵蓋 F6 ~ F12
+        expected_vks = {117, 118, 119, 120, 121, 122, 123}
+        self.assertEqual(set(listener._vk_map.keys()), expected_vks)
+
+        # 2. 測試信號槽與防抖 (debounce)
+        received_signals = []
+        listener.toggle_poll_signal.connect(lambda: received_signals.append("toggle_poll"))
+
+        # 首次觸發應成功發射信號
+        listener._trigger_signal("toggle_poll_signal")
+        self.assertEqual(len(received_signals), 1)
+
+        # 在 250ms 內連續重複觸發，防抖應攔截
+        listener._trigger_signal("toggle_poll_signal")
+        listener._trigger_signal("toggle_poll_signal")
+        self.assertEqual(len(received_signals), 1)
+
+        # 手動將上次觸發時間往前推移 0.3 秒，模擬時間流逝
+        listener._last_trigger_times["toggle_poll_signal"] = time.time() - 0.3
+        listener._trigger_signal("toggle_poll_signal")
+        self.assertEqual(len(received_signals), 2)
+
+        # 3. 測試 pynput 事件帶 vk 屬性 (原神 DirectInput / 虛擬鍵碼場景)
+        class DummyKeyWithVk:
+            def __init__(self, vk):
+                self.vk = vk
+
+        f10_signals = []
+        listener.manual_trigger_signal.connect(lambda: f10_signals.append("manual_f10"))
+        listener._pynput_on_press(DummyKeyWithVk(121))  # VK_F10 = 121
+        self.assertEqual(len(f10_signals), 1)
+
+        # 4. 測試 pynput Key 枚舉備援匹配
+        f11_signals = []
+        listener.voice_prompt_signal.connect(lambda: f11_signals.append("voice_f11"))
+        listener._pynput_on_press(keyboard.Key.f11)
+        self.assertEqual(len(f11_signals), 1)
+
+        # 5. 測試停止
+        listener.stop()
+        self.assertTrue(listener._stop_event.is_set())
+
     def test_strategies_package_exports(self):
         from game_assistant import strategies
         self.assertTrue(hasattr(strategies, "BaseGameStrategy"))

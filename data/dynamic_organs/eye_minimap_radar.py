@@ -7,7 +7,7 @@ from typing import Dict, Any
 from game_assistant.organs.base import BaseOrganTool, OrganType
 
 
-class DynamicOrgan_63430(BaseOrganTool):
+class DynamicOrgan_5668(BaseOrganTool):
     def __init__(self):
         super().__init__(
             organ_id="eye_minimap_radar",
