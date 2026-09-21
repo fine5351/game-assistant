@@ -140,11 +140,14 @@ class GeminiAuxiliaryEngine:
             f"輔助模式：{cap_name}\n"
             f"思考模式：【{effort_desc}】\n"
             f"玩家提出了具體需求：【{user_demand.strip()}】。\n"
-            "請將玩家需求轉化為極度簡潔的即時戰術指示 (Directive)，格式包含：\n"
-            "1. 核心目標 (例如：破韌、極限閃避、元素反應、自動打怪)\n"
-            "2. 推薦技能序列與優先級 (例如：切 2 號位 -> E -> 普攻)\n"
-            "3. 警戒條件 (例如：遇黃光招架、遇紅光閃避)\n"
-            "請以繁體中文回答，適合後續 Jev 反射神經固化與高頻決策器直接取用。"
+            "【系統實體操作與自律生長能力認知】：\n"
+            "你所在的助理系統已具備完整的『自律器官生長器 (OrganSynthesizer)』與『鍵鼠實體致動器 (ScreenActuator)』，能夠即時自律生長出專屬的 Python 操作 Script 宏手並接管操作！\n"
+            "嚴禁宣稱『物理終端（手）缺失』或『只有玩家有手』。\n"
+            "當玩家要求操作接管、自動戰鬥、執行連招或提問『長出手』時，請提供清晰明確的即時戰術指示 (Directive)，格式規範如下：\n"
+            "1. 核心目標 (例如：接管執行連招、核爆終結、極限閃避、大世界自動採集)\n"
+            "2. 推薦輸入序列 (明確列出鍵盤與滑鼠序列，如：切 3 號位 -> E -> 普攻 2 次 -> 切 4 號位 -> E -> Q -> 切 1 號位 -> Q)\n"
+            "3. 警戒條件 (例如：遇紅光閃避無敵幀頂傷害、技能CD與能量警報)\n"
+            "請以繁體中文回答，條點清晰，適合後續手部器官 (DynamicActionScriptHand) 與 Jev 反射神經直接解析執行。"
         )
 
         try:
@@ -189,7 +192,20 @@ class GeminiAuxiliaryEngine:
         demand_lower = user_demand.lower()
         game_str = game_type.value if hasattr(game_type, "value") else str(game_type)
         effort_tag = "深度慢思考" if thinking_effort == "max" else "敏捷快速思考"
-        if "閃避" in user_demand or "dodge" in demand_lower or "紅光" in user_demand or "危險" in user_demand:
+
+        # 1. 優先匹配：長出手 / 操作接管 / 連招 / 幫我打
+        if any(kw in user_demand for kw in ["長手", "長出手", "生長手", "接管", "幫我打", "連招", "代打", "操作", "核爆"]):
+            res = (
+                f"【大腦戰術指示 ({effort_tag}) - {game_str}】：\n"
+                f"1. 核心目標：自律生長操作手腳本，接管戰術輸出\n"
+                f"2. 推薦輸入序列：\n"
+                f"切 3 號位 ➔ E 施放戰技 ➔ 普攻 2 次\n"
+                f"切 4 號位 ➔ E 施放戰技 ➔ Q 施放大招\n"
+                f"切 2 號位 ➔ E 輔助增益\n"
+                f"切 1 號位 ➔ Q 元素爆發融化核爆 ➔ 長按 E 進入輸出 ➔ 連續普攻\n"
+                f"3. 警戒條件：鎖定敵方攻擊前搖紅光，危險時以大招無敵幀頂掉傷害，夜魂與能量耗盡立即換人循環"
+            )
+        elif "閃避" in user_demand or "dodge" in demand_lower or "紅光" in user_demand or "危險" in user_demand:
             res = (
                 f"【大腦戰術指示 ({effort_tag}) - {game_str}】：\n"
                 f"1. 核心目標：極限閃避防禦\n"

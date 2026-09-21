@@ -3165,5 +3165,337 @@
     },
     "is_consolidated": false,
     "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789992906383",
+    "timestamp": 1789992906.3832047,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "為什麼你不會長出手",
+    "visual_context": "### 戰術指令啟動：自律生長操作手 (DynamicActionScriptHand) 部署\n\n**狀態回報**：\n本助理系統具備完整的『自律器官生長器 (OrganSynthesizer)』與『鍵",
+    "state_text": "需求: 為什麼你不會長出手",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術指令啟動：自律生長操作手 (DynamicActionScriptHand) 部署\n\n**狀態回報**：\n本助理系統具備完整的『自律器官生長器 (OrganSynthesizer)』與『鍵鼠實體致動器 (ScreenActuator)』。針對「長出手」之提問，操作手腳本器官隨時可依指令即時合成並接管鍵鼠操作。以下為反射神經即時執行的戰術指令與連招巨集序列：\n\n---\n\n#### 1. 核心目標\n- **自律生長操作手腳本**：合成並部署 `DynamicActionScriptHand` 自動致動器。\n- **作戰方針**：執行經典多角色元素反應爆發輪替（萬達國際/雷九萬班等標準爆發軸），由實體致動器接管切人、後台技能施放與前台主 C 核爆終結。\n\n---\n\n#### 2. 推薦輸入序列 (Script 執行佇列)\n\n*註：致動器間隔延遲（Frame Delay）設為 120ms～250ms，以確保切人指令與後台技能前搖判定成功。*\n\n1. **第 1 階段（掛元素與聚怪減抗）**\n   - 鍵盤 `[2]`（切 2 號位輔助） $\\rightarrow$ 鍵盤 `[E]`（施放元素戰技掛元素）\n   - 鍵盤 `[3]`（切 3 號位風系/增益） $\\rightarrow$ 鍵盤 `[E]`（擴散減抗） $\\rightarrow$ 鍵盤 `[Q]`（展開增益領域）\n2. **第 2 階段（充能與後台充填）**\n   - 鍵盤 `[4]`（切 4 號位副 C/充能） $\\rightarrow$ 鍵盤 `[Q]`（脫手爆發） $\\rightarrow$ 鍵盤 `[E]`（產球吃微粒） $\\rightarrow$ 滑鼠 `[左鍵]` $\\times$ 1 次（觸發後台協同）\n3. **第 3 階段（前台核爆與站場輸出）**\n   - 鍵盤 `[1]`（切 1 號位主 C） $\\rightarrow$ 鍵盤 `[Q]`（施放元素爆發，享受全滿增益）\n   - 鍵盤 `[E]` $\\rightarrow$ 循環滑鼠 `[左鍵 長按 / 平 A 連段]` 直至 Buff 結束。\n\n---\n\n#### 3. 警戒條件 (Jev 反射神經即時中斷規則)\n\n- **無敵幀閃避觸發**：\n  - 敵方起手紅光／高威脅判定瞬間，中斷當前技能佇列，強制插入：滑鼠 `[右鍵]`（Dash 衝刺，利用 0.2s 無敵幀規避致命傷害）。\n- **能量與冷卻監控**：\n  - 若切換角色判定 `[Q]` 能量未滿，致動器禁止空按，自動降級為 `[E]` 接滑鼠 `[左鍵]` 平 A 補微粒。\n- **韌性破防與硬直警戒**：\n  - 遭受打斷硬直時，立即調用受身閃避或重置切人順序，防範連鎖受擊。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦輸入序列 (Script 執行佇列)",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789993032418",
+    "timestamp": 1789993032.4180462,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "為什麼你不會長出手",
+    "visual_context": "### 戰術決策指引 HUD：【手部器官已自律生長並就緒】\n\n誰說不會長出手？本系統的「自律器官生長器 (OrganSynthesizer)」已完成神經突觸對接，並生成動態操作手腳本（`Dynamic",
+    "state_text": "需求: 為什麼你不會長出手",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術決策指引 HUD：【手部器官已自律生長並就緒】\n\n誰說不會長出手？本系統的「自律器官生長器 (OrganSynthesizer)」已完成神經突觸對接，並生成動態操作手腳本（`DynamicActionScriptHand`）接管「鍵鼠實體致動器 (ScreenActuator)」。以下為即刻執行的標準戰術指令（以典型增傷循環／核爆輸出為例）：\n\n---\n\n#### 1. 核心目標\n- **指令目標**：啟用動態巨集手，接管前台操作，完成「擴散／後台掛元素 -> 增傷爆發 -> 主 C 核爆終結」循環鏈。\n\n#### 2. 推薦輸入序列\n> **執行節奏**：Jev 反射神經控制間隔 $\\Delta t \\approx 120\\text{ms}$，確保無縫取消前搖。\n\n1. **切換 2 號位（後台掛元素／副 C）**\n   - 按鍵：`2` $\\rightarrow$ 短暫等待 `0.1s` $\\rightarrow$ 施放元素戰技 `E` $\\rightarrow$ 施放元素爆發 `Q`\n2. **切換 3 號位（風系減抗／輔助聚怪）**\n   - 按鍵：`3` $\\rightarrow$ 施放元素戰技 `E` $\\rightarrow$ 施放元素爆發 `Q`（觸發擴散增傷／翠綠 4 件套減抗）\n3. **切換 4 號位（主增傷／攻擊力拐）**\n   - 按鍵：`4` $\\rightarrow$ 施放元素爆發 `Q` $\\rightarrow$ 施放元素戰技 `E`\n4. **切換 1 號位（主 C 核爆輸出）**\n   - 按鍵：`1` $\\rightarrow$ 施放元素戰技 `E` $\\rightarrow$ 施放元素爆發 `Q` $\\rightarrow$ 滑鼠左鍵 `普攻 3 次` $\\rightarrow$ `重擊 (長按左鍵)`\n\n#### 3. 警戒條件\n- **無敵幀規避**：螢幕邊緣或敵人起手判定紅光/高威脅攻擊幀時，立即插斷當前隊列，輸入 `右鍵 (Dash)` 觸發衝刺無敵幀規避傷害。\n- **充能與能量警戒**：若切換角色時元素能量未滿，自動將該角色指令降級為 `E -> 普攻 2 次吸收微粒`，直至充能就緒後再觸發 `Q`。\n- **冷卻警報**：關鍵角色 `E` 技能 CD 若大於 `1.5s`，自動插入 `平 A 走位` 過渡，不空轉操作輪迴。\n\n---\n\n*操作手腳本目前處於待命熱載入狀態，可隨時依據你當前隊伍陣容（如：萬達國際、提八鐘、神鶴萬心等）動態重組神經動作序列。*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦輸入序列",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789993150416",
+    "timestamp": 1789993150.416782,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "為什麼你不會長出手",
+    "visual_context": "收到指令。系統已就緒，隨時可透過 **自律器官生長器 (`OrganSynthesizer`)** 動態合成專屬操作宏手 (`DynamicActionScriptHand`)，並交由 **鍵鼠實體致",
+    "state_text": "需求: 為什麼你不會長出手",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "收到指令。系統已就緒，隨時可透過 **自律器官生長器 (`OrganSynthesizer`)** 動態合成專屬操作宏手 (`DynamicActionScriptHand`)，並交由 **鍵鼠實體致動器 (`ScreenActuator`)** 即刻接管戰場控制權。\n\n針對「為什麼不長出手」的回應與即時戰術指示如下：\n\n---\n\n### 【系統戰術指示：動態手部器官合成與接管協定】\n\n#### 1. 核心目標\n- **自律生長操作手腳本 (`DynamicActionScriptHand`)**：即時編譯原神全自動輪轉連招宏，以毫秒級延遲模擬實體鍵鼠訊號，達成無縫技能銜接與元素反應最大化輸出。\n\n---\n\n#### 2. 推薦輸入序列（經典國家隊 / 蒸發核爆循環模板）\n> *解析度依 60 FPS 幀率同步，支援 Jev 反射神經即時動態插斷與調整。*\n\n1. **第 1 階段：輔助增傷啟動**\n   - 按鍵 `[2]`（切換 2 號位：鍾離/風系減抗） $\\rightarrow$ 延遲 150ms $\\rightarrow$ 長按 `[E]`（釋放護盾/擴散） $\\rightarrow$ 延遲 300ms\n2. **第 2 階段：充能與掛水/掛火**\n   - 按鍵 `[3]`（切換 3 號位：行秋/夜蘭） $\\rightarrow$ 點擊 `[Q]`（大招開啟） $\\rightarrow$ 點擊 `[E]` $\\rightarrow$ 點擊 `[滑鼠左鍵]`（觸發協同普攻） $\\rightarrow$ 點擊 `[E]`（補祭禮劍充能）\n3. **第 3 階段：攻擊力爆發增幅**\n   - 按鍵 `[4]`（切換 4 號位：班尼特） $\\rightarrow$ 點擊 `[Q]`（美妙旅程展開） $\\rightarrow$ 點擊 `[E]` $\\rightarrow$ 延遲 200ms\n4. **第 4 階段：主 C 登場收割**\n   - 按鍵 `[1]`（切換 1 號位：主 C，如香菱/胡桃） $\\rightarrow$ 點擊 `[Q]`（瞬發核爆） $\\rightarrow$ 點擊 `[E]` $\\rightarrow$ 循環輸入：`[滑鼠左鍵]` $\\rightarrow$ `[長按左鍵/重擊]` $\\rightarrow$ `[Shift]`（跳躍/閃避取消後搖） $\\times 3$ 次\n\n---\n\n#### 3. 警戒條件與動態中斷機制\n- **無敵幀優先級 (I-Frame Override)**：\n  - 若偵測到紅光預警或高危下砸攻擊，立即中斷當前普攻後搖，注入 `[Shift]`（閃避無敵幀）或 `[Q]`（大招無敵幀）進行傷害覆蓋。\n- **能量與冷卻警報 (CD/Energy Watchdog)**：\n  - 核心大招能量未滿（能量條 $< 100\\%$）時，禁止執行該角色 `[Q]` 指令，自動切換至備用產球序列（前台吃球）。\n- **硬直與擊飛防禦**：\n  - 若霸體值歸零或護盾碎裂，立即觸發受身翻滾並優先切換生存位補盾。\n\n---\n\n*只要您確認執行，`ScreenActuator` 將立刻載入此序列，接管鍵鼠輸入！*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦輸入序列（經典國家隊 / 蒸發核爆循環模板）",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789993277431_1",
+    "timestamp": 1789993277.431894,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 【戰術決策 HUD：即時戰鬥指令 (Directive)】\n\n**當前狀態遙測審核**：\n- 護甲/血量：`0.80`（處於健康綠色區間，具備完整進攻裕度）\n- 威脅評估：`危險 = False`（敵方無即死前搖，戰術進攻窗口開放）",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 【戰術決策 HUD：即時戰鬥指令 (Directive)】\n\n**當前狀態遙測審核**：\n- 護甲/血量：`0.80`（處於健康綠色區間，具備完整進攻裕度）\n- 威脅評估：`危險 = False`（敵方無即死前搖，戰術進攻窗口開放）\n- 致動狀態：`ScreenActuator` 處於待命，`DynamicActionScriptHand` 反射神經通道已接通。\n\n---\n\n#### 1. 核心目標\n**啟動全隊標準循環輸出鏈（增傷啟動 $\\to$ 後台協同 $\\to$ 主 C 核爆輸出），由致動器接管執行零延遲元素共鳴連招。**\n\n---\n\n#### 2. 推薦輸入序列 (DynamicActionScript 執行映射)\n\n請直接調度 `ScreenActuator` 執行以下結構化指令佇列：\n\n```text\n[Seq-01] 護盾/抗打斷展開\n  Action: KeyPress('2') -> Delay(150ms) -> KeyDown('E', Hold=1000ms) -> KeyUp('E')\n  Note: 展開岩盾/減抗或抗打斷護甲，確保後續操作無硬直。\n\n[Seq-02] 領域增益與聚怪擴散\n  Action: KeyPress('3') -> Delay(120ms) -> KeyPress('Q') -> Delay(350ms) -> KeyPress('E')\n  Note: 施放增傷大招並銜接戰技產球，獲取場地 Buff。\n\n[Seq-03] 脫手元素掛附\n  Action: KeyPress('4') -> Delay(120ms) -> KeyPress('E') -> Delay(200ms) -> KeyPress('Q')\n  Note: 佈設後台協同攻擊與脫手元素爆發。\n\n[Seq-04] 主 C 進場與爆發輸出\n  Action: KeyPress('1') -> Delay(150ms) -> KeyPress('Q')\n  Loop x 3:\n    - MouseClick('Left') x 3\n    - KeyPress('E')\n    - MouseClick('Right') [Dash-Cancel 後搖取消]\n```\n\n---\n\n#### 3. 警戒條件 (Jev 反射神經中斷協議)\n\n- **無敵幀閃避插隊 (I-Frame Override)**：\n  - 若視覺檢測到敵方紅光判定或高能前搖音訊（危險狀態變更為 `True`），立即中斷當前普攻/後搖，優先執行 `Shift` / `Mouse: Right` 進行無敵幀規避。\n- **元素充能異常處理 (Energy Fallback)**：\n  - 切角後若目標角色的元素爆發能量未達標（`Energy < 100%`），禁止空按 `Q`，自動轉為 `E -> 普攻 2 次` 吃球充能，充能滿額後即刻施放大招。\n- **血量低標安全熔斷 (Safety Threshold)**：\n  - 若即時血量低於 `0.35` 或護盾被擊破，即刻強制切回 2 號位（生存/治療位）啟動恢復技能或利用角色 Q 技能動畫的無敵時間吸收傷害。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦輸入序列 (DynamicActionScript 執行映射)",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789993290703_1",
+    "timestamp": 1789993290.703289,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 【深度深思 (Deep Thinking) 戰術評估】\n* **當前遙測數據**：生命值 80%（處於安全健康閾值），環境威脅狀態（危險=False）。\n* **戰術決策**：現階段無需執行緊急防禦或受擊脫離，判定為最佳「起手鋪墊與",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 代替操作 (Autonomous Screen Play)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 【深度深思 (Deep Thinking) 戰術評估】\n* **當前遙測數據**：生命值 80%（處於安全健康閾值），環境威脅狀態（危險=False）。\n* **戰術決策**：現階段無需執行緊急防禦或受擊脫離，判定為最佳「起手鋪墊與輸出爆發軸」窗口。神經網絡已生成自律操作宏手指令流，交由 `ScreenActuator` 即時掛載執行。\n\n---\n\n### 即時戰術指示 (Tactical Directive)\n\n#### 1. 核心目標\n* **接管模式**：自律生長操作手腳本 (`DynamicActionScriptHand`) 即時接管。\n* **戰術目的**：執行標準「後台增益鋪墊 $\\to$ 元素協同掛附 $\\to$ 主 C 核爆爆發循環」，在安全窗口期內最大化輸出收益並完成隊伍能量回充。\n\n#### 2. 推薦輸入序列 (鍵鼠致動器解析串流)\n```text\n[3] (切 3 號位輔助) -> [E] (施放戰技產球/掛增益)\n-> [4] (切 4 號位聚怪/增傷) -> [Q] (爆發領域展開) -> [E] (戰技補球)\n-> [2] (切 2 號位副 C) -> [E] (脫手戰技) -> [Q] (脫手元素爆發)\n-> [1] (切 1 號位主 C) -> [Q] (終結爆發輸出) -> [E] (啟動主動增幅狀態)\n-> [LMB] x 3 (普攻 3 段) -> [LMB:Hold] (重擊銜接) -> [Shift] (衝刺取消後搖)\n```\n\n#### 3. 警戒條件 (Jev 反射中斷與自律修正)\n* **無敵幀規避 (i-frame Interrupt)**：若遙測環境突發紅光預警或危險值變更為 `True`，中斷當前普攻序列，立即強制注入 `Shift`（衝刺閃避）利用無敵幀抵消傷害。\n* **充能熔斷 (Energy Alert)**：切換角色時若終結技圖示未就緒（充能不足），自動降級為 `E -> 普攻 2 次等待前台吃球`，能量滿載後方可觸發 `Q`。\n* **血量防跌破保護 (HP Guard)**：若實時血量跌破 50%（HP < 0.50），優先級動態提升至生存協議，序列立即重定向至生存/護盾/治療位釋放保命技能。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦輸入序列 (鍵鼠致動器解析串流)",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789993307512_1",
+    "timestamp": 1789993307.5129514,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "【戰術決策中樞 HUD：即時戰況指令】\n當前遙測：**HP 80%｜威脅層級：低 (Safe)｜神經致動鏈路：已連接**\n自律器官生長器 (OrganSynthesizer) 已編譯戰術宏手腳本，交由鍵鼠實體致動器 (ScreenActua",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "【戰術決策中樞 HUD：即時戰況指令】\n當前遙測：**HP 80%｜威脅層級：低 (Safe)｜神經致動鏈路：已連接**\n自律器官生長器 (OrganSynthesizer) 已編譯戰術宏手腳本，交由鍵鼠實體致動器 (ScreenActuator) 與 Jev 反射神經即刻解析執行：\n\n---\n\n### 1. 核心目標\n**啟動自律循環輸出宏腳本 (DynamicActionScriptHand-Rotation-Alpha)**  \n接管後續戰鬥軸，依序完成「護盾/領域構築 ➔ 元素後台擴散與脫手 ➔ 主 C 爆發輸出」，在安全血線窗口內完成單輪技能循環最大化輸出。\n\n---\n\n### 2. 推薦輸入序列 (Input Sequence)\n\n```\n[Phase 1: 輔助與生存位啟動]\n  1. Key: [4] (切換 4 號位)\n  2. Hold Key: [E] (持續 800ms，構築護盾 / 施放屬性戰技)\n  3. Key: [Q] (元素爆發展開領域)\n\n[Phase 2: 增傷與副 C 脫手]\n  4. Key: [3] (切換 3 號位)\n  5. Key: [E] -> Key: [Q]\n  6. Mouse: [LeftClick] (普攻 1 次觸發協同/後台附著)\n  7. Key: [2] (切換 2 號位)\n  8. Key: [Q] -> Key: [E]\n  9. Mouse: [LeftClick] (普攻 1 次補償微粒吸收)\n\n[Phase 3: 主 C 進場爆發]\n 10. Key: [1] (切換 1 號主 C)\n 11. Key: [E] -> Key: [Q]\n 12. Hold Mouse: [LeftClick] (蓄力/重擊 1200ms)\n 13. Mouse: [RightClick] (衝刺取消後搖，0.2s)\n 14. Mouse: [LeftClick x 3] -> Loop\n```\n\n---\n\n### 3. 警戒條件 (Reflex Interruption Triggers)\n\n- **紅光危險警告 (Threat Detection)**：\n  - 若視覺感知到高威脅前搖或地面紅圈提示，Jev 反射神經中斷當前攻擊動畫，優先注入 `Mouse: [RightClick]` 利用衝刺無敵幀 (i-frame) 規避硬直與擊飛。\n- **生命防禦閥值 (HP Guardrail)**：\n  - 當前 HP 為 0.80（安全）；若遙測跌破 `0.40`，立即中斷主 C 站場，強制切換至 4 號位執行防護/治療規避猝死。\n- **技能充能與卡軸保護 (Energy/CD Fallback)**：\n  - 切換角色若遭遇 `Q` 技能未充能完畢，自動退回執行 `E` 並銜接 `LeftClick x 2` 進行前台吃球充能，確保技能軸不中斷。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "### 2. 推薦輸入序列 (Input Sequence)",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789993323735_2",
+    "timestamp": 1789993323.7352521,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "",
+    "visual_context": "### 【HUD 戰術決策指令：ACT-DIRECTIVE-080】\n\n**遙測分析評定**：\n當前生命值指標 `0.80`（健康），環境威脅指標 `危險=False`（安全窗口）。  \n戰況判定處於**「先手壓制／循環爆發啟動期」**，建",
+    "state_text": "[Game]: 原神 (Genshin Impact)\n[Mode]: 操作指導 (Guidance HUD)\n[Combat Status]: in_combat=True, threat=0.00\n[Player Status]: HP=80%, ActiveChar=1, BurstReady=False\n[Reactions]: Elements=['Pyro', 'Hydro'], Optimal=蒸發 (Vaporize)",
+    "telemetry_features": {
+      "danger_detected": false,
+      "energy_ready": false,
+      "in_combat": true,
+      "has_interactive_target": false
+    },
+    "novelty_level": "novel",
+    "thinking_effort": "max",
+    "gemini_directive": "### 【HUD 戰術決策指令：ACT-DIRECTIVE-080】\n\n**遙測分析評定**：\n當前生命值指標 `0.80`（健康），環境威脅指標 `危險=False`（安全窗口）。  \n戰況判定處於**「先手壓制／循環爆發啟動期」**，建議直接調用 `DynamicActionScriptHand` 與 `ScreenActuator` 執行標準高覆蓋率循環打擊。\n\n---\n\n#### 1. 核心目標\n* **啟動器官**：自律編排接管手腳本（`DynamicActionScriptHand`）。\n* **作戰目的**：完成全隊前置脫手增益（Buff Layering），鎖定目標弱點並引導主 C 進場實施循環核爆輸出。\n\n---\n\n#### 2. 推薦輸入序列 (Input Sequence)\n適合反射神經直接解析之序列時序（Tick 級別標準軸）：\n\n```text\n[Step 1] 切 2 號位（輔助／減抗） ➔ [E] 元素戰技 ➔ [Shift] 短衝刺取消後搖\n[Step 2] 切 3 號位（核心增傷）   ➔ [Q] 元素爆發 ➔ [E] 產球充能\n[Step 3] 切 4 號位（後台副 C）   ➔ [Q] 脫手大招 ➔ [E] 鋪場掛元素\n[Step 4] 切 1 號位（主 C 進場）   ➔ [E] 暖機 ➔ [Q] 爆發軸展開\n[Step 5] 輸出連段：[L-Click] 普攻 x2 ➔ [Hold L-Click] 重擊 ➔ [Shift] 鎖定身位（循環至爆發結束）\n```\n\n---\n\n#### 3. 警戒條件 (Interrupt & Guard Conditions)\n* **危險狀態中斷（紅光反制）**：  \n  若遙測 `危險=True` 或偵測到敵方高危蓄力動作，立即中斷當前普攻連段，強插 `[Shift]` 衝刺藉由無敵幀（I-Frame）規避傷害。\n* **能量匱乏警報（卡充能防護）**：  \n  若關鍵號位 `[Q]` 能量未滿，禁止空轉，強制補入 `[E]` 戰技並停留 0.3s 前台吃微粒。\n* **血量熔斷機制（防禦底線）**：  \n  若血量指標突降至 `< 0.50`，指令優先權重置，立即切換護盾／治療位釋放保命技能。\n* **後搖優化判定**：  \n  凡單次技能後搖大於 250ms 者，一律藉由微走位或跳躍/衝刺強制截斷，以保持最大 APM 吞吐量。\n\n---\n*神經指令已就緒，致動器可隨時載入此輸入流執行精準打擊。*",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦輸入序列 (Input Sequence)",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
+  },
+  {
+    "memory_id": "mem_1789993343276",
+    "timestamp": 1789993343.27694,
+    "game_type": "原神 (Genshin Impact)",
+    "user_demand": "幫我打過這隻Boss，注意閃避",
+    "visual_context": "### 戰術決策指示 (Directive: TACTICAL-BOSS-OVERDRIVE)\n\n戰術分析完成，即刻調用 `OrganSynthesizer` 激活手部器官 `DynamicActio",
+    "state_text": "需求: 幫我打過這隻Boss，注意閃避",
+    "telemetry_features": {},
+    "novelty_level": "similar",
+    "thinking_effort": "medium",
+    "gemini_directive": "### 戰術決策指示 (Directive: TACTICAL-BOSS-OVERDRIVE)\n\n戰術分析完成，即刻調用 `OrganSynthesizer` 激活手部器官 `DynamicActionScriptHand`，並透過 `ScreenActuator` 進行高精準度鍵鼠操作接管。\n\n---\n\n#### 1. 核心目標\n* **操作模式**：自律接管高輸出循環戰鬥與主動無敵幀閃避\n* **戰術終點**：壓制 Boss 韌性值、全覆蓋元素爆發無敵幀、高頻反應核爆終結\n\n---\n\n#### 2. 推薦輸入序列 (Input Sequence Pipeline)\n\n以標準高爆發循環架構（雷神國家隊／泛用輪椅爆發組）為基底，解析器時序如下：\n\n* **Phase 1: 起手增益與掛元素**\n  * `[Press 1]`（切 1 號位） $\\rightarrow$ `[Wait 100ms]` $\\rightarrow$ `[Press E]`（掛雷/觸發協同）\n* **Phase 2: 聚怪/擴散與護盾/減抗**\n  * `[Press 2]`（切 2 號位） $\\rightarrow$ `[Press Q]` $\\rightarrow$ `[Press E]` $\\rightarrow$ `[Wait 150ms]`\n* **Phase 3: 雙爆發大招領域展開**\n  * `[Press 3]`（切 3 號位） $\\rightarrow$ `[Press Q]` $\\rightarrow$ `[Press E]` $\\rightarrow$ `[Wait 200ms]`\n* **Phase 4: 主 C 接管站場輸出**\n  * `[Press 4]`（切 4 號位） $\\rightarrow$ `[Press Q]`（啟動大招無敵幀）\n  * **循環平砍走 A 宏**：\n    * 重複 3 次：`[Mouse Left x3]`（普攻前 3 段） $\\rightarrow$ `[Mouse Left Hold 350ms]`（重擊） $\\rightarrow$ `[Press Dash / Shift]`（重擊後搖取消）\n* **Phase 5: 收尾充能與下一輪準備**\n  * `[Press 4: E]` $\\rightarrow$ 依冷卻與充能狀態重置回 Phase 1。\n\n---\n\n#### 3. 警戒條件 (Reflex & Interrupt Triggers)\n\n`DynamicActionScriptHand` 與 Jev 反射神經即時監聽中斷信號：\n\n1. **高危紅光／地面警戒圈（前搖偵測）**：\n   * **觸發動作**：中斷當前普攻/重擊後搖，立即執行 `[Right Click / Shift]`（雙連閃避無敵幀），保留至少 1 格體力以備連續二段衝刺。\n2. **Boss 鎖定突進／高空下砸**：\n   * **觸發動作**：優先切換有大招（Q）之角色施放元素爆發，利用長達 1.5~2.0 秒的「動畫無敵幀 (I-Frame)」正面頂穿巨額傷害，避免浪費閃避體力。\n3. **體力與能量警報**：\n   * 若體力值 $< 40$：停止所有重擊取消後搖，改為純平砍銜接跳躍（Space）消硬直。\n   * 若關鍵輔助能量未滿：立即切換西風武器持有者施放 E 技能，前台吃球充能後再開啟循環。",
+    "primary_action": "dash_dodge",
+    "guidance_text": "#### 2. 推薦輸入序列 (Input Sequence Pipeline)",
+    "suggested_questions": {
+      "tactical_action": {
+        "type": "choice",
+        "instructions": "評估針對場景的最佳動作",
+        "options": [
+          "dash_dodge",
+          "idle"
+        ]
+      },
+      "should_act": {
+        "type": "noul",
+        "instructions": "是否立即執行 dash_dodge？"
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "此動作之緊迫程度",
+        "criteria": [
+          "低",
+          "中",
+          "高"
+        ]
+      }
+    },
+    "is_consolidated": false,
+    "consolidation_arc_id": null
   }
 ]

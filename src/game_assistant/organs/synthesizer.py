@@ -80,10 +80,12 @@ class OrganSynthesizer:
     def __init__(
         self,
         storage_dir: str = "data/dynamic_organs",
-        brain_engine: Optional[AntigravityCliEngine] = None
+        brain_engine: Optional[AntigravityCliEngine] = None,
+        actuator: Optional[Any] = None
     ):
         self.storage_dir = storage_dir
         self.brain_engine = brain_engine or AntigravityCliEngine()
+        self.actuator = actuator
         self.guard = OrganSafetyGuard()
         self._ensure_storage_dir()
 
@@ -168,7 +170,86 @@ class OrganSynthesizer:
         organ_id: str
     ) -> str:
         """離線確定性安全器官代碼生成樣板"""
+        clean_req = requirement.replace("\n", " ").replace('"', "'").strip()
+        clean_name = name.replace("\n", " ").replace('"', "'").strip()
         class_name = f"DynamicOrgan_{abs(hash(organ_id)) % 100000}"
+
+        if organ_type == OrganType.ACTUATOR_HAND:
+            # 專屬操作手腳本生成：解析動作序列，生成具備真實鍵鼠致動邏輯的代碼
+            from game_assistant.organs.action_parser import ActionSequenceExtractor
+            steps = ActionSequenceExtractor.extract_sequence(requirement, requirement)
+            steps_repr = [s.to_dict() for s in steps]
+            return f'''"""
+自律生長專屬操作手腳本 - {clean_name}
+需求: {clean_req}
+"""
+
+import time
+from typing import Dict, Any, Optional, List
+from game_assistant.organs.base import BaseOrganTool, OrganType
+
+
+class {class_name}(BaseOrganTool):
+    def __init__(self, actuator=None):
+        super().__init__(
+            organ_id="{organ_id}",
+            organ_type=OrganType.ACTUATOR_HAND,
+            name="{clean_name}",
+            description="針對需求【{clean_req}】自律生長建置之真實操作接管手",
+            is_built_in=False
+        )
+        self.actuator = actuator
+        self.steps = {repr(steps_repr)}
+
+    def execute(self, **kwargs) -> Dict[str, Any]:
+        self.execution_count += 1
+        act = kwargs.get("actuator", self.actuator)
+        performed = False
+        details = []
+
+        for step in self.steps:
+            a_type = step.get("action_type", "key")
+            tgt = step.get("target", "e")
+            dur = step.get("duration", 0.05)
+            p_delay = step.get("post_delay", 0.15)
+            desc = step.get("description", "")
+
+            if act and getattr(act, "is_enabled", False):
+                performed = True
+                try:
+                    if a_type in ("key", "hold_key"):
+                        act.press_key(tgt, hold_sec=dur)
+                    elif a_type in ("click", "hold_click"):
+                        act.click_mouse(button_name=tgt, count=1)
+                except Exception:
+                    pass
+
+            details.append(desc)
+            if p_delay > 0:
+                time.sleep(p_delay)
+
+            if act and not getattr(act, "is_enabled", False):
+                break
+
+        res = {{
+            "action": "script_takeover_executed",
+            "organ_id": self.organ_id,
+            "performed_real": performed,
+            "steps": details,
+            "params_received": kwargs,
+            "status": "dynamic_executed",
+            "takeover_completed": True
+        }}
+        self.last_result = res
+        return res
+
+    def extract_predicates(self, **kwargs) -> Dict[str, Any]:
+        return {{
+            "{organ_id}_executed": True,
+            "has_hand_takeover": True
+        }}
+'''
+
         return f'''"""
 自律生長動態器官代碼 - {name}
 需求: {requirement}
@@ -179,7 +260,7 @@ from game_assistant.organs.base import BaseOrganTool, OrganType
 
 
 class {class_name}(BaseOrganTool):
-    def __init__(self):
+    def __init__(self, actuator=None):
         super().__init__(
             organ_id="{organ_id}",
             organ_type=OrganType.{organ_type.name},
@@ -187,6 +268,7 @@ class {class_name}(BaseOrganTool):
             description="針對需求【{requirement}】自律生長建置之專案器官工具",
             is_built_in=False
         )
+        self.actuator = actuator
 
     def execute(self, **kwargs) -> Dict[str, Any]:
         self.execution_count += 1
@@ -213,6 +295,7 @@ class {class_name}(BaseOrganTool):
         import sys
         import dataclasses
         import time
+        from typing import List
 
         module_name = f"dynamic_organ_{organ_id}"
         module = types.ModuleType(module_name)
@@ -231,6 +314,7 @@ class {class_name}(BaseOrganTool):
             "Dict": Dict,
             "Any": Any,
             "Optional": Optional,
+            "List": List,
             "dataclasses": dataclasses,
             "dataclass": dataclasses.dataclass,
             "time": time
@@ -251,6 +335,14 @@ class {class_name}(BaseOrganTool):
             if not target_class:
                 raise OrganSecurityViolation(f"代碼中未發現合法的 BaseOrganTool 實作類別: {organ_id}")
 
-            return target_class()
+            try:
+                instance = target_class(actuator=self.actuator)
+            except TypeError:
+                instance = target_class()
+
+            if hasattr(instance, "actuator") and instance.actuator is None:
+                instance.actuator = self.actuator
+
+            return instance
         except Exception:
             raise

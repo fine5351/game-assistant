@@ -165,3 +165,176 @@ class AutoLootSprintFoot(BaseOrganTool):
             "foot_moving": bool(self.last_result and self.last_result.get("performed_real")),
             "auto_loot_active": True
         }
+
+
+class DynamicActionScriptHand(BaseOrganTool):
+    """
+    自律生長操作手：動態按鍵腳本接管手 (Dynamic Action Script Hand)
+    由大腦與動作序列抽取器即時生長建置，直接承載真實鍵鼠動作序列並執行操作接管。
+    """
+
+    def __init__(
+        self,
+        organ_id: str,
+        name: str,
+        steps: Optional[List[Any]] = None,
+        actuator: Optional[ScreenActuator] = None,
+        requirement: str = ""
+    ):
+        super().__init__(
+            organ_id=organ_id,
+            organ_type=OrganType.ACTUATOR_HAND,
+            name=name,
+            description=f"針對需求【{requirement or name}】自律生長建置之真實鍵鼠操作接管手",
+            is_built_in=False
+        )
+        self.steps = steps or []
+        self.actuator = actuator
+        self.requirement = requirement
+
+    def execute(self, **kwargs) -> Dict[str, Any]:
+        """
+        執行操作腳本接管
+        依序執行每個 ActionStep，遇 F8 緊急停止中斷
+        """
+        self.execution_count += 1
+        executed_details = []
+        performed_real = False
+
+        # 優先取用 kwargs 傳入的 actuator
+        actuator = kwargs.get("actuator", self.actuator)
+        initially_enabled = bool(actuator and getattr(actuator, "is_enabled", False))
+
+        for i, step in enumerate(self.steps):
+            # 若為字典則相容轉換
+            action_type = getattr(step, "action_type", None) or (step.get("action_type") if isinstance(step, dict) else "key")
+            target = getattr(step, "target", None) or (step.get("target") if isinstance(step, dict) else "e")
+            duration = getattr(step, "duration", None) or (step.get("duration") if isinstance(step, dict) else 0.05)
+            post_delay = getattr(step, "post_delay", None) or (step.get("post_delay") if isinstance(step, dict) else 0.15)
+            desc = getattr(step, "description", None) or (step.get("description") if isinstance(step, dict) else f"Step {i+1}")
+
+            if actuator and actuator.is_enabled:
+                performed_real = True
+                try:
+                    if action_type in ("key", "hold_key"):
+                        actuator.press_key(target, hold_sec=duration)
+                    elif action_type in ("click", "hold_click"):
+                        actuator.click_mouse(button_name=target, count=1)
+                except Exception as e:
+                    print(f"[DynamicActionScriptHand] 執行步驟失敗 ({desc}): {e}")
+
+            executed_details.append(desc)
+
+            # 步驟間間隔時間
+            if post_delay > 0:
+                time.sleep(post_delay)
+
+            # 檢查是否觸發 F8 急停 (原本為啟用但在中途被急停禁用)
+            if initially_enabled and actuator and not actuator.is_enabled:
+                executed_details.append("⚠️ 偵測到 F8 緊急急停，終止後續動作")
+                break
+
+        result = {
+            "action": "dynamic_script_takeover",
+            "organ_id": self.organ_id,
+            "name": self.name,
+            "requirement": self.requirement,
+            "performed_real": performed_real,
+            "steps_count": len(self.steps),
+            "executed_steps": executed_details,
+            "status": "completed"
+        }
+        self.last_result = result
+        return result
+
+    def extract_predicates(self, **kwargs) -> Dict[str, Any]:
+        return {
+            f"{self.organ_id}_executed": True,
+            f"{self.organ_id}_steps": len(self.steps),
+            "has_hand_takeover": True
+        }
+
+    def generate_python_code(self) -> str:
+        """生成符合 AST 審查規範的專屬 Python 腳本代碼"""
+        steps_repr = []
+        for s in self.steps:
+            if hasattr(s, "to_dict"):
+                steps_repr.append(s.to_dict())
+            elif isinstance(s, dict):
+                steps_repr.append(s)
+            else:
+                steps_repr.append({"action_type": "key", "target": str(s), "duration": 0.05, "post_delay": 0.15})
+
+        clean_req = self.requirement.replace("\n", " ").replace('"', "'").strip()
+        clean_name = self.name.replace("\n", " ").replace('"', "'").strip()
+        class_name = f"DynamicHand_{abs(hash(self.organ_id)) % 100000}"
+        return f'''"""
+自律生長專屬操作手腳本 - {clean_name}
+需求: {clean_req}
+"""
+
+import time
+from typing import Dict, Any, Optional, List
+from game_assistant.organs.base import BaseOrganTool, OrganType
+
+
+class {class_name}(BaseOrganTool):
+    def __init__(self, actuator=None):
+        super().__init__(
+            organ_id="{self.organ_id}",
+            organ_type=OrganType.ACTUATOR_HAND,
+            name="{clean_name}",
+            description="針對需求【{clean_req}】自律生長建置之真實操作接管手",
+            is_built_in=False
+        )
+        self.actuator = actuator
+        self.steps = {repr(steps_repr)}
+
+    def execute(self, **kwargs) -> Dict[str, Any]:
+        self.execution_count += 1
+        act = kwargs.get("actuator", self.actuator)
+        init_enabled = bool(act and getattr(act, "is_enabled", False))
+        performed = False
+        details = []
+
+        for step in self.steps:
+            a_type = step.get("action_type", "key")
+            tgt = step.get("target", "e")
+            dur = step.get("duration", 0.05)
+            p_delay = step.get("post_delay", 0.15)
+            desc = step.get("description", "")
+
+            if act and getattr(act, "is_enabled", False):
+                performed = True
+                try:
+                    if a_type in ("key", "hold_key"):
+                        act.press_key(tgt, hold_sec=dur)
+                    elif a_type in ("click", "hold_click"):
+                        act.click_mouse(button_name=tgt, count=1)
+                except Exception:
+                    pass
+
+            details.append(desc)
+            if p_delay > 0:
+                time.sleep(p_delay)
+
+            if init_enabled and act and not getattr(act, "is_enabled", False):
+                details.append("⚠️ 偵測到 F8 緊急急停，終止後續動作")
+                break
+
+        res = {{
+            "action": "script_takeover_executed",
+            "organ_id": self.organ_id,
+            "performed_real": performed,
+            "steps": details,
+            "status": "completed"
+        }}
+        self.last_result = res
+        return res
+
+    def extract_predicates(self, **kwargs) -> Dict[str, Any]:
+        return {{
+            "{self.organ_id}_executed": True,
+            "has_hand_takeover": True
+        }}
+'''

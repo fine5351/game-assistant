@@ -38,7 +38,9 @@ class OrganRegistry:
         self.storage_dir = storage_dir
         self.actuator = actuator
         self.gatherer = gatherer
-        self.synthesizer = synthesizer or OrganSynthesizer(storage_dir=storage_dir)
+        self.synthesizer = synthesizer or OrganSynthesizer(storage_dir=storage_dir, actuator=actuator)
+        if self.synthesizer.actuator is None:
+            self.synthesizer.actuator = actuator
         self._organs: Dict[str, BaseOrganTool] = {}
 
         # 1. 註冊預裝內建器官

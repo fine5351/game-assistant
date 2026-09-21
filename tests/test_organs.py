@@ -153,6 +153,98 @@ class SystemTool(BaseOrganTool):
         self.assertGreaterEqual(summary["total_count"], 7)
         self.assertGreaterEqual(summary["dynamic_grown_count"], 1)
 
+    def test_action_sequence_extractor(self):
+        """測試動作序列抽取器從文字中解析微觀鍵鼠操作"""
+        from game_assistant.organs.action_parser import ActionSequenceExtractor, ActionStep
+        from game_assistant.core.config import GameType
+
+        # 測試判定接管需求
+        self.assertTrue(ActionSequenceExtractor.is_takeover_or_hand_demand("為什麼你不會長出手"))
+        self.assertTrue(ActionSequenceExtractor.is_takeover_or_hand_demand("幫我打，執行連招"))
+        self.assertFalse(ActionSequenceExtractor.is_takeover_or_hand_demand("今天天氣真好"))
+
+        directive_text = """
+1. 核心目標：核爆輸出
+2. 推薦輸入序列：
+切 3 號位 (希諾寧) ➔ E 施放戰技 ➔ 普攻 2 次
+切 4 號位 (茜特菈莉) ➔ E ➔ Q 施放大招
+切 1 號位 (瑪薇卡) ➔ Q 元素爆發融化核爆 ➔ 長按 E 進入驅動模式 ➔ 連續普攻
+3. 警戒條件：紅光閃避
+"""
+        steps = ActionSequenceExtractor.extract_sequence(directive_text, game_type=GameType.GENSHIN)
+        self.assertGreaterEqual(len(steps), 6)
+
+        # 驗證步驟解析
+        targets = [s.target for s in steps]
+        self.assertIn("3", targets)
+        self.assertIn("e", targets)
+        self.assertIn("left", targets)
+        self.assertIn("4", targets)
+        self.assertIn("q", targets)
+        self.assertIn("1", targets)
+
+    def test_dynamic_action_script_hand(self):
+        """測試 DynamicActionScriptHand 生成腳本、執行動作與 AST 安全審查"""
+        from game_assistant.organs.actuator import DynamicActionScriptHand
+        from game_assistant.organs.action_parser import ActionStep
+        from game_assistant.utils.input_actuator import ScreenActuator
+
+        actuator = ScreenActuator()
+        steps = [
+            ActionStep("key", "3", duration=0.01, post_delay=0.01, description="切 3 號位"),
+            ActionStep("key", "e", duration=0.01, post_delay=0.01, description="戰技 E"),
+            ActionStep("click", "left", duration=0.01, post_delay=0.01, description="普攻"),
+            ActionStep("key", "q", duration=0.01, post_delay=0.01, description="大招 Q")
+        ]
+
+        hand = DynamicActionScriptHand(
+            organ_id="hand_test_macro",
+            name="測試連招手",
+            steps=steps,
+            actuator=actuator,
+            requirement="核爆連招"
+        )
+        res = hand.execute(actuator=actuator)
+        self.assertEqual(res["action"], "dynamic_script_takeover")
+        self.assertEqual(res["steps_count"], 4)
+        self.assertEqual(len(res["executed_steps"]), 4)
+
+        # 驗證生成的代碼可通過 AST 安全審查
+        py_code = hand.generate_python_code()
+        OrganSafetyGuard.inspect_code(py_code)
+        self.assertIn("DynamicHand_", py_code)
+        self.assertIn("BaseOrganTool", py_code)
+
+    def test_universal_agent_hand_growth_and_takeover_flow(self):
+        """測試 UniversalGameAgent 在收到長手/接管需求時，自動生長手部器官並接管操作"""
+        from game_assistant.core.agent import UniversalGameAgent
+        from game_assistant.core.config import GameType, AssistCapability
+
+        agent = UniversalGameAgent(game_type=GameType.GENSHIN, capability=AssistCapability.GUIDANCE)
+        # 清除反射弧以測試大腦與生長閉環
+        agent.nervous_system.reflex_registry.clear()
+
+        # 玩家語音提問：「為什麼你不會長出手」
+        demand = "為什麼你不會長出手"
+        agent.set_user_demand(demand)
+
+        # 1. 驗證大腦戰術指示不再宣稱「物理終端缺失」，而是包含操作接管回報
+        directive = agent.current_gemini_directive
+        self.assertNotIn("物理終端（手）缺失", directive)
+        self.assertIn("神經操作接管完成", directive)
+        self.assertIn("操作手", directive)
+
+        # 2. 驗證器官註冊中心已成功動態生長出手部器官
+        hand_organs = [o for o in agent.organ_registry.list_all_organs() if o.organ_type == OrganType.ACTUATOR_HAND and not o.is_built_in]
+        self.assertGreaterEqual(len(hand_organs), 1)
+        grown_hand = hand_organs[-1]
+        self.assertIn("操作手", grown_hand.name)
+        self.assertGreaterEqual(grown_hand.execution_count, 1)
+
+        # 3. 驗證進化報告反映新生長之器官
+        report = agent.get_evolution_report()
+        self.assertGreaterEqual(report["organs"]["dynamic_grown_count"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()

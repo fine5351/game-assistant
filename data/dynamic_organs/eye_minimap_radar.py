@@ -7,8 +7,8 @@ from typing import Dict, Any
 from game_assistant.organs.base import BaseOrganTool, OrganType
 
 
-class DynamicOrgan_5668(BaseOrganTool):
-    def __init__(self):
+class DynamicOrgan_16301(BaseOrganTool):
+    def __init__(self, actuator=None):
         super().__init__(
             organ_id="eye_minimap_radar",
             organ_type=OrganType.SENSORY_EYE,
@@ -16,6 +16,7 @@ class DynamicOrgan_5668(BaseOrganTool):
             description="針對需求【監測畫面左上方小地圖的紅點警示】自律生長建置之專案器官工具",
             is_built_in=False
         )
+        self.actuator = actuator
 
     def execute(self, **kwargs) -> Dict[str, Any]:
         self.execution_count += 1

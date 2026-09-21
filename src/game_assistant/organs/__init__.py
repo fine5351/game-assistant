@@ -11,7 +11,12 @@ from game_assistant.organs.sensory import (
 from game_assistant.organs.actuator import (
     DodgeCancelHand,
     ElementalComboHand,
-    AutoLootSprintFoot
+    AutoLootSprintFoot,
+    DynamicActionScriptHand
+)
+from game_assistant.organs.action_parser import (
+    ActionStep,
+    ActionSequenceExtractor
 )
 from game_assistant.organs.synthesizer import (
     OrganSynthesizer,
@@ -29,6 +34,9 @@ __all__ = [
     "DodgeCancelHand",
     "ElementalComboHand",
     "AutoLootSprintFoot",
+    "DynamicActionScriptHand",
+    "ActionStep",
+    "ActionSequenceExtractor",
     "OrganSynthesizer",
     "OrganSafetyGuard",
     "OrganSecurityViolation",

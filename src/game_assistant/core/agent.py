@@ -129,6 +129,18 @@ class UniversalGameAgent:
             )
             self.current_gemini_directive = directive
 
+            # 3.5 自律生長操作手腳本與接管操作 (Hand Growth & Script Takeover)
+            from game_assistant.organs.action_parser import ActionSequenceExtractor
+            if ActionSequenceExtractor.is_takeover_or_hand_demand(demand, directive):
+                takeover_res = self.auto_grow_hand_and_takeover(demand, directive)
+                if takeover_res:
+                    status_note = "✅ 已連接鍵鼠實體致動器完成連招接管" if takeover_res.get("performed_real") else "⚡ 已由神經網路模擬接管執行完畢"
+                    self.current_gemini_directive += (
+                        f"\n\n🖐️ **【神經操作接管完成】**：已自律生長專屬操作手【{takeover_res['hand_name']}】並生成 Action Script 腳本！\n"
+                        f"- **接管動作**：{takeover_res['summary']}\n"
+                        f"- **致動狀態**：{status_note}"
+                    )
+
             # 4. 留下神經突觸記憶痕跡 (供後續定期固化管線提煉)
             schema = self.gemini_engine.extract_reflex_schema_from_directive(
                 directive=directive,
@@ -360,6 +372,73 @@ class UniversalGameAgent:
             name=name,
             organ_id=organ_id
         )
+
+    def auto_grow_hand_and_takeover(self, demand: str, directive: str) -> Optional[Dict[str, Any]]:
+        """
+        自律生長專屬操作手腳本器官並即刻接管鍵鼠操作
+        1. 抽取微觀按鍵動作序列 (ActionSteps)
+        2. 動態生成專屬手部器官並通過 AST 安全審查
+        3. 掛載至器官註冊表 (OrganRegistry)
+        4. 啟用致動器並調用 execute() 透過 ScreenActuator 進行連招接管
+        """
+        import os
+        import re
+        from game_assistant.organs.action_parser import ActionSequenceExtractor
+        from game_assistant.organs.actuator import DynamicActionScriptHand
+
+        steps = ActionSequenceExtractor.extract_sequence(directive, demand, self.game_type)
+        if not steps:
+            return None
+
+        clean_demand = re.sub(r'[^a-zA-Z0-9_\u4e00-\u9fa5]', '', demand)[:12]
+        hand_id = f"hand_macro_{abs(hash(clean_demand + str(time.time()))) % 100000}"
+        hand_name = f"{clean_demand or '戰術連招'}操作手"
+
+        # 1. 建立真實操作手器官實例
+        hand_organ = DynamicActionScriptHand(
+            organ_id=hand_id,
+            name=hand_name,
+            steps=steps,
+            actuator=self.actuator,
+            requirement=f"{demand} -> {directive[:60]}"
+        )
+
+        # 2. 生成 Python 腳本代碼並持久化至磁碟
+        py_code = hand_organ.generate_python_code()
+        save_path = os.path.join(self.organ_registry.storage_dir, f"{hand_id}.py")
+        try:
+            self.organ_registry.synthesizer.guard.inspect_code(py_code)
+            with open(save_path, "w", encoding="utf-8") as f:
+                f.write(py_code)
+        except Exception as e:
+            print(f"[UniversalGameAgent] 持久化操作手腳本提示: {e}")
+
+        # 3. 註冊至器官中心
+        self.organ_registry.register_organ(hand_organ)
+
+        # 4. 啟用致動器以允許操作接管
+        was_enabled = self.actuator.is_enabled
+        self.actuator.enable()
+
+        try:
+            # 5. 立即執行接管操作
+            exec_res = hand_organ.execute(actuator=self.actuator)
+        finally:
+            if not was_enabled and self.capability != AssistCapability.AUTONOMOUS:
+                self.actuator.disable()
+
+        summary_steps = " ➔ ".join([s.description for s in steps[:5]])
+        if len(steps) > 5:
+            summary_steps += f" 等共 {len(steps)} 個步驟"
+
+        return {
+            "hand_id": hand_id,
+            "hand_name": hand_name,
+            "steps_count": len(steps),
+            "summary": summary_steps,
+            "performed_real": exec_res.get("performed_real", False),
+            "execution_result": exec_res
+        }
 
     def fetch_game_knowledge(self, query: str) -> List[Dict[str, Any]]:
         """透過網路感官查詢遊戲即時攻略與百科條目"""
